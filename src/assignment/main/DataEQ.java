@@ -1,38 +1,34 @@
-package assignment1;
+package assignment.main;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.Node;
+import org.w3c.dom.Element;
 
 
 public class DataEQ extends ParseXML {
 	// CIM classes 		
 	public static void main(String[] args) {
-		// Check if args is of correct length (1)
-		if (args.length != 1) {
-			System.err.println("Error: invalid number of EQ filepaths");
-			return;
-		}
-
 		try {
-			Document doc = getDocument(args[0]); 
+			Document doc = getDocument("Assignment_EQ_reduced.xml"); 
 			
 			// Extract the required CIM classes from the EQ file
 			ArrayList<String> cimClasses = new ArrayList<String>(
-											Arrays.asList(BASE_VOLTAGE, 
-													      SUBSTATION,
-													      VOLTAGE_LEVEL,
-													      GENERATING_UNIT,
-													      SYNC_MACHINE,
-													      REG_CONTROL,
-													      POWER_TRANS,
-													      ENERGY_CONSUMER,
-													      POWER_TRANS_END,
-													      BREAKER,
-													      RATIO_TAP));
+											Arrays.asList(//BASE_VOLTAGE, 
+//													      SUBSTATION,
+//													      VOLTAGE_LEVEL,
+//													      GENERATING_UNIT,
+													      SYNC_MACHINE//,
+//													      REG_CONTROL,
+//													      POWER_TRANS,
+//													      ENERGY_CONSUMER,
+//													      POWER_TRANS_END,
+//													      BREAKER,
+//													      RATIO_TAP
+													      ));
 			
 			for (String cimClass : cimClasses) {
 				NodeList nodeList = doc.getElementsByTagName(cimClass);
@@ -83,7 +79,7 @@ public class DataEQ extends ParseXML {
 						extractRatioTap(nodeList); 
 						break;
 					default:
-						System.err.println("Error: Incorrect CIM class for EQ file");
+						System.err.println("Error: Incorrect CIM object");
 				}
 			}						
 		}
@@ -99,19 +95,24 @@ public class DataEQ extends ParseXML {
 			
 			// Extract element data 
 			String rdfID = element.getAttribute("rdf:ID");
-			String nominalV = element.getElementsByTagName("cim:BaseVoltage.nominalVoltage").item(0).getTextContent();
-			
-			System.out.println("rdfID: " + rdfID + "\n" + "Nominal Voltage: " + nominalV + "\n");
+			String nominalV = element.getElementsByTagName("cim:BaseVoltage.nominalVoltage")
+					.item(0).getTextContent();
 		}
 	}
 	
 	public static void extractSubstation (NodeList nodeList) {
+		String region = null; 
+
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			Element element = (Element) nodeList.item(i);
 			
 			// Extract sub-station data 
 			String name = extractName(element);
-			String region = element.getElementsByTagName("cim:Substation.Region").item(0).getAttributes().item(0).getTextContent();
+
+//			String region = element.getElementsByTagName("cim:Substation.Region").item(0)
+//					.getAttributes().item(0).getTextContent();
+			
+//			NodeList something = element.getElementsByTagName("cim:Substation.Region");
 			
 			System.out.println(name + "\n" + "Region: " + region + "\n");
 		}
@@ -123,8 +124,10 @@ public class DataEQ extends ParseXML {
 			
 			// Extract voltage level data 
 			String name = extractName(element);
-			String substation = element.getElementsByTagName("cim:VoltageLevel.Substation").item(0).getAttributes().item(0).getTextContent();
-			String baseVolt = element.getElementsByTagName("cim:VoltageLevel.BaseVoltage").item(0).getAttributes().item(0).getTextContent();
+			String substation = element.getElementsByTagName("cim:VoltageLevel.Substation").item(0)
+					.getAttributes().item(0).toString();
+			String baseVolt = element.getElementsByTagName("cim:VoltageLevel.BaseVoltage").item(0)
+					.getAttributes().item(0).toString();
 			
 			System.out.println(name + "\nSubstation: " + substation + "\nBase Voltage: " + baseVolt + "\n");
 		}
@@ -136,8 +139,8 @@ public class DataEQ extends ParseXML {
 			
 			// Extract generating unit data 
 			String name = extractName(element);
-			String maxP = element.getElementsByTagName("cim:GeneratingUnit.maxOperatingP").item(0).getTextContent();
-			String minP = element.getElementsByTagName("cim:GeneratingUnit.minOperatingP").item(0).getTextContent();
+			String maxP = element.getElementsByTagName("cim:GeneratingUnit.maxOperatingP").item(0).toString();
+			String minP = element.getElementsByTagName("cim:GeneratingUnit.minOperatingP").item(0).toString();
 			
 			System.out.println(name + "\nMax P: " + maxP + "\nMin P: " + minP + "\n");
 		}
@@ -153,9 +156,12 @@ public class DataEQ extends ParseXML {
 			String genUnit = element.getElementsByTagName("cim:RotatingMachine.GeneratingUnit").item(0).getAttributes().item(0).getTextContent();
 			String regControl = element.getElementsByTagName("cim:RegulatingCondEq.RegulatingControl").item(0).getAttributes().item(0).getTextContent();
 			String eqContainer = element.getElementsByTagName("cim:Equipment.EquipmentContainer").item(0).getAttributes().item(0).getTextContent();
+			String baseVolt = element.getElementsByTagName("cim:VoltageLevel.BaseVoltage").item(0)
+					.getAttributes().item(0).toString();
 
-			System.out.println(name + "\nRated S: " + ratedS + "\nGenerating Unit: " + genUnit + "\nRegulating Control: " 
-					+ regControl + "\nEquipment Container: " + eqContainer + "\n");
+			System.out.println(baseVolt);
+//			System.out.println(name + "\nRated S: " + ratedS + "\nGenerating Unit: " + genUnit + "\nRegulating Control: " 
+//					+ regControl + "\nEquipment Container: " + eqContainer + "\n");
 		}
 	}
 	

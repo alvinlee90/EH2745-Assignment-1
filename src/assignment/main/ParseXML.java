@@ -1,4 +1,4 @@
-package assignment1;
+package assignment.main;
 
 import java.io.File;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package assignment1;
+package assignment.main;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,7 +14,7 @@ public class Database {
 	final static String DB_URL = "jdbc:mysql://localhost/";
 	
 	// Database credentials 
-	private Properties properties = new Properties(); 
+	private Properties credentials = new Properties(); 
 	final static String USER = "root";
 	final static String PASS = "root"; 
 	
@@ -23,35 +23,35 @@ public class Database {
 	private Statement stmt = null;
 
 	// Database name
-	private String databaseName; 
+	private String database; 
 	
 	public Database(String name) {
 		try {			
-			databaseName = name;
+			database = name;
 
 			// Register JDBC driver
 			Class.forName(JDBC_DRIVER);
 			
 			// Properties for connection (credentials) 
-			properties.setProperty("user", USER);
-			properties.setProperty("password", PASS);
-			properties.setProperty("useSSL", "false");		// Stops time-zone error from appearing
+			credentials.setProperty("user", USER);
+			credentials.setProperty("password", PASS);
+			credentials.setProperty("useSSL", "false");		// Stops time-zone error from appearing
 			
 			// Open a connection
 			System.out.println("Connecting to database...");
-			conn = DriverManager.getConnection(DB_URL, properties);
+			conn = DriverManager.getConnection(DB_URL, credentials);
 
 			// Execute a query to create database
 			System.out.println("Creating database...");
 			
 			// Create database students
-			String sql = "CREATE DATABASE IF NOT EXISTS " + databaseName; 
+			String sql = "CREATE DATABASE IF NOT EXISTS " + database; 
 			stmt = conn.createStatement();
 			stmt.executeUpdate(sql);
 			System.out.println("Database created successfully...");
 
 			// Connect to the created database
-			conn = DriverManager.getConnection(DB_URL + databaseName, properties);
+			conn = DriverManager.getConnection(DB_URL + database, credentials);
 			stmt = conn.createStatement();
 		}
 		catch (SQLException se) {
@@ -70,7 +70,7 @@ public class Database {
 	public void DropDatabase() {
 		try {
 			// Drop database
-			String sql = "DROP DATABASE " + databaseName; 
+			String sql = "DROP DATABASE " + database; 
 			stmt.executeUpdate(sql);
 			System.out.println("Database dropped successfully...");
 
