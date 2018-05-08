@@ -43,7 +43,10 @@ public class PowerTransformerEnd extends BaseCIMClass{
 	public String insertTable() {
 		String columnNames = " (";
 		String values = "VALUES ("; 
-		
+
+		String duplicate = " ON DUPLICATE KEY UPDATE "; 
+		Boolean update = false; 
+
 		// Add rdf_id 
 		columnNames = columnNames.concat(RDF_ID_); 
 		values = values.concat("'" + rdfID + "'");
@@ -52,33 +55,60 @@ public class PowerTransformerEnd extends BaseCIMClass{
 		if (name != null) {
 			columnNames = columnNames.concat(", " + NAME_);
 			values = values.concat(", '" + name + "'");
+			
+			duplicate = duplicate.concat(NAME_ + " = VALUES(" + NAME_ + "), ");  
+			update = true; 
 		}
 				
 		// Add R
 		if (transformerR != null) {
 			columnNames = columnNames.concat(", " + R_);
 			values = values.concat(", '" + transformerR + "'");
+			
+			duplicate = duplicate.concat(R_ + " = VALUES(" + R_ + "), ");  
+			update = true; 
 		}
 				
 		// Add X
 		if (transformerX != null) {
 			columnNames = columnNames.concat(", " + X_);
 			values = values.concat(", '" + transformerX + "'");
+			
+			duplicate = duplicate.concat(X_ + " = VALUES(" + X_ + "), ");  
+			update = true; 
 		}
 		
 		// Add transformer ID
 		if (transformer != null) {
 			columnNames = columnNames.concat(", " + TRANSFORMER_ID_);
 			values = values.concat(", '" + transformer + "'");
+			
+			duplicate = duplicate.concat(TRANSFORMER_ID_ + " = VALUES(" 
+										 + TRANSFORMER_ID_ + "), ");  
+			update = true; 
 		}
 		
 		// Add base voltage ID
 		if (baseVoltage != null) {
 			columnNames = columnNames.concat(", " + BASE_VOLTAGE_ID_);
 			values = values.concat(", '" + baseVoltage + "'");
+			
+			duplicate = duplicate.concat(BASE_VOLTAGE_ID_ + " = VALUES(" 
+										 + BASE_VOLTAGE_ID_ + "), ");  
+			update = true; 
 		}
 		
-		return POWER_TRANS_END_ + columnNames + ") " + values + ")";
+		// Return SQL command (check possibility for duplicates already in table)
+		if (update) {
+			if (duplicate.endsWith(", ")) {
+				duplicate = duplicate.substring(0, duplicate.length() - 2);
+			}
+
+			return POWER_TRANS_END_ + columnNames + ") " + values + ")" + duplicate;
+		}
+		else {
+			return POWER_TRANS_END_ + columnNames + ") " + values + ")";
+		}
 	}
 
 	public String getName() { return name; }

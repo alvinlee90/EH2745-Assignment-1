@@ -111,65 +111,126 @@ public class CIMData extends CIMConsts {
 							 syncMachine_.get(0).createTable()};
 	}
 	
-	public ArrayList<String> insertAllTables() {
+	public ArrayList<String> insertBaseVoltage() {
 		ArrayList<String> command = new ArrayList<String>(); 
 		
 		// Insert all BaseVoltage elements
 		for (BaseVoltage object : baseVoltage_) {
 			command.add(object.insertTable()); 
 		}
+
+		return command; 
+	}
+	
+	public ArrayList<String> insertSubstation() {
+		ArrayList<String> command = new ArrayList<String>(); 
 		
 		// Insert all Substation elements
 		for (Substation object : substation_) {
 			command.add(object.insertTable()); 
 		}
-
+		
+		return command; 
+	}
+	
+	public ArrayList<String> insertVoltageLevel() {
+		ArrayList<String> command = new ArrayList<String>(); 
+		
 		// Insert all VoltageLevel elements
 		for (VoltageLevel object : voltageLevel_) {
 			command.add(object.insertTable()); 
 		}
+		
+		return command; 
+	}
 	
+	public ArrayList<String> insertGeneratingUnit() {
+		ArrayList<String> command = new ArrayList<String>(); 
+		
 		// Insert all GeneratingUnit elements
 		for (GeneratingUnit object : generatingUnit_) {
 			command.add(object.insertTable()); 
 		}
-				
-		// Insert all RegulatingControl elements
-		for (RegulatingControl object : regulatingControl_) {
-			command.add(object.insertTable()); 
-		}
 		
-		// Insert all PowerTransformer elements
-		for (PowerTransformer object : powerTrans_) {
-			command.add(object.insertTable()); 
-		}	
-		
-		// Insert all EnergyConsumer elements
-		for (EnergyConsumer object : energyConsumer_) {
-			command.add(object.insertTable()); 
-		}	
-		
-		// Insert all PowerTransformerEnd elements
-		for (PowerTransformerEnd object : powerTransEnd_) {
-			command.add(object.insertTable()); 
-		}	
-		
-		// Insert all Breaker elements
-		for (Breaker object : breaker_) {
-			command.add(object.insertTable()); 
-		}	
-
-		// Insert all Breaker elements
-		for (RatioTapChanger object : ratioTapChanger_) {
-			command.add(object.insertTable()); 
-		}	
-
+		return command; 
+	}
+	
+	public ArrayList<String> insertSyncMachine() {
+		ArrayList<String> command = new ArrayList<String>(); 
+			
 		// Insert all SyncMachine elements
 		for (SyncMachine object : syncMachine_) {
 			command.add(object.insertTable()); 
 		}
 		
 		return command; 
+	}
+	
+	public ArrayList<String> insertRegulatingControl() {
+		ArrayList<String> command = new ArrayList<String>(); 
+	
+		// Insert all RegulatingControl elements
+		for (RegulatingControl object : regulatingControl_) {
+			command.add(object.insertTable()); 
+		}		
+		
+		return command; 
+	}
+
+	public ArrayList<String> insertPowerTransformer() {
+		ArrayList<String> command = new ArrayList<String>(); 
+			
+		// Insert all PowerTransformer elements
+		for (PowerTransformer object : powerTrans_) {
+			command.add(object.insertTable()); 
+		}	
+		
+		return command;
+	}
+		
+
+	public ArrayList<String> insertEnergyConsumer() {
+		ArrayList<String> command = new ArrayList<String>(); 
+						
+		// Insert all EnergyConsumer elements
+		for (EnergyConsumer object : energyConsumer_) {
+			command.add(object.insertTable()); 
+		}	
+	
+		return command;
+	}
+	
+	public ArrayList<String> insertPowerTransformerEnd() {
+		ArrayList<String> command = new ArrayList<String>(); 
+			
+		// Insert all PowerTransformerEnd elements
+		for (PowerTransformerEnd object : powerTransEnd_) {
+			command.add(object.insertTable()); 
+		}		
+		
+		return command;
+	}
+	
+	public ArrayList<String> insertBreaker() {
+		ArrayList<String> command = new ArrayList<String>(); 
+				
+		// Insert all Breaker elements
+		for (Breaker object : breaker_) {
+			command.add(object.insertTable()); 
+		}	
+		
+		return command;
+	}
+	
+	public ArrayList<String> insertRatioTapChanger() {
+		ArrayList<String> command = new ArrayList<String>(); 		
+
+		// Insert all Breaker elements
+		for (RatioTapChanger object : ratioTapChanger_) {
+			command.add(object.insertTable()); 
+		}	
+		
+		return command;
 	}
 	
 	public void printCIMData(String object) {

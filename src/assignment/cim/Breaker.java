@@ -36,6 +36,9 @@ public class Breaker extends BaseCIMClass{
 		String columnNames = " (";
 		String values = "VALUES ("; 
 		
+		String duplicate = " ON DUPLICATE KEY UPDATE "; 
+		Boolean update = false; 
+
 		// Add rdf_id 
 		columnNames = columnNames.concat(RDF_ID_); 
 		values = values.concat("'" + rdfID + "'");
@@ -44,27 +47,49 @@ public class Breaker extends BaseCIMClass{
 		if (name != null) {
 			columnNames = columnNames.concat(", " + NAME_);
 			values = values.concat(", '" + name + "'");
+			
+			duplicate = duplicate.concat(NAME_ + " = VALUES(" + NAME_ + "), ");  
+			update = true; 
 		}
 				
 		// Add state
 		if (state != null) {
 			columnNames = columnNames.concat(", " + STATE_);
 			values = values.concat(", '" + state + "'");
+			
+			duplicate = duplicate.concat(STATE_ + " = VALUES(" + STATE_ + "), ");  
+			update = true; 
 		}
 		
 		// Add equipment container ID
 		if (equipContainer != null) {
 			columnNames = columnNames.concat(", " + EQUIP_CONTAINER_ID_);
 			values = values.concat(", '" + equipContainer + "'");
+			
+			duplicate = duplicate.concat(EQUIP_CONTAINER_ID_ + " = VALUES(" + EQUIP_CONTAINER_ID_ + "), ");  
+			update = true; 
 		}
 		
 		// Add base voltage ID
 		if (baseVoltage != null) {
 			columnNames = columnNames.concat(", " + BASE_VOLTAGE_ID_);
 			values = values.concat(", '" + baseVoltage + "'");
+			
+			duplicate = duplicate.concat(BASE_VOLTAGE_ID_ + " = VALUES(" + BASE_VOLTAGE_ID_ + "), ");  
+			update = true; 
 		}
 		
-		return BREAKER_ + columnNames + ") " + values + ")";
+		// Return SQL command (check possibility for duplicates already in table)
+		if (update) {
+			if (duplicate.endsWith(", ")) {
+				duplicate = duplicate.substring(0, duplicate.length() - 2);
+			}
+
+			return BREAKER_ + columnNames + ") " + values + ")" + duplicate;
+		}
+		else {
+			return BREAKER_ + columnNames + ") " + values + ")";
+		}
 	}
 	
 	public String getName() { return name; }

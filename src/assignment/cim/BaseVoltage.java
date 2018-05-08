@@ -21,7 +21,10 @@ public class BaseVoltage extends BaseCIMClass {
 	
 	public String insertTable() {
 		String columnNames = " (";
-		String values = "VALUES ("; 
+		String values = "VALUES (";
+		
+		String duplicate = " ON DUPLICATE KEY UPDATE "; 
+		Boolean update = false; 
 		
 		// Add rdf_id 
 		columnNames = columnNames.concat(RDF_ID_); 
@@ -31,9 +34,21 @@ public class BaseVoltage extends BaseCIMClass {
 		if (nominalVolt != null) {
 			columnNames = columnNames.concat(", " + NOMINAL_VOLTAGE_);
 			values = values.concat(", '" + nominalVolt + "'");
+			
+			duplicate = duplicate.concat(NOMINAL_VOLTAGE_ + " = VALUES(" + NOMINAL_VOLTAGE_ + "), ");  
+			update = true; 
 		}
 		
-		return BASE_VOLTAGE_ + columnNames + ") " + values + ")";
+		if (update) {
+			if (duplicate.endsWith(", ")) {
+				duplicate = duplicate.substring(0, duplicate.length() - 2);
+			}
+
+			return BASE_VOLTAGE_ + columnNames + ") " + values + ")" + duplicate;
+		}
+		else {
+			return BASE_VOLTAGE_ + columnNames + ") " + values + ")";
+		}
 	}
 	
 	public String getNominalVolt() { return nominalVolt; }

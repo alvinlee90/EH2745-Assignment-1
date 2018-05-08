@@ -28,6 +28,9 @@ public class Substation extends BaseCIMClass{
 		String columnNames = " (";
 		String values = "VALUES ("; 
 		
+		String duplicate = " ON DUPLICATE KEY UPDATE "; 
+		Boolean update = false; 
+		
 		// Add rdf_id 
 		columnNames = columnNames.concat(RDF_ID_); 
 		values = values.concat("'" + rdfID + "'");
@@ -36,15 +39,31 @@ public class Substation extends BaseCIMClass{
 		if (name != null) {
 			columnNames = columnNames.concat(", " + NAME_);
 			values = values.concat(", '" + name + "'");
+			
+			duplicate = duplicate.concat(NAME_ + " = VALUES(" + NAME_ + "), ");  
+			update = true; 
 		}
 		
 		// Add region id
 		if (region != null) {
 			columnNames = columnNames.concat(", " + REGION_ID_);
 			values = values.concat(", '" + region + "'");
+			
+			duplicate = duplicate.concat(REGION_ID_ + " = VALUES(" + REGION_ID_ + "), ");  
+			update = true; 
 		}
-		
-		return SUBSTATION_ + columnNames + ") " + values + ")";
+
+		// Return SQL command (check possibility for duplicates already in table)
+		if (update) {
+			if (duplicate.endsWith(", ")) {
+				duplicate = duplicate.substring(0, duplicate.length() - 2);
+			}
+
+			return SUBSTATION_ + columnNames + ") " + values + ")" + duplicate;
+		}
+		else {
+			return SUBSTATION_ + columnNames + ") " + values + ")";
+		}
 	}
 	
 	public String getName() { return name; }

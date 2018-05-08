@@ -55,6 +55,9 @@ public class SyncMachine extends BaseCIMClass{
 		String columnNames = " (";
 		String values = "VALUES ("; 
 		
+		String duplicate = " ON DUPLICATE KEY UPDATE "; 
+		Boolean update = false; 
+		
 		// Add rdf_id 
 		columnNames = columnNames.concat(RDF_ID_); 
 		values = values.concat("'" + rdfID + "'");
@@ -63,51 +66,89 @@ public class SyncMachine extends BaseCIMClass{
 		if (name != null) {
 			columnNames = columnNames.concat(", " + NAME_);
 			values = values.concat(", '" + name + "'");
+			
+			duplicate = duplicate.concat(NAME_ + " = VALUES(" + NAME_ + "), ");  
+			update = true; 
 		}
 				
 		// Add rated S
 		if (ratedS != null) {
 			columnNames = columnNames.concat(", " + S_);
 			values = values.concat(", '" + ratedS + "'");
+			
+			duplicate = duplicate.concat(S_ + " = VALUES(" + S_ + "), ");  
+			update = true; 
 		}
 		
 		// Add P
 		if (machineP != null) {
 			columnNames = columnNames.concat(", " + P_);
 			values = values.concat(", '" + machineP + "'");
+			
+			duplicate = duplicate.concat(P_ + " = VALUES(" + P_ + "), ");  
+			update = true; 
 		}
 		
 		// Add Q
 		if (machineQ != null) {
 			columnNames = columnNames.concat(", " + Q_);
 			values = values.concat(", '" + machineQ + "'");
+			
+			duplicate = duplicate.concat(Q_ + " = VALUES(" + Q_ + "), ");  
+			update = true; 
 		}
 		
 		// Add generating unit ID
 		if (genUnit != null) {
 			columnNames = columnNames.concat(", " + GEN_UNIT_ID_);
 			values = values.concat(", '" + genUnit + "'");
+			
+			duplicate = duplicate.concat(GEN_UNIT_ID_ + " = VALUES(" 
+										 + GEN_UNIT_ID_ + "), ");  
+			update = true; 
 		}
 		
 		// Add regulating control ID
 		if (regControl != null) {
 			columnNames = columnNames.concat(", " + REG_CONTROL_ID_);
 			values = values.concat(", '" + regControl + "'");
+			
+			duplicate = duplicate.concat(REG_CONTROL_ID_ + " = VALUES(" 
+										 + REG_CONTROL_ID_ + "), ");  
+			update = true; 
 		}
 
 		// Add equipment container ID
 		if (equipContainer != null) {
 			columnNames = columnNames.concat(", " + EQUIP_CONTAINER_ID_);
 			values = values.concat(", '" + equipContainer + "'");
+			
+			duplicate = duplicate.concat(EQUIP_CONTAINER_ID_ + " = VALUES(" 
+										 + EQUIP_CONTAINER_ID_ + "), ");  
+			update = true; 
 		}
 		
 		// Add base voltage ID
 		if (baseVoltage != null) {
 			columnNames = columnNames.concat(", " + BASE_VOLTAGE_ID_);
 			values = values.concat(", '" + baseVoltage + "'");
+			
+			duplicate = duplicate.concat(BASE_VOLTAGE_ID_ + " = VALUES(" 
+										 + BASE_VOLTAGE_ID_ + "), ");  
+			update = true; 
 		}
-		
-		return SYNC_MACHINE_ + columnNames + ") " + values + ")";
+
+		// Return SQL command (check possibility for duplicates already in table)
+		if (update) {
+			if (duplicate.endsWith(", ")) {
+				duplicate = duplicate.substring(0, duplicate.length() - 2);
+			}
+
+			return SYNC_MACHINE_ + columnNames + ") " + values + ")" + duplicate;
+		}
+		else {
+			return SYNC_MACHINE_ + columnNames + ") " + values + ")";
+		}
 	}
 	
 	public String getName() { return name; }

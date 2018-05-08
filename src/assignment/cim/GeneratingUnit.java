@@ -37,6 +37,9 @@ public class GeneratingUnit extends BaseCIMClass{
 		String columnNames = " (";
 		String values = "VALUES ("; 
 		
+		String duplicate = " ON DUPLICATE KEY UPDATE "; 
+		Boolean update = false; 
+
 		// Add rdf_id 
 		columnNames = columnNames.concat(RDF_ID_); 
 		values = values.concat("'" + rdfID + "'");
@@ -45,27 +48,50 @@ public class GeneratingUnit extends BaseCIMClass{
 		if (name != null) {
 			columnNames = columnNames.concat(", " + NAME_);
 			values = values.concat(", '" + name + "'");
+			
+			duplicate = duplicate.concat(NAME_ + " = VALUES(" + NAME_ + "), ");  
+			update = true; 
 		}
 		
 		// Add max P
 		if (maxP != null) {
 			columnNames = columnNames.concat(", " + MAX_P_);
 			values = values.concat(", '" + maxP + "'");
+			
+			duplicate = duplicate.concat(MAX_P_ + " = VALUES(" + MAX_P_ + "), ");  
+			update = true; 
 		}
 		
 		// Add min P
 		if (minP != null) {
 			columnNames = columnNames.concat(", " + MIN_P_);
 			values = values.concat(", '" + minP + "'");
+			
+			duplicate = duplicate.concat(MIN_P_ + " = VALUES(" + MIN_P_ + "), ");  
+			update = true; 
 		}
 		
 		// Add equipment container ID
 		if (equipContainer != null) {
 			columnNames = columnNames.concat(", " + EQUIP_CONTAINER_ID_);
 			values = values.concat(", '" + equipContainer + "'");
+			
+			duplicate = duplicate.concat(EQUIP_CONTAINER_ID_ + " = VALUES(" + 
+										 EQUIP_CONTAINER_ID_ + "), ");  
+			update = true; 
 		}
 		
-		return GENERATING_UNIT_ + columnNames + ") " + values + ")";
+		// Return SQL command (check possibility for duplicates already in table)
+		if (update) {
+			if (duplicate.endsWith(", ")) {
+				duplicate = duplicate.substring(0, duplicate.length() - 2);
+			}
+
+			return GENERATING_UNIT_ + columnNames + ") " + values + ")" + duplicate;
+		}
+		else {
+			return GENERATING_UNIT_ + columnNames + ") " + values + ")";
+		}
 	}
 	
 	public String getName() { return name; }

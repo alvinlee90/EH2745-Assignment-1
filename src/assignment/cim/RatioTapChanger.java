@@ -28,6 +28,9 @@ public class RatioTapChanger extends BaseCIMClass{
 	public String insertTable() {
 		String columnNames = " (";
 		String values = "VALUES ("; 
+
+		String duplicate = " ON DUPLICATE KEY UPDATE "; 
+		Boolean update = false; 
 		
 		// Add rdf_id 
 		columnNames = columnNames.concat(RDF_ID_); 
@@ -37,15 +40,31 @@ public class RatioTapChanger extends BaseCIMClass{
 		if (name != null) {
 			columnNames = columnNames.concat(", " + NAME_);
 			values = values.concat(", '" + name + "'");
+			
+			duplicate = duplicate.concat(NAME_ + " = VALUES(" + NAME_ + "), ");  
+			update = true; 
 		}
 				
 		// Add R
 		if (step != null) {
 			columnNames = columnNames.concat(", " + STEP_);
 			values = values.concat(", '" + step + "'");
+			
+			duplicate = duplicate.concat(STEP_ + " = VALUES(" + STEP_ + "), ");  
+			update = true; 
 		}
 		
-		return RATIO_TAP_ + columnNames + ") " + values + ")";
+		// Return SQL command (check possibility for duplicates already in table)
+		if (update) {
+			if (duplicate.endsWith(", ")) {
+				duplicate = duplicate.substring(0, duplicate.length() - 2);
+			}
+
+			return RATIO_TAP_ + columnNames + ") " + values + ")" + duplicate;
+		}
+		else {
+			return RATIO_TAP_ + columnNames + ") " + values + ")";
+		}
 	}
 	
 	public String getName() { return name; }

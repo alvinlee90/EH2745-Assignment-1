@@ -28,6 +28,9 @@ public class RegulatingControl extends BaseCIMClass{
 		String columnNames = " (";
 		String values = "VALUES ("; 
 		
+		String duplicate = " ON DUPLICATE KEY UPDATE "; 
+		Boolean update = false; 
+		
 		// Add rdf_id 
 		columnNames = columnNames.concat(RDF_ID_); 
 		values = values.concat("'" + rdfID + "'");
@@ -36,15 +39,31 @@ public class RegulatingControl extends BaseCIMClass{
 		if (name != null) {
 			columnNames = columnNames.concat(", " + NAME_);
 			values = values.concat(", '" + name + "'");
+			
+			duplicate = duplicate.concat(NAME_ + " = VALUES(" + NAME_ + "), ");  
+			update = true; 
 		}
 		
 		// Add equipment container ID
 		if (targetValue != null) {
 			columnNames = columnNames.concat(", " + TARGET_VALUE_);
 			values = values.concat(", '" + targetValue + "'");
+			
+			duplicate = duplicate.concat(TARGET_VALUE_ + " = VALUES(" + TARGET_VALUE_ + "), ");  
+			update = true; 
 		}
-		
-		return REG_CONTROL_ + columnNames + ") " + values + ")";
+
+		// Return SQL command (check possibility for duplicates already in table)
+		if (update) {
+			if (duplicate.endsWith(", ")) {
+				duplicate = duplicate.substring(0, duplicate.length() - 2);
+			}
+
+			return REG_CONTROL_ + columnNames + ") " + values + ")" + duplicate;
+		}
+		else {
+			return REG_CONTROL_ + columnNames + ") " + values + ")";
+		}
 	}
 	
 	public String getName() { return name; }
