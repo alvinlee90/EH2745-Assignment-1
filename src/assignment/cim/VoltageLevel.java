@@ -3,7 +3,7 @@ package assignment.cim;
 import org.w3c.dom.Element;
 
 
-public class VoltageLevel extends BaseCIMObject{
+public class VoltageLevel extends BaseCIMClass{
 	static final String NAME = "cim:IdentifiedObject.name";
 	static final String SUBSTATION = "cim:VoltageLevel.Substation"; 
 	static final String BASE_VOLTAGE = "cim:VoltageLevel.BaseVoltage";
@@ -13,10 +13,10 @@ public class VoltageLevel extends BaseCIMObject{
 	private String baseVoltage; 
 	
 	public VoltageLevel(Element element) {
-		rdfID = element.getAttribute("rdf:ID");
-		name = getElement(element, NAME); 
-		substation = getElement(element, SUBSTATION); 
-		baseVoltage = getElement(element, BASE_VOLTAGE); 
+		parseRDF(element);
+		name = parseElement(element, NAME); 
+		substation = parseElement(element, SUBSTATION); 
+		baseVoltage = parseElement(element, BASE_VOLTAGE); 
 	}
 	
 	public String getName() { return name; }

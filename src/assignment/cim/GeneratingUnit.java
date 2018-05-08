@@ -3,7 +3,7 @@ package assignment.cim;
 import org.w3c.dom.Element;
 
 
-public class GeneratingUnit extends BaseCIMObject{
+public class GeneratingUnit extends BaseCIMClass{
 	static final String NAME = "cim:IdentifiedObject.name";
 	static final String MAX_P = "cim:GeneratingUnit.maxOperatingP"; 
 	static final String MIN_P = "cim:GeneratingUnit.minOperatingP";
@@ -15,11 +15,11 @@ public class GeneratingUnit extends BaseCIMObject{
 	private String equipContainer; 
 	
 	public GeneratingUnit(Element element) {
-		rdfID = element.getAttribute("rdf:ID");
-		name = getElement(element, NAME); 
-		maxP = getElement(element, MAX_P); 
-		minP = getElement(element, MIN_P); 
-		equipContainer = getElement(element, EQUIP_CONTAINER); 
+		parseRDF(element);
+		name = parseElement(element, NAME); 
+		maxP = parseElement(element, MAX_P); 
+		minP = parseElement(element, MIN_P); 
+		equipContainer = parseElement(element, EQUIP_CONTAINER); 
 	}
 	
 	public String getName() { return name; }

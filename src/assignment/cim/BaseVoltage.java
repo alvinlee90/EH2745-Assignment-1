@@ -2,14 +2,14 @@ package assignment.cim;
 
 import org.w3c.dom.Element;
 
-public class BaseVoltage extends BaseCIMObject {
+public class BaseVoltage extends BaseCIMClass {
 	static final String NOMINAL_VOLTAGE = "cim:BaseVoltage.nominalVoltage";
 	
 	private String nominalVolt; 
 	
 	public BaseVoltage(Element element) {
-		rdfID = element.getAttribute("rdf:ID");
-		nominalVolt = getElement(element, NOMINAL_VOLTAGE); 
+		parseRDF(element);
+		nominalVolt = parseElement(element, NOMINAL_VOLTAGE); 
 	}
 	
 	public String getNominalVolt() { return nominalVolt; }

@@ -3,7 +3,7 @@ package assignment.cim;
 import org.w3c.dom.Element;
 
 
-public class RegulatingControl extends BaseCIMObject{
+public class RegulatingControl extends BaseCIMClass{
 	static final String NAME = "cim:IdentifiedObject.name";
 	static final String TARGET_VALUE = "cim:RegulatingControl.targetValue"; 
 
@@ -11,9 +11,9 @@ public class RegulatingControl extends BaseCIMObject{
 	private String targetValue; 
 	
 	public RegulatingControl(Element element) {
-		rdfID = element.getAttribute("rdf:ID");
-		name = getElement(element, NAME); 
-		targetValue = getElement(element, TARGET_VALUE); 
+		parseRDF(element);
+		name = parseElement(element, NAME); 
+		targetValue = parseElement(element, TARGET_VALUE); 
 	}
 	
 	public String getName() { return name; }

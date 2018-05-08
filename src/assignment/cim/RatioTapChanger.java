@@ -3,7 +3,7 @@ package assignment.cim;
 import org.w3c.dom.Element;
 
 
-public class RatioTapChanger extends BaseCIMObject{
+public class RatioTapChanger extends BaseCIMClass{
 	static final String NAME = "cim:IdentifiedObject.name";
 	static final String STEP = "cim:TapChanger.step";
 
@@ -11,9 +11,9 @@ public class RatioTapChanger extends BaseCIMObject{
 	private String step; 
 	
 	public RatioTapChanger(Element element) {
-		rdfID = element.getAttribute("rdf:ID");
-		name = getElement(element, NAME); 
-		step = getElement(element, STEP); 
+		parseRDF(element);
+		name = parseElement(element, NAME); 
+		step = parseElement(element, STEP); 
 	}
 	
 	public String getName() { return name; }

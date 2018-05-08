@@ -3,7 +3,7 @@ package assignment.cim;
 import org.w3c.dom.Element;
 
 
-public class SyncMachine extends BaseCIMObject{
+public class SyncMachine extends BaseCIMClass{
 	static final String NAME = "cim:IdentifiedObject.name";
 	static final String RATE_S = "cim:RotatingMachine.ratedS"; 
 	static final String MACHINE_P = "cim:RotatingMachine.p";
@@ -23,14 +23,14 @@ public class SyncMachine extends BaseCIMObject{
 	private String baseVoltage; 
 	
 	public SyncMachine(Element element) {
-		rdfID = element.getAttribute("rdf:ID");
-		name = getElement(element, NAME); 
-		ratedS = getElement(element, RATE_S); 
-		machineP = getElement(element, MACHINE_P); 
-		machineQ = getElement(element, MACHINE_Q); 
-		genUnit = getElement(element, GEN_UNIT); 
-		regControl = getElement(element, REG_CONTROL); 
-		equipContainer = getElement(element, EQUIP_CONTAINER); 
+		parseRDF(element);
+		name = parseElement(element, NAME); 
+		ratedS = parseElement(element, RATE_S); 
+		machineP = parseElement(element, MACHINE_P); 
+		machineQ = parseElement(element, MACHINE_Q); 
+		genUnit = parseElement(element, GEN_UNIT); 
+		regControl = parseElement(element, REG_CONTROL); 
+		equipContainer = parseElement(element, EQUIP_CONTAINER); 
 	}
 	
 	public String getName() { return name; }

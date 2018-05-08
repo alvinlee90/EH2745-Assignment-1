@@ -3,7 +3,7 @@ package assignment.cim;
 import org.w3c.dom.Element;
 
 
-public class PowerTransformerEnd extends BaseCIMObject{
+public class PowerTransformerEnd extends BaseCIMClass{
 	static final String NAME = "cim:IdentifiedObject.name";
 	static final String TRANSFORMER_R = "cim:PowerTransformerEnd.r";
 	static final String TRANSFORMER_X = "cim:PowerTransformerEnd.x"; 
@@ -17,12 +17,12 @@ public class PowerTransformerEnd extends BaseCIMObject{
 	private String baseVoltage; 
 	
 	public PowerTransformerEnd(Element element) {
-		rdfID = element.getAttribute("rdf:ID");
-		name = getElement(element, NAME); 
-		transformerR = getElement(element, TRANSFORMER_R); 
-		transformerX = getElement(element, TRANSFORMER_X); 
-		transformer = getElement(element, TRANSOFRMER);
-		baseVoltage = getElement(element, BASE_VOLTAGE); 
+		parseRDF(element);
+		name = parseElement(element, NAME); 
+		transformerR = parseElement(element, TRANSFORMER_R); 
+		transformerX = parseElement(element, TRANSFORMER_X); 
+		transformer = parseElement(element, TRANSOFRMER);
+		baseVoltage = parseElement(element, BASE_VOLTAGE); 
 	}
 	
 	public String getName() { return name; }

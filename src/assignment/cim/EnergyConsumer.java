@@ -3,7 +3,7 @@ package assignment.cim;
 import org.w3c.dom.Element;
 
 
-public class EnergyConsumer extends BaseCIMObject{
+public class EnergyConsumer extends BaseCIMClass{
 	static final String NAME = "cim:IdentifiedObject.name";
 	static final String CONSUMER_P = "cim:EnergyConsumer.p";
 	static final String CONSUMER_Q = "cim:EnergyConsumer.q"; 
@@ -17,11 +17,11 @@ public class EnergyConsumer extends BaseCIMObject{
 	private String baseVoltage; 
 	
 	public EnergyConsumer(Element element) {
-		rdfID = element.getAttribute("rdf:ID");
-		name = getElement(element, NAME); 
-		consumerP = getElement(element, CONSUMER_P); 
-		consumerQ = getElement(element, CONSUMER_Q); 
-		equipContainer = getElement(element, EQUIP_CONTAINER); 
+		parseRDF(element);
+		name = parseElement(element, NAME); 
+		consumerP = parseElement(element, CONSUMER_P); 
+		consumerQ = parseElement(element, CONSUMER_Q); 
+		equipContainer = parseElement(element, EQUIP_CONTAINER); 
 	}
 	
 	public String getName() { return name; }

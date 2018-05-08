@@ -1,4 +1,4 @@
-package assignment.main;
+package assignment;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

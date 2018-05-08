@@ -1,4 +1,4 @@
-package assignment.main;
+package assignment;
 
 public class MainProgram {
 	public static void main (String[] args) {
@@ -8,6 +8,12 @@ public class MainProgram {
 		}
 		
 		try {
+			System.out.println("Parsing EQ file...");
+			CIMData eqData = new CIMData(args[0]);
+			
+			System.out.println("Parsing SSH file...");
+			CIMData sshData = new CIMData(args[1]);
+			
 			Database database = new Database("assignment"); 
 			
 			database.DropDatabase(); 

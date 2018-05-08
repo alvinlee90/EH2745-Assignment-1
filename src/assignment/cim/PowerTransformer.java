@@ -3,7 +3,7 @@ package assignment.cim;
 import org.w3c.dom.Element;
 
 
-public class PowerTransformer extends BaseCIMObject{
+public class PowerTransformer extends BaseCIMClass{
 	static final String NAME = "cim:IdentifiedObject.name";
 	static final String EQUIP_CONTAINER = "cim:Equipment.EquipmentContainer"; 
 
@@ -11,9 +11,9 @@ public class PowerTransformer extends BaseCIMObject{
 	private String equipContainer; 
 	
 	public PowerTransformer(Element element) {
-		rdfID = element.getAttribute("rdf:ID");
-		name = getElement(element, NAME); 
-		equipContainer = getElement(element, EQUIP_CONTAINER); 
+		parseRDF(element);
+		name = parseElement(element, NAME); 
+		equipContainer = parseElement(element, EQUIP_CONTAINER); 
 	}
 	
 	public String getName() { return name; }

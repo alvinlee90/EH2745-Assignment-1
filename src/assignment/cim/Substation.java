@@ -3,7 +3,7 @@ package assignment.cim;
 import org.w3c.dom.Element;
 
 
-public class Substation extends BaseCIMObject{
+public class Substation extends BaseCIMClass{
 	static final String NAME = "cim:IdentifiedObject.name";
 	static final String REGION = "cim:Substation.Region"; 
 	
@@ -11,9 +11,9 @@ public class Substation extends BaseCIMObject{
 	private String region; 
 	
 	public Substation(Element element) {
-		rdfID = element.getAttribute("rdf:ID");
-		name = getElement(element, NAME); 
-		region = getElement(element, REGION); 
+		parseRDF(element);
+		name = parseElement(element, NAME); 
+		region = parseElement(element, REGION); 
 	}
 	
 	public String getName() { return name; }
