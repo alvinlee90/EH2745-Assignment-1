@@ -39,7 +39,7 @@ public class CIMData extends CIMConsts {
 			doc.getDocumentElement().normalize();
 			
 			for (String cimClass : CIM_CLASSES) {
-				System.out.println("Parsing data for " + cimClass + "...\n");
+//				System.out.println("Parsing data for " + cimClass + "...\n");
 				
 				NodeList nodeList = doc.getElementsByTagName(cimClass);
 
@@ -49,7 +49,7 @@ public class CIMData extends CIMConsts {
 					addElement(element, cimClass);
 				}
 				
-				printCIMData(cimClass);
+//				printCIMData(cimClass);
 			}					
 		}
 		catch(Exception e) {
@@ -97,7 +97,7 @@ public class CIMData extends CIMConsts {
 		}
 	}
 	
-	public String[] createTables() {
+	public String[] createTables() {		
 		return new String[] {baseVoltage_.get(0).createTable(),
 							 substation_.get(0).createTable(),
 							 voltageLevel_.get(0).createTable(),
@@ -109,6 +109,67 @@ public class CIMData extends CIMConsts {
 							 breaker_.get(0).createTable(),
 							 ratioTapChanger_.get(0).createTable(),
 							 syncMachine_.get(0).createTable()};
+	}
+	
+	public ArrayList<String> insertAllTables() {
+		ArrayList<String> command = new ArrayList<String>(); 
+		
+		// Insert all BaseVoltage elements
+		for (BaseVoltage object : baseVoltage_) {
+			command.add(object.insertTable()); 
+		}
+		
+		// Insert all Substation elements
+		for (Substation object : substation_) {
+			command.add(object.insertTable()); 
+		}
+
+		// Insert all VoltageLevel elements
+		for (VoltageLevel object : voltageLevel_) {
+			command.add(object.insertTable()); 
+		}
+	
+		// Insert all GeneratingUnit elements
+		for (GeneratingUnit object : generatingUnit_) {
+			command.add(object.insertTable()); 
+		}
+		
+		// Insert all SyncMachine elements
+		for (SyncMachine object : syncMachine_) {
+			command.add(object.insertTable()); 
+		}
+		
+		// Insert all RegulatingControl elements
+		for (RegulatingControl object : regulatingControl_) {
+			command.add(object.insertTable()); 
+		}
+		
+		// Insert all PowerTransformer elements
+		for (PowerTransformer object : powerTrans_) {
+			command.add(object.insertTable()); 
+		}	
+		
+		// Insert all EnergyConsumer elements
+		for (EnergyConsumer object : energyConsumer_) {
+			command.add(object.insertTable()); 
+		}	
+		
+		// Insert all PowerTransformerEnd elements
+		for (PowerTransformerEnd object : powerTransEnd_) {
+			command.add(object.insertTable()); 
+		}	
+		
+		// Insert all Breaker elements
+		for (Breaker object : breaker_) {
+			command.add(object.insertTable()); 
+		}	
+
+		// Insert all Breaker elements
+		for (RatioTapChanger object : ratioTapChanger_) {
+			command.add(object.insertTable()); 
+		}	
+		
+		return command; 
 	}
 	
 	public void printCIMData(String object) {

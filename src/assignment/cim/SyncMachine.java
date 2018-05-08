@@ -3,14 +3,23 @@ package assignment.cim;
 import org.w3c.dom.Element;
 
 
-public class SyncMachine extends BaseCIMClass{
-	static final String NAME = "cim:IdentifiedObject.name";
-	static final String RATE_S = "cim:RotatingMachine.ratedS"; 
-	static final String MACHINE_P = "cim:RotatingMachine.p";
-	static final String MACHINE_Q = "cim:RotatingMachine.q"; 
-	static final String GEN_UNIT = "cim:RotatingMachine.GeneratingUnit"; 
-	static final String REG_CONTROL = "cim:RegulatingCondEq.RegulatingControl"; 
-	static final String EQUIP_CONTAINER = "cim:Equipment.EquipmentContainer"; 
+public class SyncMachine extends BaseCIMClass{	
+	private static final String NAME_ = "NAME";
+	private static final String S_ = "S"; 
+	private static final String P_ = "P";
+	private static final String Q_ = "Q"; 
+	private static final String GEN_UNIT_ID_ = "GENERATING_UNIT_ID"; 
+	private static final String REG_CONTROL_ID_ = "REGULATING_CONTROL_ID"; 
+	private static final String EQUIP_CONTAINER_ID_ = "EQUIPMENT_CONTAINER_ID"; 
+	private static final String BASE_VOLTAGE_ID_ = "BASE_VOLTAGE_ID"; 
+
+	private static final String NAME = "cim:IdentifiedObject.name";
+	private static final String RATE_S = "cim:RotatingMachine.ratedS"; 
+	private static final String MACHINE_P = "cim:RotatingMachine.p";
+	private static final String MACHINE_Q = "cim:RotatingMachine.q"; 
+	private static final String GEN_UNIT = "cim:RotatingMachine.GeneratingUnit"; 
+	private static final String REG_CONTROL = "cim:RegulatingCondEq.RegulatingControl"; 
+	private static final String EQUIP_CONTAINER = "cim:Equipment.EquipmentContainer"; 
 
 	private String name;
 	private String ratedS;
@@ -33,13 +42,72 @@ public class SyncMachine extends BaseCIMClass{
 	}
 	
 	public String createTable() {
-		return SYNC_MACHINE_ + " (RDFID VARCHAR(50) NOT NULL, NAME VARCHAR(50), S FLOAT, "
-				+ "P FLOAT, Q FLOAT, GENERATING_UNIT_ID VARCHAR(50), REGULATING_CONTROL_ID "
-				+ "VARCHAR(50), EQUIPMENT_CONTAINER_ID VARCHAR(50), BASE_VOLTAGE_ID VARCHAR(50), "
-				+ "PRIMARY KEY(RDFID), FOREIGN KEY (GENERATING_UNIT_ID) REFERENCES " 
-				+ GENERATING_UNIT_ + "(RDFID), FOREIGN KEY (REGULATING_CONTROL_ID) REFERENCES " 
-				+ REG_CONTROL_ + "(RDFID), FOREIGN KEY (BASE_VOLTAGE_ID) REFERENCES " 
-				+ BASE_VOLTAGE_ + "(RDFID))"; 
+		return SYNC_MACHINE_ + " (" + RDF_ID_ + " VARCHAR(50) NOT NULL, " + NAME_ + " VARCHAR(50), "
+				+ S_ + " FLOAT, " + P_ + " FLOAT, " + Q_ + " FLOAT, " + GEN_UNIT_ID_ + " VARCHAR(50), "
+				+ REG_CONTROL_ID_ + " VARCHAR(50), " + EQUIP_CONTAINER_ID_ + " VARCHAR(50), " 
+				+ BASE_VOLTAGE_ID_ + " VARCHAR(50), PRIMARY KEY(" + RDF_ID_ + "), FOREIGN KEY ("
+				+ GEN_UNIT_ID_ + ") REFERENCES " + GENERATING_UNIT_ + "(" + RDF_ID_ + "), FOREIGN KEY ("
+				+ REG_CONTROL_ID_ + ") REFERENCES " + REG_CONTROL_ + "(" + RDF_ID_ + "), FOREIGN KEY (" 
+				+ BASE_VOLTAGE_ID_ + ") REFERENCES " + BASE_VOLTAGE_ + "(" + RDF_ID_ + "))"; 
+	}
+	
+	public String insertTable() {
+		String columnNames = " (";
+		String values = "VALUES ("; 
+		
+		// Add rdf_id 
+		columnNames = columnNames.concat(RDF_ID_); 
+		values = values.concat(rdfID);
+		
+		// Add name
+		if (name != null) {
+			columnNames = columnNames.concat(", " + NAME_);
+			values = values.concat(", " + name);
+		}
+				
+		// Add rated S
+		if (ratedS != null) {
+			columnNames = columnNames.concat(", " + S_);
+			values = values.concat(", " + ratedS);
+		}
+		
+		// Add P
+		if (machineP != null) {
+			columnNames = columnNames.concat(", " + P_);
+			values = values.concat(", " + machineP);
+		}
+		
+		// Add Q
+		if (machineQ != null) {
+			columnNames = columnNames.concat(", " + Q_);
+			values = values.concat(", " + machineQ);
+		}
+		
+		// Add generating unit ID
+		if (genUnit != null) {
+			columnNames = columnNames.concat(", " + GEN_UNIT_ID_);
+			values = values.concat(", " + genUnit);
+		}
+		
+		// Add regulating control ID
+		if (regControl != null) {
+			columnNames = columnNames.concat(", " + REG_CONTROL_ID_);
+			values = values.concat(", " + regControl);
+		}
+
+		// Add equipment container ID
+		if (equipContainer != null) {
+			columnNames = columnNames.concat(", " + EQUIP_CONTAINER_ID_);
+			values = values.concat(", " + equipContainer);
+		}
+		
+		// Add base voltage ID
+		if (baseVoltage != null) {
+			columnNames = columnNames.concat(", " + BASE_VOLTAGE_ID_);
+			values = values.concat(", " + baseVoltage);
+		}
+		
+		return SYNC_MACHINE_ + columnNames + ") " + values + ")";
 	}
 	
 	public String getName() { return name; }

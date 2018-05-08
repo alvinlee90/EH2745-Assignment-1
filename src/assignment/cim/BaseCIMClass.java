@@ -18,6 +18,8 @@ public class BaseCIMClass {
 	protected static final String BREAKER_ = "BREAKER"; 
 	protected static final String RATIO_TAP_ = "RATIO_TAP"; 
 	
+	protected static final String RDF_ID_ = "RDFID"; 
+	
 	protected static final String RDF_ID = "rdf:ID";
 	protected static final String RDF_ABOUT = "rdf:about"; 
 	

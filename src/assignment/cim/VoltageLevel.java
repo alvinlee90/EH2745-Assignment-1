@@ -4,9 +4,13 @@ import org.w3c.dom.Element;
 
 
 public class VoltageLevel extends BaseCIMClass{
-	static final String NAME = "cim:IdentifiedObject.name";
-	static final String SUBSTATION = "cim:VoltageLevel.Substation"; 
-	static final String BASE_VOLTAGE = "cim:VoltageLevel.BaseVoltage";
+	private static final String NAME_ = "NAME";
+	private static final String SUBSTATION_ID_ = "SUBSTATION_ID";
+	private static final String BASE_VOLTAGE_ID_ = "BASE_VOLTAGE_ID";
+
+	private static final String NAME = "cim:IdentifiedObject.name";
+	private static final String SUBSTATION = "cim:VoltageLevel.Substation"; 
+	private static final String BASE_VOLTAGE = "cim:VoltageLevel.BaseVoltage";
 	
 	private String name;
 	private String substation;
@@ -20,10 +24,40 @@ public class VoltageLevel extends BaseCIMClass{
 	}
 	
 	public String createTable() {
-		return VOLTAGE_LEVEL_ + " (RDFID VARCHAR(50) NOT NULL, NAME VARCHAR(50), SUBSTATION_ID VARCHAR(50), "
-				+ "BASE_VOLTAGE_ID VARCHAR(50), PRIMARY KEY(RDFID), FOREIGN KEY (SUBSTATION_ID) REFERENCES " 
-				+ SUBSTATION_ + "(RDFID), FOREIGN KEY (BASE_VOLTAGE_ID) REFERENCES " + BASE_VOLTAGE_ 
-				+ "(RDFID))";
+		return VOLTAGE_LEVEL_ + " (" + RDF_ID_ + " VARCHAR(50) NOT NULL, " + NAME_ + " VARCHAR(50), " 
+				+ SUBSTATION_ID_ + " VARCHAR(50), " + BASE_VOLTAGE_ID_ + " VARCHAR(50), "
+				+ "PRIMARY KEY( " + RDF_ID_ + "), FOREIGN KEY (" + SUBSTATION_ID_ + ") REFERENCES " 
+				+ SUBSTATION_ + "(" + RDF_ID_ + "), FOREIGN KEY (" + BASE_VOLTAGE_ID_+ ") REFERENCES " 
+				+ BASE_VOLTAGE_ + "(" + RDF_ID_ + "))";
+	}
+	
+	public String insertTable() {
+		String columnNames = " (";
+		String values = "VALUES ("; 
+		
+		// Add rdf_id 
+		columnNames = columnNames.concat(RDF_ID_); 
+		values = values.concat(rdfID);
+		
+		// Add name
+		if (name != null) {
+			columnNames = columnNames.concat(", " + NAME_);
+			values = values.concat(", " + name);
+		}
+		
+		// Add substation id
+		if (substation != null) {
+			columnNames = columnNames.concat(", " + SUBSTATION_ID_);
+			values = values.concat(", " + substation);
+		}
+		
+		// Add base voltage id
+		if (substation != null) {
+			columnNames = columnNames.concat(", " + BASE_VOLTAGE_ID_);
+			values = values.concat(", " + baseVoltage);
+		}
+		
+		return VOLTAGE_LEVEL_ + columnNames + ") " + values + ")";
 	}
 
 	public String getName() { return name; }

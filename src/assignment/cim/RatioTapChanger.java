@@ -4,8 +4,11 @@ import org.w3c.dom.Element;
 
 
 public class RatioTapChanger extends BaseCIMClass{
-	static final String NAME = "cim:IdentifiedObject.name";
-	static final String STEP = "cim:TapChanger.step";
+	private static final String NAME_ = "NAME";
+	private static final String STEP_ = "STEP";
+
+	private static final String NAME = "cim:IdentifiedObject.name";
+	private static final String STEP = "cim:TapChanger.step";
 
 	private String name;
 	private String step; 
@@ -17,8 +20,32 @@ public class RatioTapChanger extends BaseCIMClass{
 	}
 	
 	public String createTable() {
-		return RATIO_TAP_ + " (RDFID VARCHAR(50) NOT NULL, NAME VARCHAR(50), STEP INTEGER, "
-				+ "PRIMARY KEY(RDFID))"; 
+		return RATIO_TAP_ + " (" + RDF_ID_ + " VARCHAR(50) NOT NULL, " 
+				+ NAME_ + " VARCHAR(50), " + STEP_ + " INTEGER, "
+				+ "PRIMARY KEY("  + RDF_ID_ + "))"; 
+	}
+	
+	public String insertTable() {
+		String columnNames = " (";
+		String values = "VALUES ("; 
+		
+		// Add rdf_id 
+		columnNames = columnNames.concat(RDF_ID_); 
+		values = values.concat(rdfID);
+		
+		// Add name
+		if (name != null) {
+			columnNames = columnNames.concat(", " + NAME_);
+			values = values.concat(", " + name);
+		}
+				
+		// Add R
+		if (step != null) {
+			columnNames = columnNames.concat(", " + STEP_);
+			values = values.concat(", " + step);
+		}
+		
+		return RATIO_TAP_ + columnNames + ") " + values + ")";
 	}
 	
 	public String getName() { return name; }

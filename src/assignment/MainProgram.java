@@ -26,6 +26,17 @@ public class MainProgram {
 				database.CreateTable(command);
 			}
 			
+			// Insert tables
+			for (String command : eqData.insertAllTables()) {
+				System.out.println("[SQL] " + command); 
+			}
+			
+			// Insert tables
+			for (String command : sshData.insertAllTables()) {
+				System.out.println("[SQL] " + command); 
+			}
+
+			
 			database.DropDatabase(); 
 		}
 		catch (Exception e) {
