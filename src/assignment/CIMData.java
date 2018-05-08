@@ -97,6 +97,20 @@ public class CIMData extends CIMConsts {
 		}
 	}
 	
+	public String[] createTables() {
+		return new String[] {baseVoltage_.get(0).createTable(),
+							 substation_.get(0).createTable(),
+							 voltageLevel_.get(0).createTable(),
+							 generatingUnit_.get(0).createTable(),
+							 regulatingControl_.get(0).createTable(),
+							 powerTrans_.get(0).createTable(),
+							 energyConsumer_.get(0).createTable(),
+							 powerTransEnd_.get(0).createTable(),
+							 breaker_.get(0).createTable(),
+							 ratioTapChanger_.get(0).createTable(),
+							 syncMachine_.get(0).createTable()};
+	}
+	
 	public void printCIMData(String object) {
 		switch (object) {
 		case BASE_VOLTAGE: 

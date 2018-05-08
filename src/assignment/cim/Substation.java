@@ -16,10 +16,17 @@ public class Substation extends BaseCIMClass{
 		region = parseElement(element, REGION); 
 	}
 	
+	public String createTable() {
+		return SUBSTATION_ + " (RDFID VARCHAR(50) NOT NULL, NAME VARCHAR(50), "
+				+ "REGION_ID VARCHAR(50), PRIMARY KEY(RDFID))";
+	}
+	
 	public String getName() { return name; }
 	
 	public String getRegion() { return region; } 
 
+	public String getElement() { return SUBSTATION_; } 
+	
 	public void printData() { 
 		System.out.println("rdfID: " + rdfID + "\nName: " + name + "\nRegion: " + region + "\n");
 	}

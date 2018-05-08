@@ -15,11 +15,18 @@ public class PowerTransformer extends BaseCIMClass{
 		name = parseElement(element, NAME); 
 		equipContainer = parseElement(element, EQUIP_CONTAINER); 
 	}
+
+	public String createTable() {
+		return POWER_TRANS_ + " (RDFID VARCHAR(50) NOT NULL, NAME VARCHAR(50), "
+				+ "EQUIPMENT_CONTAINER_ID VARCHAR(50), PRIMARY KEY (RDFID))"; 
+	}
 	
 	public String getName() { return name; }
 	
 	public String getEquipContainer() { return equipContainer; } 
 
+	public String getElement() { return POWER_TRANS_; }
+	
 	public void printData() { 
 		System.out.println("rdfID: " + rdfID + "\nName: " + name + "\nEquipment Container: " + equipContainer + "\n");
 	}

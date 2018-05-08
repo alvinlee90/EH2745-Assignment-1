@@ -16,9 +16,16 @@ public class RatioTapChanger extends BaseCIMClass{
 		step = parseElement(element, STEP); 
 	}
 	
+	public String createTable() {
+		return RATIO_TAP_ + " (RDFID VARCHAR(50) NOT NULL, NAME VARCHAR(50), STEP INTEGER, "
+				+ "PRIMARY KEY(RDFID))"; 
+	}
+	
 	public String getName() { return name; }
 		
 	public String getStep() { return step; } 
+	
+	public String getElement() { return RATIO_TAP_; }
 		
 	public void printData() { 
 		System.out.println("rdfID: " + rdfID + "\nName: " + name + "\nStep: " + step + "\n");

@@ -38,17 +38,20 @@ public class Database {
 			credentials.setProperty("useSSL", "false");		// Stops time-zone error from appearing
 			
 			// Open a connection
-			System.out.println("Connecting to database...");
+			System.out.println("Connecting to database...\n");
 			conn = DriverManager.getConnection(DB_URL, credentials);
 
 			// Execute a query to create database
 			System.out.println("Creating database...");
 			
-			// Create database students
+			// Create database 
 			String sql = "CREATE DATABASE IF NOT EXISTS " + database; 
+			System.out.println("[SQL] " + sql);
+			
 			stmt = conn.createStatement();
 			stmt.executeUpdate(sql);
-			System.out.println("Database created successfully...");
+			
+			System.out.println("Database created successfully...\n");
 
 			// Connect to the created database
 			conn = DriverManager.getConnection(DB_URL + database, credentials);
@@ -56,15 +59,28 @@ public class Database {
 		}
 		catch (SQLException se) {
 			// Handle errors for JDBC
-			System.out.println("JDBC error occured while creating database");
 			se.printStackTrace();
 		}
 		catch (Exception e) {
 			// Handle errors for Class.forName
-			System.out.println("Class.forName error occured while creating database");
 			e.printStackTrace();
 		}
-
+	}
+	
+	public void CreateTable(String command) {
+		try {
+			String sql = "CREATE TABLE IF NOT EXISTS " + command; 
+			stmt.executeUpdate(sql);
+			
+			System.out.println("Created table in given database successfully...\n");
+		}
+		catch (SQLException se) {
+			// Handle errors for JDBC
+			se.printStackTrace();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void DropDatabase() {
@@ -79,8 +95,10 @@ public class Database {
 		}
 		catch (SQLException se) {
 			// Handle errors for JDBC
-			System.out.println("JDBC error occured while dropping database");
 			se.printStackTrace();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }

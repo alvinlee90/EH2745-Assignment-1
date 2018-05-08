@@ -1,6 +1,8 @@
 package assignment;
 
 public class MainProgram {
+	private static final String DATABASE = "assignment"; 
+	
 	public static void main (String[] args) {
 		if (args.length != 2) {
 			System.err.println("[Main] Error: invalid number of EQ and SSH filepaths");
@@ -8,13 +10,21 @@ public class MainProgram {
 		}
 		
 		try {
+			// Parse EQ and SSH file
 			System.out.println("Parsing EQ file...");
 			CIMData eqData = new CIMData(args[0]);
 			
 			System.out.println("Parsing SSH file...");
 			CIMData sshData = new CIMData(args[1]);
 			
-			Database database = new Database("assignment"); 
+			// Create database
+			Database database = new Database(DATABASE); 
+			
+			// Create tables 
+			for (String command : eqData.createTables()) {
+				System.out.println("[SQL] " + command); 
+				database.CreateTable(command);
+			}
 			
 			database.DropDatabase(); 
 		}

@@ -12,7 +12,13 @@ public class BaseVoltage extends BaseCIMClass {
 		nominalVolt = parseElement(element, NOMINAL_VOLTAGE); 
 	}
 	
+	public String createTable() {
+		return BASE_VOLTAGE_ + " (RDFID VARCHAR(50) NOT NULL, NOMINAL_VOLTAGE FLOAT, PRIMARY KEY(RDFID))";
+	}
+	
 	public String getNominalVolt() { return nominalVolt; }
+	
+	public String getElement() {return BASE_VOLTAGE_; }
 	
 	public void printData() { 
 		System.out.println("rdfID: " + rdfID + "\nNominal Voltage: " + nominalVolt + "\n");

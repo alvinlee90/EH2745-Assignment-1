@@ -6,8 +6,20 @@ import org.w3c.dom.NodeList;
 
 
 public class BaseCIMClass {
-	static final String RDF_ID = "rdf:ID";
-	static final String RDF_ABOUT = "rdf:about"; 
+	protected static final String BASE_VOLTAGE_ = "BASE_VOLTAGE"; 
+	protected static final String SUBSTATION_ = "SUBSTATION"; 
+	protected static final String VOLTAGE_LEVEL_ = "VOLTAGE_LEVEL"; 
+	protected static final String GENERATING_UNIT_ = "GENERATING_UNIT"; 
+	protected static final String SYNC_MACHINE_ = "SYNC_MACHINE"; 
+	protected static final String REG_CONTROL_ = "REG_CONTROL"; 
+	protected static final String POWER_TRANS_ = "POWER_TRANS"; 
+	protected static final String ENERGY_CONSUMER_ = "ENERGY_CONSUMER"; 
+	protected static final String POWER_TRANS_END_ = "POWER_TRANS_END"; 
+	protected static final String BREAKER_ = "BREAKER"; 
+	protected static final String RATIO_TAP_ = "RATIO_TAP"; 
+	
+	protected static final String RDF_ID = "rdf:ID";
+	protected static final String RDF_ABOUT = "rdf:about"; 
 	
 	protected String rdfID;
 	

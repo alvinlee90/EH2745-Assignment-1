@@ -16,10 +16,17 @@ public class RegulatingControl extends BaseCIMClass{
 		targetValue = parseElement(element, TARGET_VALUE); 
 	}
 	
+	public String createTable() {
+		return REG_CONTROL_ + " (RDFID VARCHAR(50) NOT NULL, NAME VARCHAR(50), "
+				+ "TARGET_VALUE FLOAT, PRIMARY KEY(RDFID))"; 
+	}
+	
 	public String getName() { return name; }
 	
 	public String getTargetValue() { return targetValue; } 
 
+	public String getElement() { return REG_CONTROL_; }
+	
 	public void printData() { 
 		System.out.println("rdfID: " + rdfID + "\nName: " + name + "\nTarget Value: " + targetValue + "\n");
 	}

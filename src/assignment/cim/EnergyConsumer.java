@@ -8,8 +8,7 @@ public class EnergyConsumer extends BaseCIMClass{
 	static final String CONSUMER_P = "cim:EnergyConsumer.p";
 	static final String CONSUMER_Q = "cim:EnergyConsumer.q"; 
 	static final String EQUIP_CONTAINER = "cim:Equipment.EquipmentContainer"; 
-//	static final String BASE_VOLTAGE = 
-
+	
 	private String name;
 	private String consumerP;
 	private String consumerQ;
@@ -24,6 +23,13 @@ public class EnergyConsumer extends BaseCIMClass{
 		equipContainer = parseElement(element, EQUIP_CONTAINER); 
 	}
 	
+	public String createTable() {
+		return ENERGY_CONSUMER_ + " (RDFID VARCHAR(50) NOT NULL, NAME VARCHAR(50), P FLOAT, "
+				+ "Q FLOAT, EQUIPMENT_CONTAINER_ID VARCHAR(50), BASE_VOLTAGE_ID VARCHAR(50), "
+				+ "PRIMARY KEY(RDFID), FOREIGN KEY (BASE_VOLTAGE_ID) REFERENCES " 
+				+ BASE_VOLTAGE_ + "(RDFID))"; 
+	}
+	
 	public String getName() { return name; }
 		
 	public String getConsumerP() { return consumerP; } 
@@ -34,6 +40,8 @@ public class EnergyConsumer extends BaseCIMClass{
 	
 	public String getBaseVoltage() { return baseVoltage; } 
 
+	public String getElement() { return ENERGY_CONSUMER_; }
+	
 	public void printData() { 
 		System.out.println("rdfID: " + rdfID + "\nName: " + name + "\nP: " + consumerP + "\nQ: " + consumerQ 
 				+ "\nEquipment Container: " + equipContainer + "\n");

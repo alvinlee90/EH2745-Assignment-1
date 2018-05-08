@@ -25,6 +25,14 @@ public class PowerTransformerEnd extends BaseCIMClass{
 		baseVoltage = parseElement(element, BASE_VOLTAGE); 
 	}
 	
+	public String createTable() {
+		return POWER_TRANS_END_ + " (RDFID VARCHAR(50) NOT NULL, NAME VARCHAR(50), R FLOAT, "
+				+ "X FLOAT, TRANSFORMER_ID VARCHAR(50), BASE_VOLTAGE_ID VARCHAR(50), "
+				+ "PRIMARY KEY (RDFID), FOREIGN KEY (TRANSFORMER_ID) REFERENCES "
+				+ POWER_TRANS_ + "(RDFID), FOREIGN KEY (BASE_VOLTAGE_ID) REFERENCES " 
+				+ BASE_VOLTAGE_ + "(RDFID))"; 
+	}
+
 	public String getName() { return name; }
 		
 	public String getTransformerR() { return transformerR; } 
@@ -34,6 +42,8 @@ public class PowerTransformerEnd extends BaseCIMClass{
 	public String getTransformer() { return transformer; } 
 	
 	public String getBaseVoltage() { return baseVoltage; } 
+
+	public String getElement() { return POWER_TRANS_END_; }
 
 	public void printData() { 
 		System.out.println("rdfID: " + rdfID + "\nName: " + name + "\nR: " + transformerR + "\nX: " + transformerX 

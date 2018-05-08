@@ -22,6 +22,11 @@ public class GeneratingUnit extends BaseCIMClass{
 		equipContainer = parseElement(element, EQUIP_CONTAINER); 
 	}
 	
+	public String createTable() {
+		return GENERATING_UNIT_ + " (RDFID VARCHAR(50) NOT NULL, NAME VARCHAR(50), MAX_P FLOAT, "
+				+ "MIN_P FLOAT, EQUIPMENT_CONTAINER_ID VARCHAR(50), PRIMARY KEY(RDFID))"; 
+	}
+	
 	public String getName() { return name; }
 	
 	public String getMaxP() { return maxP; } 
@@ -30,6 +35,8 @@ public class GeneratingUnit extends BaseCIMClass{
 	
 	public String getEquipContainer() { return equipContainer; } 
 
+	public String getElement() { return GENERATING_UNIT_; }
+	
 	public void printData() { 
 		System.out.println("rdfID: " + rdfID + "\nName: " + name + "\nMax P: " + maxP + 
 				"\nMin P: " + minP + "\nEquipment Container: " + equipContainer + "\n");
