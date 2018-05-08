@@ -31,18 +31,18 @@ public class PowerTransformer extends BaseCIMClass{
 		
 		// Add rdf_id 
 		columnNames = columnNames.concat(RDF_ID_); 
-		values = values.concat(rdfID);
+		values = values.concat("'" + rdfID + "'");
 		
 		// Add name
 		if (name != null) {
 			columnNames = columnNames.concat(", " + NAME_);
-			values = values.concat(", " + name);
+			values = values.concat(", '" + name + "'");
 		}
 				
 		// Add equipment container ID
 		if (equipContainer != null) {
 			columnNames = columnNames.concat(", " + EQUIP_CONTAINER_ID_);
-			values = values.concat(", " + equipContainer);
+			values = values.concat(", '" + equipContainer + "'");
 		}
 		
 		return POWER_TRANS_ + columnNames + ") " + values + ")";

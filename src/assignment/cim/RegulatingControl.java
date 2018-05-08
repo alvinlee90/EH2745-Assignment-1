@@ -30,18 +30,18 @@ public class RegulatingControl extends BaseCIMClass{
 		
 		// Add rdf_id 
 		columnNames = columnNames.concat(RDF_ID_); 
-		values = values.concat(rdfID);
+		values = values.concat("'" + rdfID + "'");
 		
 		// Add name
 		if (name != null) {
 			columnNames = columnNames.concat(", " + NAME_);
-			values = values.concat(", " + name);
+			values = values.concat(", '" + name + "'");
 		}
 		
 		// Add equipment container ID
 		if (targetValue != null) {
 			columnNames = columnNames.concat(", " + TARGET_VALUE_);
-			values = values.concat(", " + targetValue);
+			values = values.concat(", '" + targetValue + "'");
 		}
 		
 		return REG_CONTROL_ + columnNames + ") " + values + ")";

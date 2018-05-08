@@ -39,30 +39,30 @@ public class GeneratingUnit extends BaseCIMClass{
 		
 		// Add rdf_id 
 		columnNames = columnNames.concat(RDF_ID_); 
-		values = values.concat(rdfID);
+		values = values.concat("'" + rdfID + "'");
 		
 		// Add name
 		if (name != null) {
 			columnNames = columnNames.concat(", " + NAME_);
-			values = values.concat(", " + name);
+			values = values.concat(", '" + name + "'");
 		}
 		
 		// Add max P
 		if (maxP != null) {
 			columnNames = columnNames.concat(", " + MAX_P_);
-			values = values.concat(", " + maxP);
+			values = values.concat(", '" + maxP + "'");
 		}
 		
 		// Add min P
 		if (minP != null) {
 			columnNames = columnNames.concat(", " + MIN_P_);
-			values = values.concat(", " + minP);
+			values = values.concat(", '" + minP + "'");
 		}
 		
 		// Add equipment container ID
 		if (equipContainer != null) {
 			columnNames = columnNames.concat(", " + EQUIP_CONTAINER_ID_);
-			values = values.concat(", " + equipContainer);
+			values = values.concat(", '" + equipContainer + "'");
 		}
 		
 		return GENERATING_UNIT_ + columnNames + ") " + values + ")";

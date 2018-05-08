@@ -31,18 +31,18 @@ public class RatioTapChanger extends BaseCIMClass{
 		
 		// Add rdf_id 
 		columnNames = columnNames.concat(RDF_ID_); 
-		values = values.concat(rdfID);
+		values = values.concat("'" + rdfID + "'");
 		
 		// Add name
 		if (name != null) {
 			columnNames = columnNames.concat(", " + NAME_);
-			values = values.concat(", " + name);
+			values = values.concat(", '" + name + "'");
 		}
 				
 		// Add R
 		if (step != null) {
 			columnNames = columnNames.concat(", " + STEP_);
-			values = values.concat(", " + step);
+			values = values.concat(", '" + step + "'");
 		}
 		
 		return RATIO_TAP_ + columnNames + ") " + values + ")";

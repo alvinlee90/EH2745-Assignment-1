@@ -133,12 +133,7 @@ public class CIMData extends CIMConsts {
 		for (GeneratingUnit object : generatingUnit_) {
 			command.add(object.insertTable()); 
 		}
-		
-		// Insert all SyncMachine elements
-		for (SyncMachine object : syncMachine_) {
-			command.add(object.insertTable()); 
-		}
-		
+				
 		// Insert all RegulatingControl elements
 		for (RegulatingControl object : regulatingControl_) {
 			command.add(object.insertTable()); 
@@ -168,6 +163,11 @@ public class CIMData extends CIMConsts {
 		for (RatioTapChanger object : ratioTapChanger_) {
 			command.add(object.insertTable()); 
 		}	
+
+		// Insert all SyncMachine elements
+		for (SyncMachine object : syncMachine_) {
+			command.add(object.insertTable()); 
+		}
 		
 		return command; 
 	}

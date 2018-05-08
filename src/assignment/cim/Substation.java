@@ -30,18 +30,18 @@ public class Substation extends BaseCIMClass{
 		
 		// Add rdf_id 
 		columnNames = columnNames.concat(RDF_ID_); 
-		values = values.concat(rdfID);
+		values = values.concat("'" + rdfID + "'");
 		
 		// Add name
 		if (name != null) {
 			columnNames = columnNames.concat(", " + NAME_);
-			values = values.concat(", " + name);
+			values = values.concat(", '" + name + "'");
 		}
 		
 		// Add region id
 		if (region != null) {
 			columnNames = columnNames.concat(", " + REGION_ID_);
-			values = values.concat(", " + region);
+			values = values.concat(", '" + region + "'");
 		}
 		
 		return SUBSTATION_ + columnNames + ") " + values + ")";

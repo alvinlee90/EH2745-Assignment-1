@@ -57,54 +57,54 @@ public class SyncMachine extends BaseCIMClass{
 		
 		// Add rdf_id 
 		columnNames = columnNames.concat(RDF_ID_); 
-		values = values.concat(rdfID);
+		values = values.concat("'" + rdfID + "'");
 		
 		// Add name
 		if (name != null) {
 			columnNames = columnNames.concat(", " + NAME_);
-			values = values.concat(", " + name);
+			values = values.concat(", '" + name + "'");
 		}
 				
 		// Add rated S
 		if (ratedS != null) {
 			columnNames = columnNames.concat(", " + S_);
-			values = values.concat(", " + ratedS);
+			values = values.concat(", '" + ratedS + "'");
 		}
 		
 		// Add P
 		if (machineP != null) {
 			columnNames = columnNames.concat(", " + P_);
-			values = values.concat(", " + machineP);
+			values = values.concat(", '" + machineP + "'");
 		}
 		
 		// Add Q
 		if (machineQ != null) {
 			columnNames = columnNames.concat(", " + Q_);
-			values = values.concat(", " + machineQ);
+			values = values.concat(", '" + machineQ + "'");
 		}
 		
 		// Add generating unit ID
 		if (genUnit != null) {
 			columnNames = columnNames.concat(", " + GEN_UNIT_ID_);
-			values = values.concat(", " + genUnit);
+			values = values.concat(", '" + genUnit + "'");
 		}
 		
 		// Add regulating control ID
 		if (regControl != null) {
 			columnNames = columnNames.concat(", " + REG_CONTROL_ID_);
-			values = values.concat(", " + regControl);
+			values = values.concat(", '" + regControl + "'");
 		}
 
 		// Add equipment container ID
 		if (equipContainer != null) {
 			columnNames = columnNames.concat(", " + EQUIP_CONTAINER_ID_);
-			values = values.concat(", " + equipContainer);
+			values = values.concat(", '" + equipContainer + "'");
 		}
 		
 		// Add base voltage ID
 		if (baseVoltage != null) {
 			columnNames = columnNames.concat(", " + BASE_VOLTAGE_ID_);
-			values = values.concat(", " + baseVoltage);
+			values = values.concat(", '" + baseVoltage + "'");
 		}
 		
 		return SYNC_MACHINE_ + columnNames + ") " + values + ")";

@@ -29,12 +29,13 @@ public class MainProgram {
 			// Insert tables
 			for (String command : eqData.insertAllTables()) {
 				System.out.println("[SQL] " + command); 
+				database.InsertTable(command);
 			}
 			
-			// Insert tables
-			for (String command : sshData.insertAllTables()) {
-				System.out.println("[SQL] " + command); 
-			}
+//			// Insert tables
+//			for (String command : sshData.insertAllTables()) {
+//				System.out.println("[SQL] " + command); 
+//			}
 
 			
 			database.DropDatabase(); 

@@ -25,12 +25,12 @@ public class BaseVoltage extends BaseCIMClass {
 		
 		// Add rdf_id 
 		columnNames = columnNames.concat(RDF_ID_); 
-		values = values.concat(rdfID);
+		values = values.concat("'" + rdfID + "'");
 		
 		// Add nominal voltage (check if empty)
 		if (nominalVolt != null) {
 			columnNames = columnNames.concat(", " + NOMINAL_VOLTAGE_);
-			values = values.concat(", " + nominalVolt);
+			values = values.concat(", '" + nominalVolt + "'");
 		}
 		
 		return BASE_VOLTAGE_ + columnNames + ") " + values + ")";

@@ -46,36 +46,36 @@ public class PowerTransformerEnd extends BaseCIMClass{
 		
 		// Add rdf_id 
 		columnNames = columnNames.concat(RDF_ID_); 
-		values = values.concat(rdfID);
+		values = values.concat("'" + rdfID + "'");
 		
 		// Add name
 		if (name != null) {
 			columnNames = columnNames.concat(", " + NAME_);
-			values = values.concat(", " + name);
+			values = values.concat(", '" + name + "'");
 		}
 				
 		// Add R
 		if (transformerR != null) {
 			columnNames = columnNames.concat(", " + R_);
-			values = values.concat(", " + transformerR);
+			values = values.concat(", '" + transformerR + "'");
 		}
 				
 		// Add X
 		if (transformerX != null) {
 			columnNames = columnNames.concat(", " + X_);
-			values = values.concat(", " + transformerX);
+			values = values.concat(", '" + transformerX + "'");
 		}
 		
 		// Add transformer ID
 		if (transformer != null) {
 			columnNames = columnNames.concat(", " + TRANSFORMER_ID_);
-			values = values.concat(", " + transformer);
+			values = values.concat(", '" + transformer + "'");
 		}
 		
 		// Add base voltage ID
 		if (baseVoltage != null) {
 			columnNames = columnNames.concat(", " + BASE_VOLTAGE_ID_);
-			values = values.concat(", " + baseVoltage);
+			values = values.concat(", '" + baseVoltage + "'");
 		}
 		
 		return POWER_TRANS_END_ + columnNames + ") " + values + ")";

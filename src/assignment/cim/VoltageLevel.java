@@ -37,24 +37,24 @@ public class VoltageLevel extends BaseCIMClass{
 		
 		// Add rdf_id 
 		columnNames = columnNames.concat(RDF_ID_); 
-		values = values.concat(rdfID);
+		values = values.concat("'" + rdfID + "'");
 		
 		// Add name
 		if (name != null) {
 			columnNames = columnNames.concat(", " + NAME_);
-			values = values.concat(", " + name);
+			values = values.concat(", '" + name + "'");
 		}
 		
 		// Add substation id
 		if (substation != null) {
 			columnNames = columnNames.concat(", " + SUBSTATION_ID_);
-			values = values.concat(", " + substation);
+			values = values.concat(", '" + substation + "'");
 		}
 		
 		// Add base voltage id
 		if (substation != null) {
 			columnNames = columnNames.concat(", " + BASE_VOLTAGE_ID_);
-			values = values.concat(", " + baseVoltage);
+			values = values.concat(", '" + baseVoltage + "'");
 		}
 		
 		return VOLTAGE_LEVEL_ + columnNames + ") " + values + ")";

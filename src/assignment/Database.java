@@ -83,6 +83,22 @@ public class Database {
 		}
 	}
 	
+	public void InsertTable(String command) {
+		try {
+			String sql = "INSERT INTO " + command; 
+			stmt.executeUpdate(sql);
+			
+			System.out.println("Insert given table successfully...\n");
+		}
+		catch (SQLException se) {
+			// Handle errors for JDBC
+			se.printStackTrace();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void DropDatabase() {
 		try {
 			// Drop database
