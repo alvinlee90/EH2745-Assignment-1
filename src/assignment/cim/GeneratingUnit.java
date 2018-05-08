@@ -82,16 +82,9 @@ public class GeneratingUnit extends BaseCIMClass{
 		}
 		
 		// Return SQL command (check possibility for duplicates already in table)
-		if (update) {
-			if (duplicate.endsWith(", ")) {
-				duplicate = duplicate.substring(0, duplicate.length() - 2);
-			}
-
-			return GENERATING_UNIT_ + columnNames + ") " + values + ")" + duplicate;
-		}
-		else {
-			return GENERATING_UNIT_ + columnNames + ") " + values + ")";
-		}
+		String command = GENERATING_UNIT_ + columnNames + ") " + values + ")"; 
+		
+		return insertSQL(command, duplicate, update); 
 	}
 	
 	public String getName() { return name; }

@@ -95,16 +95,9 @@ public class EnergyConsumer extends BaseCIMClass{
 		}
 		
 		// Return SQL command (check possibility for duplicates already in table)
-		if (update) {
-			if (duplicate.endsWith(", ")) {
-				duplicate = duplicate.substring(0, duplicate.length() - 2);
-			}
-
-			return ENERGY_CONSUMER_ + columnNames + ") " + values + ")" + duplicate;
-		}
-		else {
-			return ENERGY_CONSUMER_ + columnNames + ") " + values + ")";
-		}
+		String command = ENERGY_CONSUMER_ + columnNames + ") " + values + ")"; 
+		
+		return insertSQL(command, duplicate, update); 
 	}
 	
 	public String getName() { return name; }

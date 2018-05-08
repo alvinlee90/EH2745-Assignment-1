@@ -83,9 +83,9 @@ public class Database {
 		}
 	}
 	
-	public void InsertTable(String command) {
+	public void InsertTable(String sql) {
 		try {
-			String sql = "INSERT INTO " + command; 
+//			String sql = "INSERT INTO " + command; 
 			stmt.executeUpdate(sql);
 			
 			System.out.println("Insert given table successfully...\n");

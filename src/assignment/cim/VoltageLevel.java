@@ -72,16 +72,9 @@ public class VoltageLevel extends BaseCIMClass{
 		}
 
 		// Return SQL command (check possibility for duplicates already in table)
-		if (update) {
-			if (duplicate.endsWith(", ")) {
-				duplicate = duplicate.substring(0, duplicate.length() - 2);
-			}
-
-			return VOLTAGE_LEVEL_ + columnNames + ") " + values + ")" + duplicate;
-		}
-		else {
-			return VOLTAGE_LEVEL_ + columnNames + ") " + values + ")";
-		}
+		String command = VOLTAGE_LEVEL_ + columnNames + ") " + values + ")"; 
+		
+		return insertSQL(command, duplicate, update); 
 	}
 
 	public String getName() { return name; }

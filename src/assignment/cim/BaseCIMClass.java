@@ -57,5 +57,18 @@ public class BaseCIMClass {
 		}
 	}
 	
+	protected String insertSQL(String command, String duplicate, Boolean update) {
+		if (update) {
+			if (duplicate.endsWith(", ")) {
+				duplicate = duplicate.substring(0, duplicate.length() - 2);
+			}
+
+			return "INSERT INTO " + command + duplicate;
+		}
+		else {
+			return "INSERT IGNORE INTO " + command;
+		}
+	}
+	
 	public String getID() { return rdfID; }
 }

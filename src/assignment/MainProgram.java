@@ -31,8 +31,10 @@ public class MainProgram {
 				database.CreateTable(command);
 			}
 			
+			// Add elements to the table
 			InsertTables(); 
 			
+			// Drop the database and close connection
 			database.DropDatabase(); 
 		}
 		catch (Exception e) {
@@ -52,7 +54,7 @@ public class MainProgram {
 			database.InsertTable(command);
 		}
 
-		// -------------- Substation -------------- 
+		// -------------- Sub-station -------------- 
 		for (String command : eqData.insertSubstation()) {
 			System.out.println("[SQL] " + command); 
 			database.InsertTable(command);

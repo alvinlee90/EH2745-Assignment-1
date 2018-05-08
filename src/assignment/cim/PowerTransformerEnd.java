@@ -99,16 +99,9 @@ public class PowerTransformerEnd extends BaseCIMClass{
 		}
 		
 		// Return SQL command (check possibility for duplicates already in table)
-		if (update) {
-			if (duplicate.endsWith(", ")) {
-				duplicate = duplicate.substring(0, duplicate.length() - 2);
-			}
-
-			return POWER_TRANS_END_ + columnNames + ") " + values + ")" + duplicate;
-		}
-		else {
-			return POWER_TRANS_END_ + columnNames + ") " + values + ")";
-		}
+		String command = POWER_TRANS_END_ + columnNames + ") " + values + ")"; 
+		
+		return insertSQL(command, duplicate, update);
 	}
 
 	public String getName() { return name; }

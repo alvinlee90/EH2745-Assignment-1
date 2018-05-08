@@ -54,8 +54,17 @@ public class Breaker extends BaseCIMClass{
 				
 		// Add state
 		if (state != null) {
+			String boolState; 
+			
+			if (state == "true") {
+				boolState = "1"; 
+			}
+			else {
+				boolState = "0";
+			}
+			
 			columnNames = columnNames.concat(", " + STATE_);
-			values = values.concat(", '" + state + "'");
+			values = values.concat(", '" + boolState + "'");
 			
 			duplicate = duplicate.concat(STATE_ + " = VALUES(" + STATE_ + "), ");  
 			update = true; 
@@ -79,17 +88,9 @@ public class Breaker extends BaseCIMClass{
 			update = true; 
 		}
 		
-		// Return SQL command (check possibility for duplicates already in table)
-		if (update) {
-			if (duplicate.endsWith(", ")) {
-				duplicate = duplicate.substring(0, duplicate.length() - 2);
-			}
-
-			return BREAKER_ + columnNames + ") " + values + ")" + duplicate;
-		}
-		else {
-			return BREAKER_ + columnNames + ") " + values + ")";
-		}
+		String command = BREAKER_ + columnNames + ") " + values + ")"; 
+		
+		return insertSQL(command, duplicate, update); 
 	}
 	
 	public String getName() { return name; }

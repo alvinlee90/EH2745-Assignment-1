@@ -39,16 +39,10 @@ public class BaseVoltage extends BaseCIMClass {
 			update = true; 
 		}
 		
-		if (update) {
-			if (duplicate.endsWith(", ")) {
-				duplicate = duplicate.substring(0, duplicate.length() - 2);
-			}
-
-			return BASE_VOLTAGE_ + columnNames + ") " + values + ")" + duplicate;
-		}
-		else {
-			return BASE_VOLTAGE_ + columnNames + ") " + values + ")";
-		}
+		// Return SQL command (check possibility for duplicates already in table)
+		String command = BASE_VOLTAGE_ + columnNames + ") " + values + ")"; 
+		
+		return insertSQL(command, duplicate, update); 
 	}
 	
 	public String getNominalVolt() { return nominalVolt; }
