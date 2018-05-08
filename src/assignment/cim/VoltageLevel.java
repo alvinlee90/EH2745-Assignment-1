@@ -3,7 +3,7 @@ package assignment.cim;
 import org.w3c.dom.Element;
 
 
-public class VoltageLevel extends BaseCIMClass{
+public class VoltageLevel extends BaseCimClass{
 	private static final String NAME_ = "NAME";
 	private static final String SUBSTATION_ID_ = "SUBSTATION_ID";
 	private static final String BASE_VOLTAGE_ID_ = "BASE_VOLTAGE_ID";

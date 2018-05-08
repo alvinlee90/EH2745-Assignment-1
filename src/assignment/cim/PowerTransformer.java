@@ -3,7 +3,7 @@ package assignment.cim;
 import org.w3c.dom.Element;
 
 
-public class PowerTransformer extends BaseCIMClass{
+public class PowerTransformer extends BaseCimClass{
 	private static final String NAME_ = "NAME";
 	private static final String EQUIP_CONTAINER_ID_ = "EQUIPMENT_CONTAINER_ID"; 
 

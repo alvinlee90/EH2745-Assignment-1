@@ -3,8 +3,8 @@ package assignment;
 public class MainProgram {
 	private static final String DATABASE = "assignment"; 
 	
-	private static CIMData eqData;
-	private static CIMData sshData;
+	private static CimData eqData;
+	private static CimData sshData;
 	
 	private static Database database;
 	
@@ -15,24 +15,11 @@ public class MainProgram {
 		}
 		
 		try {
-			// Parse EQ and SSH file
-			System.out.println("Parsing EQ file...");
-			eqData = new CIMData(args[0]);
+			// Parse data
+			ParseXMLFiles(args[0], args[1]);
 			
-			System.out.println("Parsing SSH file...");
-			sshData = new CIMData(args[1]);
-			
-			// Create database
-			database = new Database(DATABASE); 
-			
-			// Create tables 
-			for (String command : eqData.createTables()) {
-				System.out.println("[SQL] " + command); 
-				database.CreateTable(command);
-			}
-			
-			// Add elements to the table
-			InsertTables(); 
+			// Initialize database (create database, create tables, insert elements)
+			InitializeDatabase(); 
 			
 			// Drop the database and close connection
 			database.DropDatabase(); 
@@ -40,6 +27,29 @@ public class MainProgram {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static void ParseXMLFiles(String eqFile, String sshFile) {
+		// Parse EQ and SSH file
+		System.out.println("Parsing EQ file...");
+		eqData = new CimData(eqFile);
+		
+		System.out.println("Parsing SSH file...");
+		sshData = new CimData(sshFile);
+	}
+	
+	public static void InitializeDatabase() {
+		// Create database
+		database = new Database(DATABASE); 
+		
+		// Create tables 
+		for (String command : eqData.createTables()) {
+			System.out.println("[SQL] " + command); 
+			database.CreateTable(command);
+		}
+		
+		// Insert elements to the table
+		InsertTables(); 
 	}
 	
 	public static void InsertTables() {

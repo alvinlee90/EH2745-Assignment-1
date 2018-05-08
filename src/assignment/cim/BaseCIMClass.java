@@ -5,7 +5,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 
-public class BaseCIMClass {
+public class BaseCimClass {
 	protected static final String BASE_VOLTAGE_ = "BASE_VOLTAGE"; 
 	protected static final String SUBSTATION_ = "SUBSTATION"; 
 	protected static final String VOLTAGE_LEVEL_ = "VOLTAGE_LEVEL"; 

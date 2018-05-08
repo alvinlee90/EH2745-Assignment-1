@@ -13,7 +13,7 @@ import org.w3c.dom.NodeList;
 import assignment.cim.*;
 
 
-public class CIMData extends CIMConsts {
+public class CimData extends CimConsts {
 	// CIM classes 		
 	private ArrayList <BaseVoltage> baseVoltage_ = new ArrayList<BaseVoltage>();
 	private ArrayList <Substation> substation_ = new ArrayList<Substation>();
@@ -27,7 +27,7 @@ public class CIMData extends CIMConsts {
 	private ArrayList <Breaker> breaker_ = new ArrayList<Breaker>();
 	private ArrayList <RatioTapChanger> ratioTapChanger_ = new ArrayList<RatioTapChanger>();
 
-	public CIMData (String filepath) {
+	public CimData (String filepath) {
 		try {		
 			File file = new File(filepath);	
 			

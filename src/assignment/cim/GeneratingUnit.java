@@ -3,7 +3,7 @@ package assignment.cim;
 import org.w3c.dom.Element;
 
 
-public class GeneratingUnit extends BaseCIMClass{
+public class GeneratingUnit extends BaseCimClass{
 	private static final String NAME_ = "NAME";
 	private static final String MAX_P_ = "MAX_P";
 	private static final String MIN_P_ = "MIN_P";

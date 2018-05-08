@@ -3,7 +3,7 @@ package assignment.cim;
 import org.w3c.dom.Element;
 
 
-public class Substation extends BaseCIMClass{
+public class Substation extends BaseCimClass{
 	private static final String NAME_ = "NAME";
 	private static final String REGION_ID_ = "REGION_ID"; 
 	

@@ -1,6 +1,6 @@
 package assignment;
 
-public class CIMConsts {
+public class CimConsts {
 	protected static final String BASE_VOLTAGE = "cim:BaseVoltage"; 
 	protected static final String SUBSTATION = "cim:Substation"; 
 	protected static final String VOLTAGE_LEVEL = "cim:VoltageLevel"; 

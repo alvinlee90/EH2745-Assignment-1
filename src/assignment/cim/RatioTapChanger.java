@@ -3,7 +3,7 @@ package assignment.cim;
 import org.w3c.dom.Element;
 
 
-public class RatioTapChanger extends BaseCIMClass{
+public class RatioTapChanger extends BaseCimClass{
 	private static final String NAME_ = "NAME";
 	private static final String STEP_ = "STEP";
 

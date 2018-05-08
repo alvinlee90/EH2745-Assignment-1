@@ -3,7 +3,7 @@ package assignment.cim;
 import org.w3c.dom.Element;
 
 
-public class EnergyConsumer extends BaseCIMClass{
+public class EnergyConsumer extends BaseCimClass{
 	private static final String NAME_ = "NAME";
 	private static final String P_ = "P";
 	private static final String Q_ = "Q";

@@ -3,7 +3,7 @@ package assignment.cim;
 import org.w3c.dom.Element;
 
 
-public class SyncMachine extends BaseCIMClass{	
+public class SyncMachine extends BaseCimClass{	
 	private static final String NAME_ = "NAME";
 	private static final String S_ = "S"; 
 	private static final String P_ = "P";

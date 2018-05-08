@@ -3,7 +3,7 @@ package assignment.cim;
 import org.w3c.dom.Element;
 
 
-public class RegulatingControl extends BaseCIMClass{
+public class RegulatingControl extends BaseCimClass{
 	private static final String NAME_ = "NAME";
 	private static final String TARGET_VALUE_ = "TARGET_VALUE";
 
