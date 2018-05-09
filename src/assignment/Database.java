@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Properties;
 
-import assignment.cim.BaseCimClass;
 import assignment.cim.BaseVoltage;
 import assignment.cim.Breaker;
 import assignment.cim.EnergyConsumer;
@@ -21,7 +20,7 @@ import assignment.cim.Substation;
 import assignment.cim.SyncMachine;
 import assignment.cim.VoltageLevel; 
 
-public class Database extends BaseCimClass {
+public class Database extends CimConsts {
 	// JDBC driver name and database URL
 	final static String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
 //	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
@@ -81,9 +80,9 @@ public class Database extends BaseCimClass {
 		}
 	}
 	
-	public void CreateTable(String command) {
+	public void CreateTable(String query) {
 		try {
-			String sql = "CREATE TABLE IF NOT EXISTS " + command; 
+			String sql = "CREATE TABLE IF NOT EXISTS " + query; 
 			stmt.executeUpdate(sql);
 			
 			System.out.println("Created table in given database successfully...\n");
@@ -112,79 +111,139 @@ public class Database extends BaseCimClass {
 		}
 	}
 	
-	public void PopulateBaseVoltageID() {
+	public void UpdateBaseVoltageID() {
+		String rdfID = "RDFID"; 
+		String equipContainerID = "EQUIPMENT_CONTAINER_ID"; 
+		String baseVoltageID = "BASE_VOLTAGE_ID"; 
 		
+		String[] elements = {SYNC_MACHINE_, ENERGY_CONSUMER_, BREAKER_};
+		
+		try {
+			for (String table : elements) {
+				ArrayList<String> updateArray = new ArrayList<String>(); 
+				
+				// Get all the rows where base voltage id is null
+				String query = "SELECT " + rdfID + ", " + equipContainerID 
+								+ " FROM " + table + " WHERE " + baseVoltageID
+								+ " IS NULL"; 
+				
+			    System.out.println("\n[SQL] " + query);
+		        ResultSet result = stmt.executeQuery(query);
+		        
+		        // Loop through all found rows
+		        while (result.next()) {
+		        	// Get the equipment container ID 
+		        	String rdfResult = result.getString(rdfID); 
+		        	String equipResult = result.getString(equipContainerID); 
+		        	
+		        	// Find corresponding voltage level with the same equipment container ID
+		        	String query2 = "SELECT " + baseVoltageID + " FROM " + VOLTAGE_LEVEL_
+		        					+ " WHERE " + rdfID + " = '" + equipResult + "'"; 
+				    
+		        	System.out.println("\n[SQL] " + query2);
+		        	Statement stmt2 = conn.createStatement();
+			        ResultSet voltageResult = stmt2.executeQuery(query2);
+					
+			        // Check if result is found
+			        if (voltageResult.next()) {
+			        	// Get base voltage id from corresponding voltage level
+			        	String baseResult = voltageResult.getString(baseVoltageID);
+			        	
+			        	// Update (null) base voltage id with found one
+			        	String update = "UPDATE " + table + " SET " + baseVoltageID 
+			        					+ " = '" + baseResult + "' WHERE " 
+			        					+ rdfID + " = '" + rdfResult + "'";
+			        	
+			        	updateArray.add(update); 
+			        }
+		        }
+	        
+	        	for (String update : updateArray) {
+			        System.out.println("\n[SQL] " + update);
+			        stmt.executeUpdate(update);
+	        	}	        
+			}
+		}
+		catch (SQLException se) {
+			// Handle errors for JDBC
+			se.printStackTrace();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
-	public void viewTable(String table) {	    
+	public void ViewTables() {	    
 	    try {
-			ArrayList<String> attributes = new ArrayList<String>(); 
-
-			switch (table) {
-				case BASE_VOLTAGE_: 
-					attributes = new BaseVoltage().getAttributes();
-					break;
-				case SUBSTATION_: 
-					attributes = new Substation().getAttributes();
-					break;
-				case VOLTAGE_LEVEL_: 
-					attributes = new VoltageLevel().getAttributes();
-				  	break;
-				case GENERATING_UNIT_: 
-					attributes = new GeneratingUnit().getAttributes();
-					break;
-				case SYNC_MACHINE_: 
-					attributes = new SyncMachine().getAttributes();
-					break;
-				case REG_CONTROL_: 
-					attributes = new RegulatingControl().getAttributes();
-					break;
-				case POWER_TRANS_: 
-					attributes = new PowerTransformer().getAttributes();
-					break;
-				case ENERGY_CONSUMER_: 
-					attributes = new EnergyConsumer().getAttributes();
-					break;
-				case POWER_TRANS_END_: 
-					attributes = new PowerTransformerEnd().getAttributes();
-					break;
-				case BREAKER_: 
-					attributes = new Breaker().getAttributes();
-					break;
-				case RATIO_TAP_: 
-					attributes = new RatioTapChanger().getAttributes();
-					break;
-				default:
-					System.err.println("Error: Incorrect CIM object");	    	
-			}
-	    	
-			String command = "SELECT "; 
-			String title = "\n";
-			
-			for (String entry : attributes) {
-				command = command.concat(entry + ", "); 
-				title = title.concat(entry + "\t"); 
-            }
-			
-			if (command.endsWith(", ")) {
-				command = command.substring(0, command.length() - 2);
-			}
-
-		    command = command.concat(" FROM " + table);            
-		    System.out.println("[SQL] " + command);
-		    System.out.println(title);
-
-	        ResultSet result = stmt.executeQuery(command);
-	        	        	        
-	        while (result.next()) {
-	        	String data = ""; 
-	        	
-				for (String entry : attributes) {
-					data = data.concat(result.getString(entry) + "\t"); 
+	    	for (String table : CIM_CLASSES_) {
+				ArrayList<String> attributes = new ArrayList<String>(); 
+	
+				switch (table) {
+					case BASE_VOLTAGE_: 
+						attributes = new BaseVoltage().getAttributes();
+						break;
+					case SUBSTATION_: 
+						attributes = new Substation().getAttributes();
+						break;
+					case VOLTAGE_LEVEL_: 
+						attributes = new VoltageLevel().getAttributes();
+					  	break;
+					case GENERATING_UNIT_: 
+						attributes = new GeneratingUnit().getAttributes();
+						break;
+					case SYNC_MACHINE_: 
+						attributes = new SyncMachine().getAttributes();
+						break;
+					case REG_CONTROL_: 
+						attributes = new RegulatingControl().getAttributes();
+						break;
+					case POWER_TRANS_: 
+						attributes = new PowerTransformer().getAttributes();
+						break;
+					case ENERGY_CONSUMER_: 
+						attributes = new EnergyConsumer().getAttributes();
+						break;
+					case POWER_TRANS_END_: 
+						attributes = new PowerTransformerEnd().getAttributes();
+						break;
+					case BREAKER_: 
+						attributes = new Breaker().getAttributes();
+						break;
+					case RATIO_TAP_: 
+						attributes = new RatioTapChanger().getAttributes();
+						break;
+					default:
+						System.err.println("Error: Incorrect CIM object");	    	
 				}
+		    	
+				String query = "SELECT "; 
+				String title = "\n" + table + "\n";
 				
-				System.out.println(data);
-	        }
+				for (String entry : attributes) {
+					query = query.concat(entry + ", "); 
+					title = title.concat(entry + "\t"); 
+	            }
+				
+				if (query.endsWith(", ")) {
+					query = query.substring(0, query.length() - 2);
+				}
+	
+			    query = query.concat(" FROM " + table);            
+//			    System.out.println("[SQL] " + query);
+			    System.out.println(title);
+	
+		        ResultSet result = stmt.executeQuery(query);
+		        	        	        
+		        while (result.next()) {
+		        	String data = ""; 
+		        	
+					for (String entry : attributes) {
+						data = data.concat(result.getString(entry) + "\t"); 
+					}
+					
+					System.out.println(data);
+		        }
+	    	}
 	    }
 		catch (SQLException se) {
 			// Handle errors for JDBC
@@ -194,14 +253,13 @@ public class Database extends BaseCimClass {
 			e.printStackTrace();
 		}
 	}
-
 	
 	public void DropDatabase() {
 		try {
 			// Drop database
 			String sql = "DROP DATABASE " + database; 
 			stmt.executeUpdate(sql);
-			System.out.println("Database dropped successfully...");
+			System.out.println("\nDatabase dropped successfully...");
 
 			// Close connection
 			if (conn != null) {

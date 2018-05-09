@@ -21,7 +21,8 @@ public class MainProgram {
 			// Initialize database (create database, create tables, insert elements)
 			InitializeDatabase(); 			
 			
-			database.viewTable("SYNC_MACHINE"); 
+			// Display (print) all the tables
+			database.ViewTables(); 
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -46,135 +47,138 @@ public class MainProgram {
 		database = new Database(DATABASE); 
 		
 		// Create tables 
-		for (String command : eqData.createTables()) {
-			System.out.println("[SQL] " + command); 
-			database.CreateTable(command);
+		for (String query : eqData.createTables()) {
+			System.out.println("[SQL] " + query); 
+			database.CreateTable(query);
 		}
 		
 		// Insert elements to the table
 		InsertTables(); 
+		
+		// Fill in values where base voltage ID is null
+		database.UpdateBaseVoltageID();
 	}
 	
 	public static void InsertTables() {
 		// -------------- Base Voltage -------------- 
-		for (String command : eqData.insertBaseVoltage()) {
-			System.out.println("[SQL] " + command); 
-			database.InsertTable(command);
+		for (String query : eqData.insertBaseVoltage()) {
+			System.out.println("[SQL] " + query); 
+			database.InsertTable(query);
 		}
 		
-		for (String command : sshData.insertBaseVoltage()) {
-			System.out.println("[SQL] " + command); 
-			database.InsertTable(command);
+		for (String query : sshData.insertBaseVoltage()) {
+			System.out.println("[SQL] " + query); 
+			database.InsertTable(query);
 		}
 
 		// -------------- Sub-station -------------- 
-		for (String command : eqData.insertSubstation()) {
-			System.out.println("[SQL] " + command); 
-			database.InsertTable(command);
+		for (String query : eqData.insertSubstation()) {
+			System.out.println("[SQL] " + query); 
+			database.InsertTable(query);
 		}
 		
-		for (String command : sshData.insertSubstation()) {
-			System.out.println("[SQL] " + command); 
-			database.InsertTable(command);
+		for (String query : sshData.insertSubstation()) {
+			System.out.println("[SQL] " + query); 
+			database.InsertTable(query);
 		}
 		
 		// -------------- Voltage Level -------------- 
-		for (String command : eqData.insertVoltageLevel()) {
-			System.out.println("[SQL] " + command); 
-			database.InsertTable(command);
+		for (String query : eqData.insertVoltageLevel()) {
+			System.out.println("[SQL] " + query); 
+			database.InsertTable(query);
 		}
 		
-		for (String command : sshData.insertVoltageLevel()) {
-			System.out.println("[SQL] " + command); 
-			database.InsertTable(command);
+		for (String query : sshData.insertVoltageLevel()) {
+			System.out.println("[SQL] " + query); 
+			database.InsertTable(query);
 		}
 
 		// -------------- Generating Unit -------------- 
-		for (String command : eqData.insertGeneratingUnit()) {
-			System.out.println("[SQL] " + command); 
-			database.InsertTable(command);
+		for (String query : eqData.insertGeneratingUnit()) {
+			System.out.println("[SQL] " + query); 
+			database.InsertTable(query);
 		}
 		
-		for (String command : sshData.insertGeneratingUnit()) {
-			System.out.println("[SQL] " + command); 
-			database.InsertTable(command);
+		for (String query : sshData.insertGeneratingUnit()) {
+			System.out.println("[SQL] " + query); 
+			database.InsertTable(query);
 		}
 
 		// -------------- Regulating Control -------------- 
-		for (String command : eqData.insertRegulatingControl()) {
-			System.out.println("[SQL] " + command); 
-			database.InsertTable(command);
+		for (String query : eqData.insertRegulatingControl()) {
+			System.out.println("[SQL] " + query); 
+			database.InsertTable(query);
 		}
 		
-		for (String command : sshData.insertRegulatingControl()) {
-			System.out.println("[SQL] " + command); 
-			database.InsertTable(command);
+		for (String query : sshData.insertRegulatingControl()) {
+			System.out.println("[SQL] " + query); 
+			database.InsertTable(query);
 		}
 
 		// -------------- Power Transformer -------------- 
-		for (String command : eqData.insertPowerTransformer()) {
-			System.out.println("[SQL] " + command); 
-			database.InsertTable(command);
+		for (String query : eqData.insertPowerTransformer()) {
+			System.out.println("[SQL] " + query); 
+			database.InsertTable(query);
 		}
 		
-		for (String command : sshData.insertPowerTransformer()) {
-			System.out.println("[SQL] " + command); 
-			database.InsertTable(command);
+		for (String query : sshData.insertPowerTransformer()) {
+			System.out.println("[SQL] " + query); 
+			database.InsertTable(query);
 		}
 		
 		// -------------- Energy Consumer -------------- 
-		for (String command : eqData.insertEnergyConsumer()) {
-			System.out.println("[SQL] " + command); 
-			database.InsertTable(command);
+		for (String query : eqData.insertEnergyConsumer()) {
+			System.out.println("[SQL] " + query); 
+			database.InsertTable(query);
 		}
 		
-		for (String command : sshData.insertEnergyConsumer()) {
-			System.out.println("[SQL] " + command); 
-			database.InsertTable(command);
+		for (String query : sshData.insertEnergyConsumer()) {
+			System.out.println("[SQL] " + query); 
+			database.InsertTable(query);
 		}
 
 		// -------------- Power Transformer End -------------- 
-		for (String command : eqData.insertPowerTransformerEnd()) {
-			System.out.println("[SQL] " + command); 
-			database.InsertTable(command);
+		for (String query : eqData.insertPowerTransformerEnd()) {
+			System.out.println("[SQL] " + query); 
+			database.InsertTable(query);
 		}
 		
-		for (String command : sshData.insertPowerTransformerEnd()) {
-			System.out.println("[SQL] " + command); 
-			database.InsertTable(command);
+		for (String query : sshData.insertPowerTransformerEnd()) {
+			System.out.println("[SQL] " + query); 
+			database.InsertTable(query);
 		}
 
 		// -------------- Breaker -------------- 
-		for (String command : eqData.insertBreaker()) {
-			System.out.println("[SQL] " + command); 
-			database.InsertTable(command);
+		for (String query : eqData.insertBreaker()) {
+			System.out.println("[SQL] " + query); 
+			database.InsertTable(query);
 		}
 		
-		for (String command : sshData.insertBreaker()) {
-			System.out.println("[SQL] " + command); 
-			database.InsertTable(command);
+		for (String query : sshData.insertBreaker()) {
+			System.out.println("[SQL] " + query); 
+			database.InsertTable(query);
 		}
 		
 		// -------------- Ratio Tap Changer -------------- 
-		for (String command : eqData.insertRatioTapChanger()) {
-			System.out.println("[SQL] " + command); 
-			database.InsertTable(command);
+		for (String query : eqData.insertRatioTapChanger()) {
+			System.out.println("[SQL] " + query); 
+			database.InsertTable(query);
 		}
 		
-		for (String command : sshData.insertRatioTapChanger()) {
-			System.out.println("[SQL] " + command); 
-			database.InsertTable(command);
+		for (String query : sshData.insertRatioTapChanger()) {
+			System.out.println("[SQL] " + query); 
+			database.InsertTable(query);
 		}
 
 		// -------------- Synchronous Machine -------------- 
-		for (String command : eqData.insertSyncMachine()) {
-			System.out.println("[SQL] " + command); 
-			database.InsertTable(command);
+		for (String query : eqData.insertSyncMachine()) {
+			System.out.println("[SQL] " + query); 
+			database.InsertTable(query);
 		}
 		
-		for (String command : sshData.insertSyncMachine()) {
-			System.out.println("[SQL] " + command); 
-			database.InsertTable(command);
+		for (String query : sshData.insertSyncMachine()) {
+			System.out.println("[SQL] " + query); 
+			database.InsertTable(query);
 		}
 	}
 }
