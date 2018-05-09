@@ -27,7 +27,7 @@ public class Breaker extends BaseCimClass{
 	
 	public String createTable() {
 		return BREAKER_ + " (" + RDF_ID_ + " VARCHAR(50) NOT NULL, " + NAME_ + " VARCHAR(50), "
-				+ STATE_ + " BOOL, " + EQUIP_CONTAINER_ID_ + " VARCHAR(50), " + BASE_VOLTAGE_ID_ 
+				+ STATE_ + " VARCHAR(50), " + EQUIP_CONTAINER_ID_ + " VARCHAR(50), " + BASE_VOLTAGE_ID_ 
 				+ " VARCHAR(50), PRIMARY KEY(" + RDF_ID_ + "), FOREIGN KEY (" + BASE_VOLTAGE_ID_ 
 				+ ") REFERENCES " + BASE_VOLTAGE_ + "(" + RDF_ID_ + "))"; 
 	}
@@ -53,18 +53,9 @@ public class Breaker extends BaseCimClass{
 		}
 				
 		// Add state
-		if (state != null) {
-			String boolState; 
-			
-			if (state == "true") {
-				boolState = "1"; 
-			}
-			else {
-				boolState = "0";
-			}
-			
+		if (state != null) {			
 			columnNames = columnNames.concat(", " + STATE_);
-			values = values.concat(", '" + boolState + "'");
+			values = values.concat(", '" + state + "'");
 			
 			duplicate = duplicate.concat(STATE_ + " = VALUES(" + STATE_ + "), ");  
 			update = true; 
