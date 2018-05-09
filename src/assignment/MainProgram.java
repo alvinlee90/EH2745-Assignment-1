@@ -19,13 +19,16 @@ public class MainProgram {
 			ParseXMLFiles(args[0], args[1]);
 			
 			// Initialize database (create database, create tables, insert elements)
-			InitializeDatabase(); 
+			InitializeDatabase(); 			
 			
-			// Drop the database and close connection
-			database.DropDatabase(); 
+			database.viewTable("SYNC_MACHINE"); 
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+		}
+		finally {
+			// Drop the database and close connection
+			database.DropDatabase(); 
 		}
 	}
 	

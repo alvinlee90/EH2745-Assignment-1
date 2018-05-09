@@ -1,5 +1,7 @@
 package assignment.cim;
 
+import java.util.ArrayList;
+
 import org.w3c.dom.Element;
 
 
@@ -22,6 +24,8 @@ public class PowerTransformerEnd extends BaseCimClass{
 	private String transformer;
 	private String baseVoltage; 
 	
+	public PowerTransformerEnd() {}
+	
 	public PowerTransformerEnd(Element element) {
 		parseRDF(element);
 		name = parseElement(element, NAME); 
@@ -32,12 +36,12 @@ public class PowerTransformerEnd extends BaseCimClass{
 	}
 	
 	public String createTable() {
-		return POWER_TRANS_END_ + " (" + RDF_ID_ + " VARCHAR(50) NOT NULL, " + NAME_ 
-				+ " VARCHAR(50), " + R_ + " FLOAT, " + X_ + " FLOAT, " + TRANSFORMER_ID_ 
-				+ " VARCHAR(50), " + BASE_VOLTAGE_ID_ + " VARCHAR(50), PRIMARY KEY (" 
-				+ RDF_ID_ + "), FOREIGN KEY (" + TRANSFORMER_ID_ + ") REFERENCES "
-				+ POWER_TRANS_ + "(" + RDF_ID_ + "), FOREIGN KEY (" + BASE_VOLTAGE_ID_ 
-				+ ") REFERENCES " + BASE_VOLTAGE_ + "(" + RDF_ID_ + "))"; 
+		return POWER_TRANS_END_ + " (" + RDF_ID_ + " " + STRING + " NOT NULL, " + NAME_ 
+				+ " " + STRING + ", " + R_ + " " + FLOAT + ", " + X_ + " " + FLOAT + ", " 
+				+ TRANSFORMER_ID_ + " " + STRING + ", " + BASE_VOLTAGE_ID_ + " " + STRING 
+				+ ", PRIMARY KEY (" + RDF_ID_ + "), FOREIGN KEY (" + TRANSFORMER_ID_ 
+				+ ") REFERENCES " + POWER_TRANS_ + "(" + RDF_ID_ + "), FOREIGN KEY (" 
+				+ BASE_VOLTAGE_ID_ + ") REFERENCES " + BASE_VOLTAGE_ + "(" + RDF_ID_ + "))"; 
 	}
 	
 	public String insertTable() {
@@ -104,6 +108,19 @@ public class PowerTransformerEnd extends BaseCimClass{
 		return insertSQL(command, duplicate, update);
 	}
 
+	public ArrayList<String> getAttributes() {
+		ArrayList<String> attributes = new ArrayList<String>(); 
+		
+		attributes.add(RDF_ID_);
+		attributes.add(NAME_);
+		attributes.add(R_);
+		attributes.add(X_);
+		attributes.add(TRANSFORMER_ID_);
+		attributes.add(BASE_VOLTAGE_ID_);
+
+		return attributes; 
+	}
+	
 	public String getName() { return name; }
 		
 	public String getTransformerR() { return transformerR; } 

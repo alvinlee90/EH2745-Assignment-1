@@ -1,5 +1,7 @@
 package assignment.cim;
 
+import java.util.ArrayList;
+
 import org.w3c.dom.Element;
 
 
@@ -16,6 +18,8 @@ public class VoltageLevel extends BaseCimClass{
 	private String substation;
 	private String baseVoltage; 
 	
+	public VoltageLevel() {}
+	
 	public VoltageLevel(Element element) {
 		parseRDF(element);
 		name = parseElement(element, NAME); 
@@ -24,8 +28,8 @@ public class VoltageLevel extends BaseCimClass{
 	}
 	
 	public String createTable() {
-		return VOLTAGE_LEVEL_ + " (" + RDF_ID_ + " VARCHAR(50) NOT NULL, " + NAME_ + " VARCHAR(50), " 
-				+ SUBSTATION_ID_ + " VARCHAR(50), " + BASE_VOLTAGE_ID_ + " VARCHAR(50), "
+		return VOLTAGE_LEVEL_ + " (" + RDF_ID_ + " " + STRING + " NOT NULL, " + NAME_ + " " + STRING + ", " 
+				+ SUBSTATION_ID_ + " " + STRING + ", " + BASE_VOLTAGE_ID_ + " " + STRING + ", "
 				+ "PRIMARY KEY( " + RDF_ID_ + "), FOREIGN KEY (" + SUBSTATION_ID_ + ") REFERENCES " 
 				+ SUBSTATION_ + "(" + RDF_ID_ + "), FOREIGN KEY (" + BASE_VOLTAGE_ID_+ ") REFERENCES " 
 				+ BASE_VOLTAGE_ + "(" + RDF_ID_ + "))";
@@ -77,6 +81,17 @@ public class VoltageLevel extends BaseCimClass{
 		return insertSQL(command, duplicate, update); 
 	}
 
+	public ArrayList<String> getAttributes() {
+		ArrayList<String> attributes = new ArrayList<String>(); 
+		
+		attributes.add(RDF_ID_);
+		attributes.add(NAME_);
+		attributes.add(SUBSTATION_ID_);
+		attributes.add(BASE_VOLTAGE_ID_);
+
+		return attributes; 
+	}
+	
 	public String getName() { return name; }
 	
 	public String getSubstation() { return substation; } 

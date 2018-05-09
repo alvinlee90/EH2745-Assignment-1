@@ -1,5 +1,7 @@
 package assignment.cim;
 
+import java.util.ArrayList;
+
 import org.w3c.dom.Element;
 
 
@@ -13,6 +15,8 @@ public class Substation extends BaseCimClass{
 	private String name;
 	private String region; 
 	
+	public Substation() {}
+	
 	public Substation(Element element) {
 		parseRDF(element);
 		name = parseElement(element, NAME); 
@@ -20,8 +24,9 @@ public class Substation extends BaseCimClass{
 	}
 	
 	public String createTable() {
-		return SUBSTATION_ + " (" + RDF_ID_ + " VARCHAR(50) NOT NULL, " + NAME_ 
-				+ " VARCHAR(50), " + REGION_ID_ + " VARCHAR(50), PRIMARY KEY("+ RDF_ID_ + "))";
+		return SUBSTATION_ + " (" + RDF_ID_ + " " + STRING + " NOT NULL, " + NAME_ 
+				+ " " + STRING + ", " + REGION_ID_ + " " + STRING + ", PRIMARY KEY("
+				+ RDF_ID_ + "))";
 	}
 	
 	public String insertTable() {
@@ -57,6 +62,16 @@ public class Substation extends BaseCimClass{
 		String command = SUBSTATION_ + columnNames + ") " + values + ")"; 
 		
 		return insertSQL(command, duplicate, update); 
+	}
+	
+	public ArrayList<String> getAttributes() {
+		ArrayList<String> attributes = new ArrayList<String>(); 
+		
+		attributes.add(RDF_ID_);
+		attributes.add(NAME_);
+		attributes.add(REGION_ID_);
+
+		return attributes; 
 	}
 	
 	public String getName() { return name; }

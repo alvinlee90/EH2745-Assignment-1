@@ -20,6 +20,10 @@ public class BaseCimClass {
 	
 	protected static final String RDF_ID_ = "RDFID"; 
 	
+	protected static final String STRING = "VARCHAR(50)";
+	protected static final String FLOAT = "FLOAT"; 
+	protected static final String INT = "INT"; 
+	
 	protected static final String RDF_ID = "rdf:ID";
 	protected static final String RDF_ABOUT = "rdf:about"; 
 	

@@ -1,5 +1,7 @@
 package assignment.cim;
 
+import java.util.ArrayList;
+
 import org.w3c.dom.Element;
 
 public class BaseVoltage extends BaseCimClass {
@@ -9,14 +11,16 @@ public class BaseVoltage extends BaseCimClass {
 	
 	private String nominalVolt; 
 	
+	public BaseVoltage() {}
+	
 	public BaseVoltage(Element element) {
 		parseRDF(element);
 		nominalVolt = parseElement(element, NOMINAL_VOLTAGE); 
 	}
 	
 	public String createTable() {
-		return BASE_VOLTAGE_ + " (" + RDF_ID_  + " VARCHAR(50) NOT NULL, " + NOMINAL_VOLTAGE_ 
-				+ " FLOAT, PRIMARY KEY(" + RDF_ID_ + "))";
+		return BASE_VOLTAGE_ + " (" + RDF_ID_  + " " + STRING + " NOT NULL, " 
+				+ NOMINAL_VOLTAGE_ + " " + FLOAT + ", PRIMARY KEY(" + RDF_ID_ + "))";
 	}
 	
 	public String insertTable() {
@@ -43,6 +47,15 @@ public class BaseVoltage extends BaseCimClass {
 		String command = BASE_VOLTAGE_ + columnNames + ") " + values + ")"; 
 		
 		return insertSQL(command, duplicate, update); 
+	}
+	
+	public ArrayList<String> getAttributes() {
+		ArrayList<String> attributes = new ArrayList<String>(); 
+		
+		attributes.add(RDF_ID_); 
+		attributes.add(NOMINAL_VOLTAGE_);
+
+		return attributes; 
 	}
 	
 	public String getNominalVolt() { return nominalVolt; }

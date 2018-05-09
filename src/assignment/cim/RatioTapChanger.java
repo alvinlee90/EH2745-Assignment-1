@@ -1,5 +1,7 @@
 package assignment.cim;
 
+import java.util.ArrayList;
+
 import org.w3c.dom.Element;
 
 
@@ -13,6 +15,8 @@ public class RatioTapChanger extends BaseCimClass{
 	private String name;
 	private String step; 
 	
+	public RatioTapChanger() {}
+	
 	public RatioTapChanger(Element element) {
 		parseRDF(element);
 		name = parseElement(element, NAME); 
@@ -20,8 +24,8 @@ public class RatioTapChanger extends BaseCimClass{
 	}
 	
 	public String createTable() {
-		return RATIO_TAP_ + " (" + RDF_ID_ + " VARCHAR(50) NOT NULL, " 
-				+ NAME_ + " VARCHAR(50), " + STEP_ + " INTEGER, "
+		return RATIO_TAP_ + " (" + RDF_ID_ + " " + STRING + " NOT NULL, " 
+				+ NAME_ + " " + STRING + ", " + STEP_ + " " + INT + ", "
 				+ "PRIMARY KEY("  + RDF_ID_ + "))"; 
 	}
 	
@@ -58,6 +62,16 @@ public class RatioTapChanger extends BaseCimClass{
 		String command = RATIO_TAP_ + columnNames + ") " + values + ")"; 
 		
 		return insertSQL(command, duplicate, update); 
+	}
+	
+	public ArrayList<String> getAttributes() {
+		ArrayList<String> attributes = new ArrayList<String>(); 
+		
+		attributes.add(RDF_ID_);
+		attributes.add(NAME_);
+		attributes.add(STEP_);
+
+		return attributes; 
 	}
 	
 	public String getName() { return name; }

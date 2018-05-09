@@ -1,5 +1,7 @@
 package assignment.cim;
 
+import java.util.ArrayList;
+
 import org.w3c.dom.Element;
 
 
@@ -30,6 +32,8 @@ public class SyncMachine extends BaseCimClass{
 	private String equipContainer;
 	private String baseVoltage; 
 	
+	public SyncMachine() {}
+
 	public SyncMachine(Element element) {
 		parseRDF(element);
 		name = parseElement(element, NAME); 
@@ -42,13 +46,14 @@ public class SyncMachine extends BaseCimClass{
 	}
 	
 	public String createTable() {
-		return SYNC_MACHINE_ + " (" + RDF_ID_ + " VARCHAR(50) NOT NULL, " + NAME_ + " VARCHAR(50), "
-				+ S_ + " FLOAT, " + P_ + " FLOAT, " + Q_ + " FLOAT, " + GEN_UNIT_ID_ + " VARCHAR(50), "
-				+ REG_CONTROL_ID_ + " VARCHAR(50), " + EQUIP_CONTAINER_ID_ + " VARCHAR(50), " 
-				+ BASE_VOLTAGE_ID_ + " VARCHAR(50), PRIMARY KEY(" + RDF_ID_ + "), FOREIGN KEY ("
-				+ GEN_UNIT_ID_ + ") REFERENCES " + GENERATING_UNIT_ + "(" + RDF_ID_ + "), FOREIGN KEY ("
-				+ REG_CONTROL_ID_ + ") REFERENCES " + REG_CONTROL_ + "(" + RDF_ID_ + "), FOREIGN KEY (" 
-				+ BASE_VOLTAGE_ID_ + ") REFERENCES " + BASE_VOLTAGE_ + "(" + RDF_ID_ + "))"; 
+		return SYNC_MACHINE_ + " (" + RDF_ID_ + " " + STRING + " NOT NULL, " + NAME_ + " " + STRING + ", "
+				+ S_ + " " + FLOAT + ", " + P_ + " " + FLOAT + ", " + Q_ + " " + FLOAT + ", " + GEN_UNIT_ID_ 
+				+ " " + STRING + ", " + REG_CONTROL_ID_ + " " + STRING + ", " + EQUIP_CONTAINER_ID_ 
+				+ " " + STRING + ", " + BASE_VOLTAGE_ID_ + " " + STRING + ", PRIMARY KEY(" + RDF_ID_ 
+				+ "), FOREIGN KEY (" + GEN_UNIT_ID_ + ") REFERENCES " + GENERATING_UNIT_ + "(" + RDF_ID_ 
+				+ "), FOREIGN KEY (" + REG_CONTROL_ID_ + ") REFERENCES " + REG_CONTROL_ + "(" + RDF_ID_ 
+				+ "), FOREIGN KEY (" + BASE_VOLTAGE_ID_ + ") REFERENCES " + BASE_VOLTAGE_ + "(" + RDF_ID_ 
+				+ "))"; 
 	}
 	
 	public String insertTable() {
@@ -142,6 +147,22 @@ public class SyncMachine extends BaseCimClass{
 		String command = SYNC_MACHINE_ + columnNames + ") " + values + ")"; 
 		
 		return insertSQL(command, duplicate, update); 
+	}
+	
+	public ArrayList<String> getAttributes() {
+		ArrayList<String> attributes = new ArrayList<String>(); 
+		
+		attributes.add(RDF_ID_);
+		attributes.add(NAME_);
+		attributes.add(S_);
+		attributes.add(P_);
+		attributes.add(Q_);
+		attributes.add(GEN_UNIT_ID_);
+		attributes.add(REG_CONTROL_ID_);
+		attributes.add(EQUIP_CONTAINER_ID_);
+		attributes.add(BASE_VOLTAGE_ID_);
+
+		return attributes; 
 	}
 	
 	public String getName() { return name; }

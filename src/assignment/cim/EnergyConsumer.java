@@ -1,5 +1,7 @@
 package assignment.cim;
 
+import java.util.ArrayList;
+
 import org.w3c.dom.Element;
 
 
@@ -21,6 +23,8 @@ public class EnergyConsumer extends BaseCimClass{
 	private String equipContainer;
 	private String baseVoltage; 
 	
+	public EnergyConsumer() {}
+	
 	public EnergyConsumer(Element element) {
 		parseRDF(element);
 		name = parseElement(element, NAME); 
@@ -30,9 +34,9 @@ public class EnergyConsumer extends BaseCimClass{
 	}
 	
 	public String createTable() {
-		return ENERGY_CONSUMER_ + " (" + RDF_ID_ + " VARCHAR(50) NOT NULL, " + NAME_ + " VARCHAR(50), "
-				+ P_ + " FLOAT, "	+ Q_ + " FLOAT, " + EQUIP_CONTAINER_ID_ + " VARCHAR(50), "
-				+ BASE_VOLTAGE_ID_ + " VARCHAR(50), PRIMARY KEY(" + RDF_ID_ + "), FOREIGN KEY ("
+		return ENERGY_CONSUMER_ + " (" + RDF_ID_ + " " + STRING + " NOT NULL, " + NAME_ + " " + STRING + ", "
+				+ P_ + " " + FLOAT + ", "	+ Q_ + " " + FLOAT + ", " + EQUIP_CONTAINER_ID_ + " " + STRING + ", "
+				+ BASE_VOLTAGE_ID_ + " " + STRING + ", PRIMARY KEY(" + RDF_ID_ + "), FOREIGN KEY ("
 				+ BASE_VOLTAGE_ID_+ ") REFERENCES " + BASE_VOLTAGE_ + "(" + RDF_ID_ + "))"; 
 	}
 	
@@ -98,6 +102,19 @@ public class EnergyConsumer extends BaseCimClass{
 		String command = ENERGY_CONSUMER_ + columnNames + ") " + values + ")"; 
 		
 		return insertSQL(command, duplicate, update); 
+	}
+	
+	public ArrayList<String> getAttributes() {
+		ArrayList<String> attributes = new ArrayList<String>(); 
+		
+		attributes.add(RDF_ID_);
+		attributes.add(NAME_);
+		attributes.add(P_);
+		attributes.add(Q_);
+		attributes.add(EQUIP_CONTAINER_ID_);
+		attributes.add(BASE_VOLTAGE_ID_);
+
+		return attributes; 
 	}
 	
 	public String getName() { return name; }

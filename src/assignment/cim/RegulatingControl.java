@@ -1,5 +1,7 @@
 package assignment.cim;
 
+import java.util.ArrayList;
+
 import org.w3c.dom.Element;
 
 
@@ -13,6 +15,8 @@ public class RegulatingControl extends BaseCimClass{
 	private String name;
 	private String targetValue; 
 	
+	public RegulatingControl() {}
+	
 	public RegulatingControl(Element element) {
 		parseRDF(element);
 		name = parseElement(element, NAME); 
@@ -20,8 +24,9 @@ public class RegulatingControl extends BaseCimClass{
 	}
 	
 	public String createTable() {
-		return REG_CONTROL_ + " (" + RDF_ID_ + " VARCHAR(50) NOT NULL, " + NAME_ 
-				+ " VARCHAR(50), " + TARGET_VALUE_ + " FLOAT, PRIMARY KEY(" + RDF_ID_ + "))"; 
+		return REG_CONTROL_ + " (" + RDF_ID_ + " " + STRING + " NOT NULL, " + NAME_ 
+				+ " " + STRING + ", " + TARGET_VALUE_ + " " + FLOAT + ", PRIMARY KEY(" 
+				+ RDF_ID_ + "))"; 
 	}
 	
 	public String insertTable() {
@@ -57,6 +62,16 @@ public class RegulatingControl extends BaseCimClass{
 		String command = REG_CONTROL_ + columnNames + ") " + values + ")"; 
 		
 		return insertSQL(command, duplicate, update); 
+	}
+	
+	public ArrayList<String> getAttributes() {
+		ArrayList<String> attributes = new ArrayList<String>(); 
+		
+		attributes.add(RDF_ID_);
+		attributes.add(NAME_);
+		attributes.add(TARGET_VALUE_);
+
+		return attributes; 
 	}
 	
 	public String getName() { return name; }

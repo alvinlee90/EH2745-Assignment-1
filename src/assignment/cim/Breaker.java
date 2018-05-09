@@ -1,5 +1,7 @@
 package assignment.cim;
 
+import java.util.ArrayList;
+
 import org.w3c.dom.Element;
 
 
@@ -18,6 +20,8 @@ public class Breaker extends BaseCimClass{
 	private String equipContainer;
 	private String baseVoltage; 
 	
+	public Breaker() {}
+	
 	public Breaker(Element element) {
 		parseRDF(element);
 		name = parseElement(element, NAME); 
@@ -26,9 +30,9 @@ public class Breaker extends BaseCimClass{
 	}
 	
 	public String createTable() {
-		return BREAKER_ + " (" + RDF_ID_ + " VARCHAR(50) NOT NULL, " + NAME_ + " VARCHAR(50), "
-				+ STATE_ + " VARCHAR(50), " + EQUIP_CONTAINER_ID_ + " VARCHAR(50), " + BASE_VOLTAGE_ID_ 
-				+ " VARCHAR(50), PRIMARY KEY(" + RDF_ID_ + "), FOREIGN KEY (" + BASE_VOLTAGE_ID_ 
+		return BREAKER_ + " (" + RDF_ID_ + " " + STRING + " NOT NULL, " + NAME_ + " " + STRING + ", "
+				+ STATE_ + " " + STRING + ", " + EQUIP_CONTAINER_ID_ + " " + STRING + ", " + BASE_VOLTAGE_ID_ 
+				+ " " + STRING + ", PRIMARY KEY(" + RDF_ID_ + "), FOREIGN KEY (" + BASE_VOLTAGE_ID_ 
 				+ ") REFERENCES " + BASE_VOLTAGE_ + "(" + RDF_ID_ + "))"; 
 	}
 	
@@ -82,6 +86,18 @@ public class Breaker extends BaseCimClass{
 		String command = BREAKER_ + columnNames + ") " + values + ")"; 
 		
 		return insertSQL(command, duplicate, update); 
+	}
+	
+	public ArrayList<String> getAttributes() {
+		ArrayList<String> attributes = new ArrayList<String>(); 
+		
+		attributes.add(RDF_ID_);
+		attributes.add(NAME_);
+		attributes.add(STATE_);
+		attributes.add(EQUIP_CONTAINER_ID_);
+		attributes.add(BASE_VOLTAGE_ID_);
+
+		return attributes; 
 	}
 	
 	public String getName() { return name; }

@@ -1,5 +1,7 @@
 package assignment.cim;
 
+import java.util.ArrayList;
+
 import org.w3c.dom.Element;
 
 
@@ -13,6 +15,8 @@ public class PowerTransformer extends BaseCimClass{
 	private String name;
 	private String equipContainer; 
 	
+	public PowerTransformer() {}
+	
 	public PowerTransformer(Element element) {
 		parseRDF(element);
 		name = parseElement(element, NAME); 
@@ -20,9 +24,9 @@ public class PowerTransformer extends BaseCimClass{
 	}
 
 	public String createTable() {
-		return POWER_TRANS_ + " (" + RDF_ID_ + " VARCHAR(50) NOT NULL, " + NAME_ 
-				+ " VARCHAR(50), " + EQUIP_CONTAINER_ID_ + " VARCHAR(50), PRIMARY KEY (" 
-				+ RDF_ID_ + "))"; 
+		return POWER_TRANS_ + " (" + RDF_ID_ + " " + STRING + " NOT NULL, " + NAME_ 
+				+ " " + STRING + ", " + EQUIP_CONTAINER_ID_ + " " + STRING 
+				+ ", PRIMARY KEY (" + RDF_ID_ + "))"; 
 	}
 	
 	public String insertTable() {
@@ -59,6 +63,16 @@ public class PowerTransformer extends BaseCimClass{
 		String command = POWER_TRANS_ + columnNames + ") " + values + ")"; 
 		
 		return insertSQL(command, duplicate, update); 
+	}
+	
+	public ArrayList<String> getAttributes() {
+		ArrayList<String> attributes = new ArrayList<String>(); 
+		
+		attributes.add(RDF_ID_);
+		attributes.add(NAME_);
+		attributes.add(EQUIP_CONTAINER_ID_);
+
+		return attributes; 
 	}
 	
 	public String getName() { return name; }
