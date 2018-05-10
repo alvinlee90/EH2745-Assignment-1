@@ -10,6 +10,8 @@ import java.util.Properties;
 
 import assignment.cim.BaseVoltage;
 import assignment.cim.Breaker;
+import assignment.cim.BusbarSection;
+import assignment.cim.ConnectivityNode;
 import assignment.cim.EnergyConsumer;
 import assignment.cim.GeneratingUnit;
 import assignment.cim.PowerTransformer;
@@ -18,6 +20,7 @@ import assignment.cim.RatioTapChanger;
 import assignment.cim.RegulatingControl;
 import assignment.cim.Substation;
 import assignment.cim.SyncMachine;
+import assignment.cim.Terminal;
 import assignment.cim.VoltageLevel; 
 
 public class Database extends CimConsts {
@@ -80,7 +83,7 @@ public class Database extends CimConsts {
 		}
 	}
 	
-	public void CreateTable(String query) {
+	public void createTable(String query) {
 		try {
 			String sql = "CREATE TABLE IF NOT EXISTS " + query; 
 			stmt.executeUpdate(sql);
@@ -96,7 +99,7 @@ public class Database extends CimConsts {
 		}
 	}
 	
-	public void InsertTable(String sql) {
+	public void insertTable(String sql) {
 		try {
 			stmt.executeUpdate(sql);
 			
@@ -111,7 +114,7 @@ public class Database extends CimConsts {
 		}
 	}
 	
-	public void UpdateBaseVoltageID() {
+	public void updateBaseVoltageID() {
 		String rdfID = "RDFID"; 
 		String equipContainerID = "EQUIPMENT_CONTAINER_ID"; 
 		String baseVoltageID = "BASE_VOLTAGE_ID"; 
@@ -173,7 +176,7 @@ public class Database extends CimConsts {
 		}
 	}
 	
-	public void ViewTables() {	    
+	public void viewTables() {	    
 	    try {
 	    	for (String table : CIM_CLASSES_) {
 				ArrayList<String> attributes = new ArrayList<String>(); 
@@ -212,6 +215,15 @@ public class Database extends CimConsts {
 					case RATIO_TAP_: 
 						attributes = new RatioTapChanger().getAttributes();
 						break;
+					case BUSBAR_: 
+						attributes = new BusbarSection().getAttributes();
+						break;	
+					case CONNECT_NODE_: 
+						attributes = new ConnectivityNode().getAttributes();
+						break;	
+					case TERMINAL_: 
+						attributes = new Terminal().getAttributes();
+						break;	
 					default:
 						System.err.println("Error: Incorrect CIM object");	    	
 				}
@@ -254,7 +266,7 @@ public class Database extends CimConsts {
 		}
 	}
 	
-	public void DropDatabase() {
+	public void dropDatabase() {
 		try {
 			// Drop database
 			String sql = "DROP DATABASE " + database; 

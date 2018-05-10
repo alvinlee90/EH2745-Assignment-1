@@ -12,6 +12,9 @@ public class XmlConsts {
 	protected static final String POWER_TRANS_END = "cim:PowerTransformerEnd"; 
 	protected static final String BREAKER = "cim:Breaker"; 
 	protected static final String RATIO_TAP = "cim:RatioTapChanger"; 
+	protected static final String BUSBAR = "cim:BusbarSection"; 
+	protected static final String CONNECT_NODE = "cim:ConnectivityNode"; 
+	protected static final String TERMINAL = "cim:Terminal"; 
 	
 	// Array of all the CIM classes 
 	protected static final String[] CIM_CLASSES = {BASE_VOLTAGE, 
@@ -24,5 +27,8 @@ public class XmlConsts {
 											       ENERGY_CONSUMER,
 											       POWER_TRANS_END,
 											       BREAKER,
-											       RATIO_TAP};
+											       RATIO_TAP,
+											       BUSBAR,
+											       CONNECT_NODE,
+											       TERMINAL};
 }

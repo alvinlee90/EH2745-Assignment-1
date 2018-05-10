@@ -10,7 +10,20 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import assignment.cim.*;
+import assignment.cim.BaseVoltage;
+import assignment.cim.Breaker;
+import assignment.cim.BusbarSection;
+import assignment.cim.ConnectivityNode;
+import assignment.cim.EnergyConsumer;
+import assignment.cim.GeneratingUnit;
+import assignment.cim.PowerTransformer;
+import assignment.cim.PowerTransformerEnd;
+import assignment.cim.RatioTapChanger;
+import assignment.cim.RegulatingControl;
+import assignment.cim.Substation;
+import assignment.cim.SyncMachine;
+import assignment.cim.Terminal;
+import assignment.cim.VoltageLevel;
 
 
 public class CimData extends XmlConsts {
@@ -26,6 +39,9 @@ public class CimData extends XmlConsts {
 	private ArrayList <PowerTransformerEnd> powerTransEnd_ = new ArrayList<PowerTransformerEnd>();
 	private ArrayList <Breaker> breaker_ = new ArrayList<Breaker>();
 	private ArrayList <RatioTapChanger> ratioTapChanger_ = new ArrayList<RatioTapChanger>();
+	private ArrayList <BusbarSection> busbar_ = new ArrayList<BusbarSection>(); 
+	private ArrayList <ConnectivityNode> connectNode_ = new ArrayList<ConnectivityNode>(); 
+	private ArrayList <Terminal> terminal_ = new ArrayList<Terminal>(); 
 
 	public CimData (String filepath) {
 		try {		
@@ -92,23 +108,54 @@ public class CimData extends XmlConsts {
 			case RATIO_TAP: 
 				ratioTapChanger_.add(new RatioTapChanger(element)); 
 				break;
+			case BUSBAR:
+				busbar_.add(new BusbarSection(element)); 
+				break; 
+			case CONNECT_NODE:
+				connectNode_.add(new ConnectivityNode(element)); 
+				break; 
+			case TERMINAL: 
+				terminal_.add(new Terminal(element)); 
+				break; 
 			default:
 				System.err.println("Error: Incorrect CIM object");
 		}
 	}
 	
-	public String[] createTables() {		
-		return new String[] {baseVoltage_.get(0).createTable(),
-							 substation_.get(0).createTable(),
-							 voltageLevel_.get(0).createTable(),
-							 generatingUnit_.get(0).createTable(),
-							 regulatingControl_.get(0).createTable(),
-							 powerTrans_.get(0).createTable(),
-							 energyConsumer_.get(0).createTable(),
-							 powerTransEnd_.get(0).createTable(),
-							 breaker_.get(0).createTable(),
-							 ratioTapChanger_.get(0).createTable(),
-							 syncMachine_.get(0).createTable()};
+	public ArrayList<String> CreateTables() {
+		ArrayList<String> query = new ArrayList<String>();
+		
+		query.add(new BaseVoltage().createTable());
+		query.add(new Substation().createTable());
+		query.add(new VoltageLevel().createTable());
+		query.add(new GeneratingUnit().createTable());
+		query.add(new RegulatingControl().createTable());
+		query.add(new PowerTransformer().createTable());
+		query.add(new EnergyConsumer().createTable());
+		query.add(new PowerTransformerEnd().createTable());
+		query.add(new Breaker().createTable());
+		query.add(new RatioTapChanger().createTable());
+		query.add(new SyncMachine().createTable());
+		query.add(new BusbarSection().createTable());
+		query.add(new ConnectivityNode().createTable());
+		query.add(new Terminal().createTable());
+
+		return query; 
+		
+//		return new String[] {baseVoltage_.get(0).createTable(),
+//							 substation_.get(0).createTable(),
+//							 voltageLevel_.get(0).createTable(),
+//							 generatingUnit_.get(0).createTable(),
+//							 regulatingControl_.get(0).createTable(),
+//							 powerTrans_.get(0).createTable(),
+//							 energyConsumer_.get(0).createTable(),
+//							 powerTransEnd_.get(0).createTable(),
+//							 breaker_.get(0).createTable(),
+//							 ratioTapChanger_.get(0).createTable(),
+//							 syncMachine_.get(0).createTable(),
+//							 busbar_.get(0).createTable(),
+//							 connectNode_.get(0).createTable(),
+//							 terminal_.get(0).createTable()};
 	}
 	
 	public ArrayList<String> insertBaseVoltage() {
@@ -227,6 +274,39 @@ public class CimData extends XmlConsts {
 
 		// Insert all Breaker elements
 		for (RatioTapChanger object : ratioTapChanger_) {
+			query.add(object.insertTable()); 
+		}	
+		
+		return query;
+	}
+
+	public ArrayList<String> insertBusbar() {
+		ArrayList<String> query = new ArrayList<String>(); 		
+
+		// Insert all Breaker elements
+		for (BusbarSection object : busbar_) {
+			query.add(object.insertTable()); 
+		}	
+		
+		return query;
+	}
+	
+	public ArrayList<String> insertConnectNode() {
+		ArrayList<String> query = new ArrayList<String>(); 		
+
+		// Insert all Breaker elements
+		for (ConnectivityNode object : connectNode_) {
+			query.add(object.insertTable()); 
+		}	
+		
+		return query;
+	}
+	
+	public ArrayList<String> insertTerminal() {
+		ArrayList<String> query = new ArrayList<String>(); 		
+
+		// Insert all Breaker elements
+		for (Terminal object : terminal_) {
 			query.add(object.insertTable()); 
 		}	
 		
