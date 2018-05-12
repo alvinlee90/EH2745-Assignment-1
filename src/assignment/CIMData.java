@@ -10,20 +10,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import assignment.cim.BaseVoltage;
-import assignment.cim.Breaker;
-import assignment.cim.BusbarSection;
-import assignment.cim.ConnectivityNode;
-import assignment.cim.EnergyConsumer;
-import assignment.cim.GeneratingUnit;
-import assignment.cim.PowerTransformer;
-import assignment.cim.PowerTransformerEnd;
-import assignment.cim.RatioTapChanger;
-import assignment.cim.RegulatingControl;
-import assignment.cim.Substation;
-import assignment.cim.SyncMachine;
-import assignment.cim.Terminal;
-import assignment.cim.VoltageLevel;
+import assignment.cim.*;
 
 
 public class CimData extends XmlConsts {
@@ -39,9 +26,12 @@ public class CimData extends XmlConsts {
 	private ArrayList <PowerTransformerEnd> powerTransEnd_ = new ArrayList<PowerTransformerEnd>();
 	private ArrayList <Breaker> breaker_ = new ArrayList<Breaker>();
 	private ArrayList <RatioTapChanger> ratioTapChanger_ = new ArrayList<RatioTapChanger>();
+	
 	private ArrayList <BusbarSection> busbar_ = new ArrayList<BusbarSection>(); 
 	private ArrayList <ConnectivityNode> connectNode_ = new ArrayList<ConnectivityNode>(); 
 	private ArrayList <Terminal> terminal_ = new ArrayList<Terminal>(); 
+	private ArrayList <Line> line_ = new ArrayList<Line>(); 
+	private ArrayList <Shunt> shunt_ = new ArrayList<Shunt>(); 
 
 	public CimData (String filepath) {
 		try {		
@@ -56,7 +46,6 @@ public class CimData extends XmlConsts {
 			
 			for (String cimClass : CIM_CLASSES) {
 //				System.out.println("Parsing data for " + cimClass + "...\n");
-				
 				NodeList nodeList = doc.getElementsByTagName(cimClass);
 
 				for (int i = 0; i < nodeList.getLength(); i++) {
@@ -117,6 +106,12 @@ public class CimData extends XmlConsts {
 			case TERMINAL: 
 				terminal_.add(new Terminal(element)); 
 				break; 
+			case LINE: 
+				line_.add(new Line(element)); 
+				break; 
+			case SHUNT:
+				shunt_.add(new Shunt(element)); 
+				break;
 			default:
 				System.err.println("Error: Incorrect CIM object");
 		}
@@ -125,6 +120,7 @@ public class CimData extends XmlConsts {
 	public ArrayList<String> CreateTables() {
 		ArrayList<String> query = new ArrayList<String>();
 		
+		// Add SQL queries for creating tables to array (required objects)
 		query.add(new BaseVoltage().createTable());
 		query.add(new Substation().createTable());
 		query.add(new VoltageLevel().createTable());
@@ -136,26 +132,15 @@ public class CimData extends XmlConsts {
 		query.add(new Breaker().createTable());
 		query.add(new RatioTapChanger().createTable());
 		query.add(new SyncMachine().createTable());
+		
+		// Add SQL queries for creating tables to array (for Y bus)
 		query.add(new BusbarSection().createTable());
 		query.add(new ConnectivityNode().createTable());
 		query.add(new Terminal().createTable());
+		query.add(new Line().createTable());
+		query.add(new Shunt().createTable());
 
 		return query; 
-		
-//		return new String[] {baseVoltage_.get(0).createTable(),
-//							 substation_.get(0).createTable(),
-//							 voltageLevel_.get(0).createTable(),
-//							 generatingUnit_.get(0).createTable(),
-//							 regulatingControl_.get(0).createTable(),
-//							 powerTrans_.get(0).createTable(),
-//							 energyConsumer_.get(0).createTable(),
-//							 powerTransEnd_.get(0).createTable(),
-//							 breaker_.get(0).createTable(),
-//							 ratioTapChanger_.get(0).createTable(),
-//							 syncMachine_.get(0).createTable(),
-//							 busbar_.get(0).createTable(),
-//							 connectNode_.get(0).createTable(),
-//							 terminal_.get(0).createTable()};
 	}
 	
 	public ArrayList<String> insertBaseVoltage() {
@@ -172,7 +157,7 @@ public class CimData extends XmlConsts {
 	public ArrayList<String> insertSubstation() {
 		ArrayList<String> query = new ArrayList<String>(); 
 		
-		// Insert all Substation elements
+		// Insert all Sub-station elements
 		for (Substation object : substation_) {
 			query.add(object.insertTable()); 
 		}
@@ -313,65 +298,25 @@ public class CimData extends XmlConsts {
 		return query;
 	}
 	
-	public void printCIMData(String object) {
-		switch (object) {
-		case BASE_VOLTAGE: 
-			for (BaseVoltage tmp : baseVoltage_) {
-				tmp.printData();
-			}
-			break;
-		case SUBSTATION: 
-			for (Substation tmp : substation_) {
-				tmp.printData();
-			}
-			break;
-		case VOLTAGE_LEVEL: 
-			for (VoltageLevel tmp : voltageLevel_) {
-				tmp.printData();
-			}
-		  	break;
-		case GENERATING_UNIT: 
-			for (GeneratingUnit tmp : generatingUnit_) {
-				tmp.printData();
-			}
-			break;
-		case SYNC_MACHINE: 
-			for (SyncMachine tmp : syncMachine_) {
-				tmp.printData();
-			}
-			break;
-		case REG_CONTROL: 
-			for (RegulatingControl tmp : regulatingControl_) {
-				tmp.printData();
-			}
-			break;
-		case POWER_TRANS: 
-			for (PowerTransformer tmp : powerTrans_) {
-				tmp.printData();
-			}
-			break;
-		case ENERGY_CONSUMER: 
-			for (EnergyConsumer tmp : energyConsumer_) {
-				tmp.printData();
-			}
-			break;
-		case POWER_TRANS_END: 
-			for (PowerTransformerEnd tmp : powerTransEnd_) {
-				tmp.printData();
-			}
-			break;
-		case BREAKER: 
-			for (Breaker tmp : breaker_) {
-				tmp.printData();
-			}
-			break;
-		case RATIO_TAP: 
-			for (RatioTapChanger tmp : ratioTapChanger_) {
-				tmp.printData();
-			}
-			break;
-		default:
-			System.err.println("Error: Incorrect CIM object");
-		}
+	public ArrayList<String> insertLine() {
+		ArrayList<String> query = new ArrayList<String>(); 		
+
+		// Insert all Breaker elements
+		for (Line object : line_) {
+			query.add(object.insertTable()); 
+		}	
+		
+		return query;
+	}
+	
+	public ArrayList<String> insertShunt() {
+		ArrayList<String> query = new ArrayList<String>(); 		
+
+		// Insert all Breaker elements
+		for (Shunt object : shunt_) {
+			query.add(object.insertTable()); 
+		}	
+		
+		return query;
 	}
 }

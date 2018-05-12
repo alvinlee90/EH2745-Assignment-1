@@ -8,20 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Properties;
 
-import assignment.cim.BaseVoltage;
-import assignment.cim.Breaker;
-import assignment.cim.BusbarSection;
-import assignment.cim.ConnectivityNode;
-import assignment.cim.EnergyConsumer;
-import assignment.cim.GeneratingUnit;
-import assignment.cim.PowerTransformer;
-import assignment.cim.PowerTransformerEnd;
-import assignment.cim.RatioTapChanger;
-import assignment.cim.RegulatingControl;
-import assignment.cim.Substation;
-import assignment.cim.SyncMachine;
-import assignment.cim.Terminal;
-import assignment.cim.VoltageLevel; 
+import assignment.cim.*; 
 
 public class Database extends CimConsts {
 	// JDBC driver name and database URL
@@ -224,6 +211,12 @@ public class Database extends CimConsts {
 					case TERMINAL_: 
 						attributes = new Terminal().getAttributes();
 						break;	
+					case LINE_: 
+						attributes = new Line().getAttributes();
+						break;	
+					case SHUNT_:
+						attributes = new Shunt().getAttributes();
+						break;
 					default:
 						System.err.println("Error: Incorrect CIM object");	    	
 				}

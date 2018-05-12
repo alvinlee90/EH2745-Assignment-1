@@ -1,14 +1,19 @@
 package assignment;
 
+import java.util.ArrayList;
+
 public class MainProgram {
 	private static final String DATABASE = "cim"; 
 	
-	private static CimData eqData;
-	private static CimData sshData;
+	// Array to store the data from the XML files (both EQ and SSH)
+	private static ArrayList<CimData> cimData = new ArrayList<CimData>(); 
 	
+	// Object to manage the SQL database
 	private static Database database;
 	
 	public static void main (String[] args) {
+		// Check the number of arguments 
+		// args[0] = EQ file; args[1] = SSH file
 		if (args.length != 2) {
 			System.err.println("[Main] Error: invalid number of EQ and SSH filepaths");
 			return;
@@ -36,23 +41,23 @@ public class MainProgram {
 	public static void parseXMLFiles(String eqFile, String sshFile) {
 		// Parse EQ and SSH file
 		System.out.println("Parsing EQ file...");
-		eqData = new CimData(eqFile);
+		cimData.add(new CimData(eqFile));
 		
 		System.out.println("Parsing SSH file...");
-		sshData = new CimData(sshFile);
+		cimData.add(new CimData(sshFile));
 	}
 	
 	public static void initializeDatabase() {
 		// Create database
 		database = new Database(DATABASE); 
 		
-		// Create tables 
-		for (String query : eqData.CreateTables()) {
+		// Create tables (1 for each class)
+		for (String query : cimData.get(0).CreateTables()) {
 			System.out.println("[SQL] " + query); 
 			database.createTable(query);
 		}
 		
-		// Insert elements to the table
+		// Insert elements into the respective table
 		insertTables(); 
 		
 		// Fill in values where base voltage ID is null
@@ -61,157 +66,131 @@ public class MainProgram {
 	
 	public static void insertTables() {
 		// -------------- Base Voltage -------------- 
-		for (String query : eqData.insertBaseVoltage()) {
-			System.out.println("[SQL] " + query); 
-			database.insertTable(query);
+		for (CimData object : cimData) {
+			for (String query : object.insertBaseVoltage()) {
+				System.out.println("[SQL] " + query); 
+				database.insertTable(query);
+			}
 		}
 		
-		for (String query : sshData.insertBaseVoltage()) {
-			System.out.println("[SQL] " + query); 
-			database.insertTable(query);
-		}
-
 		// -------------- Sub-station -------------- 
-		for (String query : eqData.insertSubstation()) {
-			System.out.println("[SQL] " + query); 
-			database.insertTable(query);
-		}
-		
-		for (String query : sshData.insertSubstation()) {
-			System.out.println("[SQL] " + query); 
-			database.insertTable(query);
+		for (CimData object : cimData) {
+			for (String query : object.insertSubstation()) {
+				System.out.println("[SQL] " + query); 
+				database.insertTable(query);
+			}
 		}
 		
 		// -------------- Voltage Level -------------- 
-		for (String query : eqData.insertVoltageLevel()) {
-			System.out.println("[SQL] " + query); 
-			database.insertTable(query);
-		}
-		
-		for (String query : sshData.insertVoltageLevel()) {
-			System.out.println("[SQL] " + query); 
-			database.insertTable(query);
+		for (CimData object : cimData) {
+			for (String query : object.insertVoltageLevel()) {
+				System.out.println("[SQL] " + query); 
+				database.insertTable(query);
+			}
 		}
 
-		// -------------- Generating Unit -------------- 
-		for (String query : eqData.insertGeneratingUnit()) {
-			System.out.println("[SQL] " + query); 
-			database.insertTable(query);
-		}
-		
-		for (String query : sshData.insertGeneratingUnit()) {
-			System.out.println("[SQL] " + query); 
-			database.insertTable(query);
+		// -------------- Generating Unit --------------
+		for (CimData object : cimData) {
+			for (String query : object.insertGeneratingUnit()) {
+				System.out.println("[SQL] " + query); 
+				database.insertTable(query);
+			}
 		}
 
 		// -------------- Regulating Control -------------- 
-		for (String query : eqData.insertRegulatingControl()) {
-			System.out.println("[SQL] " + query); 
-			database.insertTable(query);
-		}
-		
-		for (String query : sshData.insertRegulatingControl()) {
-			System.out.println("[SQL] " + query); 
-			database.insertTable(query);
+		for (CimData object : cimData) {
+			for (String query : object.insertRegulatingControl()) {
+				System.out.println("[SQL] " + query); 
+				database.insertTable(query);
+			}
 		}
 
 		// -------------- Power Transformer -------------- 
-		for (String query : eqData.insertPowerTransformer()) {
-			System.out.println("[SQL] " + query); 
-			database.insertTable(query);
-		}
-		
-		for (String query : sshData.insertPowerTransformer()) {
-			System.out.println("[SQL] " + query); 
-			database.insertTable(query);
+		for (CimData object : cimData) {
+			for (String query : object.insertPowerTransformer()) {
+				System.out.println("[SQL] " + query); 
+				database.insertTable(query);
+			}
 		}
 		
 		// -------------- Energy Consumer -------------- 
-		for (String query : eqData.insertEnergyConsumer()) {
-			System.out.println("[SQL] " + query); 
-			database.insertTable(query);
-		}
-		
-		for (String query : sshData.insertEnergyConsumer()) {
-			System.out.println("[SQL] " + query); 
-			database.insertTable(query);
+		for (CimData object : cimData) {
+			for (String query : object.insertEnergyConsumer()) {
+				System.out.println("[SQL] " + query); 
+				database.insertTable(query);
+			}
 		}
 
-		// -------------- Power Transformer End -------------- 
-		for (String query : eqData.insertPowerTransformerEnd()) {
-			System.out.println("[SQL] " + query); 
-			database.insertTable(query);
-		}
-		
-		for (String query : sshData.insertPowerTransformerEnd()) {
-			System.out.println("[SQL] " + query); 
-			database.insertTable(query);
+		// -------------- Power Transformer End --------------
+		for (CimData object : cimData) {
+			for (String query : object.insertPowerTransformerEnd()) {
+				System.out.println("[SQL] " + query); 
+				database.insertTable(query);
+			}
 		}
 
 		// -------------- Breaker -------------- 
-		for (String query : eqData.insertBreaker()) {
-			System.out.println("[SQL] " + query); 
-			database.insertTable(query);
-		}
-		
-		for (String query : sshData.insertBreaker()) {
-			System.out.println("[SQL] " + query); 
-			database.insertTable(query);
+		for (CimData object : cimData) {
+			for (String query : object.insertBreaker()) {
+				System.out.println("[SQL] " + query); 
+				database.insertTable(query);
+			}
 		}
 		
 		// -------------- Ratio Tap Changer -------------- 
-		for (String query : eqData.insertRatioTapChanger()) {
-			System.out.println("[SQL] " + query); 
-			database.insertTable(query);
-		}
-		
-		for (String query : sshData.insertRatioTapChanger()) {
-			System.out.println("[SQL] " + query); 
-			database.insertTable(query);
+		for (CimData object : cimData) {
+			for (String query : object.insertRatioTapChanger()) {
+				System.out.println("[SQL] " + query); 
+				database.insertTable(query);
+			}
 		}
 
-		// -------------- Busbar Section -------------- 
-		for (String query : eqData.insertBusbar()) {
-			System.out.println("[SQL] " + query); 
-			database.insertTable(query);
+		// -------------- Bus-bar Section -------------- 
+		for (CimData object : cimData) {
+			for (String query : object.insertBusbar()) {
+				System.out.println("[SQL] " + query); 
+				database.insertTable(query);
+			}
 		}
 		
-		for (String query : sshData.insertBusbar()) {
-			System.out.println("[SQL] " + query); 
-			database.insertTable(query);
-		}
-		
-		// -------------- Connectivity Node -------------- 
-		for (String query : eqData.insertConnectNode()) {
-			System.out.println("[SQL] " + query); 
-			database.insertTable(query);
-		}
-		
-		for (String query : sshData.insertConnectNode()) {
-			System.out.println("[SQL] " + query); 
-			database.insertTable(query);
+		// -------------- Connectivity Node --------------
+		for (CimData object : cimData) {
+			for (String query : object.insertConnectNode()) {
+				System.out.println("[SQL] " + query); 
+				database.insertTable(query);
+			}
 		}
 		
 		// -------------- Terminal -------------- 
-		for (String query : eqData.insertTerminal()) {
-			System.out.println("[SQL] " + query); 
-			database.insertTable(query);
+		for (CimData object : cimData) {
+			for (String query : object.insertTerminal()) {
+				System.out.println("[SQL] " + query); 
+				database.insertTable(query);
+			}
 		}
 		
-		for (String query : sshData.insertTerminal()) {
-			System.out.println("[SQL] " + query); 
-			database.insertTable(query);
+		// -------------- Line -------------- 
+		for (CimData object : cimData) {
+			for (String query : object.insertLine()) {
+				System.out.println("[SQL] " + query); 
+				database.insertTable(query);
+			}
 		}
 
-		// -------------- Synchronous Machine -------------- 
-		for (String query : eqData.insertSyncMachine()) {
-			System.out.println("[SQL] " + query); 
-			database.insertTable(query);
+		// -------------- Shunt -------------- 
+		for (CimData object : cimData) {
+			for (String query : object.insertShunt()) {
+				System.out.println("[SQL] " + query); 
+				database.insertTable(query);
+			}
 		}
 		
-		for (String query : sshData.insertSyncMachine()) {
-			System.out.println("[SQL] " + query); 
-			database.insertTable(query);
+		// -------------- Synchronous Machine -------------- 
+		for (CimData object : cimData) {
+			for (String query : object.insertSyncMachine()) {
+				System.out.println("[SQL] " + query); 
+				database.insertTable(query);
+			}
 		}
 	}
 }
