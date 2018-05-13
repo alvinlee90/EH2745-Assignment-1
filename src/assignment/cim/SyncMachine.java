@@ -6,15 +6,6 @@ import org.w3c.dom.Element;
 
 
 public class SyncMachine extends BaseCimClass{	
-	private static final String NAME_ = "NAME";
-	private static final String S_ = "S"; 
-	private static final String P_ = "P";
-	private static final String Q_ = "Q"; 
-	private static final String GEN_UNIT_ID_ = "GENERATING_UNIT_ID"; 
-	private static final String REG_CONTROL_ID_ = "REGULATING_CONTROL_ID"; 
-	private static final String EQUIP_CONTAINER_ID_ = "EQUIPMENT_CONTAINER_ID"; 
-	private static final String BASE_VOLTAGE_ID_ = "BASE_VOLTAGE_ID"; 
-
 	private static final String NAME = "cim:IdentifiedObject.name";
 	private static final String RATE_S = "cim:RotatingMachine.ratedS"; 
 	private static final String MACHINE_P = "cim:RotatingMachine.p";

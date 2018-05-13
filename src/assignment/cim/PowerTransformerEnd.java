@@ -6,12 +6,6 @@ import org.w3c.dom.Element;
 
 
 public class PowerTransformerEnd extends BaseCimClass{
-	private static final String NAME_ = "NAME";
-	private static final String R_ = "R";
-	private static final String X_ = "X";
-	private static final String TRANSFORMER_ID_ = "TRANSFORMER_ID"; 
-	private static final String BASE_VOLTAGE_ID_ = "BASE_VOLTAGE_ID"; 
-
 	private static final String NAME = "cim:IdentifiedObject.name";
 	private static final String TRANSFORMER_R = "cim:PowerTransformerEnd.r";
 	private static final String TRANSFORMER_X = "cim:PowerTransformerEnd.x"; 

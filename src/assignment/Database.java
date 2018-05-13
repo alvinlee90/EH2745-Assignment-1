@@ -2,6 +2,7 @@ package assignment;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -23,12 +24,13 @@ public class Database extends CimConsts {
 	
 	// Connection and statement 
 	private Connection conn = null;
-	private Statement stmt = null;
 
 	// Database name
 	private String database; 
 	
 	public Database(String name) {
+		Statement stmt = null;
+
 		try {			
 			database = name;
 
@@ -49,16 +51,15 @@ public class Database extends CimConsts {
 			
 			// Create database 
 			String sql = "CREATE DATABASE IF NOT EXISTS " + database; 
-			System.out.println("[SQL] " + sql);
+//			System.out.println("[SQL] " + sql);
 			
 			stmt = conn.createStatement();
 			stmt.executeUpdate(sql);
 			
-			System.out.println("Database created successfully...\n");
+//			System.out.println("Database created successfully...\n");
 
 			// Connect to the created database
 			conn = DriverManager.getConnection(DB_URL + database, credentials);
-			stmt = conn.createStatement();
 		}
 		catch (SQLException se) {
 			// Handle errors for JDBC
@@ -68,88 +69,121 @@ public class Database extends CimConsts {
 			// Handle errors for Class.forName
 			e.printStackTrace();
 		}
+		finally {
+			// Close statement
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 	
 	public void createTable(String query) {
+		Statement stmt = null;
+
 		try {
+			// Prepare and execute statement;			
 			String sql = "CREATE TABLE IF NOT EXISTS " + query; 
+			stmt = conn.createStatement();
 			stmt.executeUpdate(sql);
 			
-			System.out.println("Created table in given database successfully...\n");
+//			System.out.println("Created table in given database successfully...\n");
 		}
 		catch (SQLException se) {
 			// Handle errors for JDBC
 			se.printStackTrace();
 		}
-		catch (Exception e) {
-			e.printStackTrace();
+		finally {
+			// Close statement
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 	
 	public void insertTable(String sql) {
+		Statement stmt = null; 
+		
 		try {
+			stmt = conn.createStatement();
 			stmt.executeUpdate(sql);
 			
-			System.out.println("Insert given table successfully...\n");
+//			System.out.println("Insert given table successfully...\n");
 		}
 		catch (SQLException se) {
 			// Handle errors for JDBC
 			se.printStackTrace();
 		}
-		catch (Exception e) {
-			e.printStackTrace();
+		finally {
+			// Close statement
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 	
-	public void updateBaseVoltageID() {
-		String rdfID = "RDFID"; 
-		String equipContainerID = "EQUIPMENT_CONTAINER_ID"; 
-		String baseVoltageID = "BASE_VOLTAGE_ID"; 
-		
+	public void updateBaseVoltageID() {		
 		String[] elements = {SYNC_MACHINE_, ENERGY_CONSUMER_, BREAKER_};
 		
+		Statement stmt = null;
+		Statement stmt2 = null; 
+		
 		try {
+			stmt = conn.createStatement();
+			stmt2 = conn.createStatement();
+			
 			for (String table : elements) {
 				ArrayList<String> updateArray = new ArrayList<String>(); 
 				
 				// Get all the rows where base voltage id is null
-				String query = "SELECT " + rdfID + ", " + equipContainerID 
-								+ " FROM " + table + " WHERE " + baseVoltageID
+				String query = "SELECT " + RDF_ID_ + ", " + EQUIP_CONTAINER_ID_ 
+								+ " FROM " + table + " WHERE " + BASE_VOLTAGE_ID_
 								+ " IS NULL"; 
 				
-			    System.out.println("\n[SQL] " + query);
+//			    System.out.println("\n[SQL] " + query);
 		        ResultSet result = stmt.executeQuery(query);
 		        
 		        // Loop through all found rows
 		        while (result.next()) {
 		        	// Get the equipment container ID 
-		        	String rdfResult = result.getString(rdfID); 
-		        	String equipResult = result.getString(equipContainerID); 
+		        	String rdfResult = result.getString(RDF_ID_); 
+		        	String equipResult = result.getString(EQUIP_CONTAINER_ID_); 
 		        	
 		        	// Find corresponding voltage level with the same equipment container ID
-		        	String query2 = "SELECT " + baseVoltageID + " FROM " + VOLTAGE_LEVEL_
-		        					+ " WHERE " + rdfID + " = '" + equipResult + "'"; 
+		        	String query2 = "SELECT " + BASE_VOLTAGE_ID_ + " FROM " + VOLTAGE_LEVEL_
+		        					+ " WHERE " + RDF_ID_ + " = '" + equipResult + "'"; 
 				    
-		        	System.out.println("\n[SQL] " + query2);
-		        	Statement stmt2 = conn.createStatement();
+//		        	System.out.println("\n[SQL] " + query2);
+		        	
 			        ResultSet voltageResult = stmt2.executeQuery(query2);
 					
 			        // Check if result is found
 			        if (voltageResult.next()) {
 			        	// Get base voltage id from corresponding voltage level
-			        	String baseResult = voltageResult.getString(baseVoltageID);
+			        	String baseResult = voltageResult.getString(BASE_VOLTAGE_ID_);
 			        	
 			        	// Update (null) base voltage id with found one
-			        	String update = "UPDATE " + table + " SET " + baseVoltageID 
+			        	String update = "UPDATE " + table + " SET " + BASE_VOLTAGE_ID_ 
 			        					+ " = '" + baseResult + "' WHERE " 
-			        					+ rdfID + " = '" + rdfResult + "'";
+			        					+ RDF_ID_ + " = '" + rdfResult + "'";
 			        	
 			        	updateArray.add(update); 
 			        }
 		        }
 	        
 	        	for (String update : updateArray) {
-			        System.out.println("\n[SQL] " + update);
+//			        System.out.println("\n[SQL] " + update);
 			        stmt.executeUpdate(update);
 	        	}	        
 			}
@@ -161,10 +195,119 @@ public class Database extends CimConsts {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+		finally {
+			// Close statements
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (stmt2 != null) {
+				try {
+					stmt2.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 	
-	public void viewTables() {	    
-	    try {
+	public ArrayList<String> getID(String table) {
+		Statement stmt = null; 
+				
+		ArrayList<String> result = new ArrayList<String>(); 
+				
+		try {
+			// Prepare SQL query 
+			String sql = "SELECT * FROM " + table; 
+						
+			// Prepare statement
+			stmt = conn.createStatement(); 
+									
+			// Execute statement
+			ResultSet rs = stmt.executeQuery(sql); 
+			
+			
+			// Store result into array list
+			while (rs.next()) {
+				result.add(rs.getString(RDF_ID_)); 
+			}
+		}
+		catch (SQLException se) {
+			// Handle errors for JDBC
+			se.printStackTrace();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			// Close statements
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		return result;
+	}
+	
+	public ArrayList<String> selectSQL(String table, String whereAttribute, String condition, String getAttribute) {
+		PreparedStatement stmt = null; 
+		
+		ArrayList<String> results = new ArrayList<String>(); 
+				
+		try {
+			// Prepare SQL query 
+			String sql = "SELECT * FROM " + table + " WHERE " + whereAttribute + " = ?"; 
+									
+			// Prepare statement
+			stmt = conn.prepareStatement(sql); 
+			stmt.setString(1, condition);
+			
+			// Execute statement
+			ResultSet rs = stmt.executeQuery(); 
+			
+			// Store result into array list
+			while (rs.next()) {				
+				results.add(rs.getString(getAttribute)); 
+			}
+		}
+		catch (SQLException se) {
+			// Handle errors for JDBC
+			se.printStackTrace();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			// Close statements
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		return results;
+	}
+	
+	public ArrayList<String> selectSQL(String table, String whereAttribute, String condition) {
+		return this.selectSQL(table, whereAttribute, condition, RDF_ID_); 
+	}
+	
+	public void printTables() {	    
+	    Statement stmt = null; 
+	    
+		try {
+			stmt = conn.createStatement();
+			
 	    	for (String table : CIM_CLASSES_) {
 				ArrayList<String> attributes = new ArrayList<String>(); 
 	
@@ -257,26 +400,48 @@ public class Database extends CimConsts {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+		finally {
+			// Close statements
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 	
 	public void dropDatabase() {
+		Statement stmt = null;
+		
 		try {
 			// Drop database
-			String sql = "DROP DATABASE " + database; 
-			stmt.executeUpdate(sql);
+			stmt = conn.createStatement();
+			stmt.executeUpdate("DROP DATABASE " + database);
 			System.out.println("\nDatabase dropped successfully...");
-
-			// Close connection
-			if (conn != null) {
-				conn.close();
-			}
 		}
 		catch (SQLException se) {
 			// Handle errors for JDBC
 			se.printStackTrace();
 		}
-		catch (Exception e) {
-			e.printStackTrace();
+		finally {
+			// Close statement
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			// Close connection
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 }

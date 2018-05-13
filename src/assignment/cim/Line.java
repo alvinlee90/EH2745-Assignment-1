@@ -6,13 +6,6 @@ import org.w3c.dom.Element;
 
 
 public class Line extends BaseCimClass{
-	private static final String NAME_ = "NAME";
-	private static final String R_ = "R";
-	private static final String X_ = "X";
-	private static final String BCH_ = "BCH"; 
-	private static final String GCH_ = "GCH"; 
-	private static final String BASE_VOLTAGE_ID_ = "BASE_VOLTAGE_ID"; 
-
 	private static final String NAME = "cim:IdentifiedObject.name";
 	private static final String R = "cim:ACLineSegment.r";
 	private static final String X = "cim:ACLineSegment.x";

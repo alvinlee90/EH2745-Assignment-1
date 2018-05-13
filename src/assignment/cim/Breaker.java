@@ -6,11 +6,6 @@ import org.w3c.dom.Element;
 
 
 public class Breaker extends BaseCimClass{
-	private static final String NAME_ = "NAME";
-	private static final String STATE_ = "STATE";
-	private static final String EQUIP_CONTAINER_ID_ = "EQUIPMENT_CONTAINER_ID"; 
-	private static final String BASE_VOLTAGE_ID_ = "BASE_VOLTAGE_ID"; 
-
 	private static final String NAME = "cim:IdentifiedObject.name";
 	private static final String STATE = "cim:Switch.open";
 	private static final String EQUIP_CONTAINER = "cim:Equipment.EquipmentContainer"; 

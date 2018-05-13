@@ -6,10 +6,6 @@ import org.w3c.dom.Element;
 
 
 public class VoltageLevel extends BaseCimClass{
-	private static final String NAME_ = "NAME";
-	private static final String SUBSTATION_ID_ = "SUBSTATION_ID";
-	private static final String BASE_VOLTAGE_ID_ = "BASE_VOLTAGE_ID";
-
 	private static final String NAME = "cim:IdentifiedObject.name";
 	private static final String SUBSTATION = "cim:VoltageLevel.Substation"; 
 	private static final String BASE_VOLTAGE = "cim:VoltageLevel.BaseVoltage";

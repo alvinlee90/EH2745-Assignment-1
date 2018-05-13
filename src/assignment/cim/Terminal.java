@@ -6,11 +6,6 @@ import org.w3c.dom.Element;
 
 
 public class Terminal extends BaseCimClass{
-	private static final String NAME_ = "NAME";
-	private static final String CONDUCT_ID_ = "CONDUCTING_EQUIPMENT_ID";
-	private static final String CONNECT_ID_ = "CONNECTING_NODE_ID"; 
-	private static final String CONNECTED_ = "CONNECTED";
-
 	private static final String NAME = "cim:IdentifiedObject.name";
 	private static final String CONDUCT_ID = "cim:Terminal.ConductingEquipment";
 	private static final String CONNECT_ID = "cim:Terminal.ConnectivityNode"; 

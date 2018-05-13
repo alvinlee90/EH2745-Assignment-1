@@ -19,6 +19,33 @@ public class CimConsts {
 	protected static final String LINE_ = "LINE"; 
 	protected static final String SHUNT_ = "SHUNT"; 
 	
+	protected static final String RDF_ID_ = "RDFID"; 
+	protected static final String NAME_ = "NAME";
+	protected static final String NOMINAL_VOLTAGE_ = "NOMINAL_VOLTAGE";
+	protected static final String STATE_ = "STATE";
+	protected static final String EQUIP_CONTAINER_ID_ = "EQUIPMENT_CONTAINER_ID"; 
+	protected static final String BASE_VOLTAGE_ID_ = "BASE_VOLTAGE_ID"; 
+	protected static final String P_ = "P";
+	protected static final String Q_ = "Q";
+	protected static final String MAX_P_ = "MAX_P";
+	protected static final String MIN_P_ = "MIN_P";
+	protected static final String R_ = "R";
+	protected static final String X_ = "X";
+	protected static final String BCH_ = "BCH"; 
+	protected static final String GCH_ = "GCH"; 
+	protected static final String TRANSFORMER_ID_ = "TRANSFORMER_ID"; 
+	protected static final String TARGET_VALUE_ = "TARGET_VALUE";
+	protected static final String B_ = "B";
+	protected static final String G_ = "G";
+	protected static final String REGION_ID_ = "REGION_ID"; 
+	protected static final String S_ = "S"; 
+	protected static final String GEN_UNIT_ID_ = "GENERATING_UNIT_ID"; 
+	protected static final String REG_CONTROL_ID_ = "REGULATING_CONTROL_ID"; 
+	protected static final String CONDUCT_ID_ = "CONDUCTING_EQUIPMENT_ID";
+	protected static final String CONNECT_ID_ = "CONNECTING_NODE_ID"; 
+	protected static final String CONNECTED_ = "CONNECTED";
+	protected static final String SUBSTATION_ID_ = "SUBSTATION_ID";
+
 	protected static final String[] CIM_CLASSES_ = {BASE_VOLTAGE_, 
 											        SUBSTATION_,
 											        VOLTAGE_LEVEL_,
@@ -35,4 +62,12 @@ public class CimConsts {
 											        TERMINAL_,
 											        LINE_,
 											        SHUNT_};
+	
+	protected static final String[] CE_TYPES_ = {SYNC_MACHINE_,
+												 BUSBAR_,
+												 ENERGY_CONSUMER_,
+												 POWER_TRANS_,
+												 BREAKER_,
+												 SHUNT_,
+												 LINE_}; 
 }

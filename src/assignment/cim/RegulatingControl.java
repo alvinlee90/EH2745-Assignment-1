@@ -6,9 +6,6 @@ import org.w3c.dom.Element;
 
 
 public class RegulatingControl extends BaseCimClass{
-	private static final String NAME_ = "NAME";
-	private static final String TARGET_VALUE_ = "TARGET_VALUE";
-
 	private static final String NAME = "cim:IdentifiedObject.name";
 	private static final String TARGET_VALUE = "cim:RegulatingControl.targetValue"; 
 

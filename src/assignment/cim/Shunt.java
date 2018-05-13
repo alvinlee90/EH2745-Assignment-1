@@ -6,11 +6,6 @@ import org.w3c.dom.Element;
 
 
 public class Shunt extends BaseCimClass{
-	private static final String NAME_ = "NAME";
-	private static final String B_ = "B";
-	private static final String G_ = "G";
-	private static final String EQUIP_CONTAINER_ID_ = "EQUIPMENT_CONTAINER_ID"; 
-
 	private static final String NAME = "cim:IdentifiedObject.name";
 	private static final String B = "cim:LinearShuntCompensator.bPerSection";
 	private static final String G = "cim:LinearShuntCompensator.gPerSection";

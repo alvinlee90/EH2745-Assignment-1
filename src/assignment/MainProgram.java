@@ -26,8 +26,11 @@ public class MainProgram {
 			// Initialize database (create database, create tables, insert elements)
 			initializeDatabase(); 			
 			
+			NetworkTraversal networkTraversal = new NetworkTraversal(database); 
+			
+			networkTraversal.printBranches();
 			// Display (print) all the tables
-			database.viewTables(); 
+//			database.printTables(); 
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -40,10 +43,10 @@ public class MainProgram {
 	
 	public static void parseXMLFiles(String eqFile, String sshFile) {
 		// Parse EQ and SSH file
-		System.out.println("Parsing EQ file...");
+//		System.out.println("Parsing EQ file...");
 		cimData.add(new CimData(eqFile));
 		
-		System.out.println("Parsing SSH file...");
+//		System.out.println("Parsing SSH file...");
 		cimData.add(new CimData(sshFile));
 	}
 	
@@ -53,7 +56,7 @@ public class MainProgram {
 		
 		// Create tables (1 for each class)
 		for (String query : cimData.get(0).CreateTables()) {
-			System.out.println("[SQL] " + query); 
+//			System.out.println("[SQL] " + query); 
 			database.createTable(query);
 		}
 		
@@ -68,7 +71,7 @@ public class MainProgram {
 		// -------------- Base Voltage -------------- 
 		for (CimData object : cimData) {
 			for (String query : object.insertBaseVoltage()) {
-				System.out.println("[SQL] " + query); 
+//				System.out.println("[SQL] " + query); 
 				database.insertTable(query);
 			}
 		}
@@ -76,7 +79,7 @@ public class MainProgram {
 		// -------------- Sub-station -------------- 
 		for (CimData object : cimData) {
 			for (String query : object.insertSubstation()) {
-				System.out.println("[SQL] " + query); 
+//				System.out.println("[SQL] " + query); 
 				database.insertTable(query);
 			}
 		}
@@ -84,7 +87,7 @@ public class MainProgram {
 		// -------------- Voltage Level -------------- 
 		for (CimData object : cimData) {
 			for (String query : object.insertVoltageLevel()) {
-				System.out.println("[SQL] " + query); 
+//				System.out.println("[SQL] " + query); 
 				database.insertTable(query);
 			}
 		}
@@ -92,7 +95,7 @@ public class MainProgram {
 		// -------------- Generating Unit --------------
 		for (CimData object : cimData) {
 			for (String query : object.insertGeneratingUnit()) {
-				System.out.println("[SQL] " + query); 
+//				System.out.println("[SQL] " + query); 
 				database.insertTable(query);
 			}
 		}
@@ -100,7 +103,7 @@ public class MainProgram {
 		// -------------- Regulating Control -------------- 
 		for (CimData object : cimData) {
 			for (String query : object.insertRegulatingControl()) {
-				System.out.println("[SQL] " + query); 
+//				System.out.println("[SQL] " + query); 
 				database.insertTable(query);
 			}
 		}
@@ -108,7 +111,7 @@ public class MainProgram {
 		// -------------- Power Transformer -------------- 
 		for (CimData object : cimData) {
 			for (String query : object.insertPowerTransformer()) {
-				System.out.println("[SQL] " + query); 
+//				System.out.println("[SQL] " + query); 
 				database.insertTable(query);
 			}
 		}
@@ -116,7 +119,7 @@ public class MainProgram {
 		// -------------- Energy Consumer -------------- 
 		for (CimData object : cimData) {
 			for (String query : object.insertEnergyConsumer()) {
-				System.out.println("[SQL] " + query); 
+//				System.out.println("[SQL] " + query); 
 				database.insertTable(query);
 			}
 		}
@@ -124,7 +127,7 @@ public class MainProgram {
 		// -------------- Power Transformer End --------------
 		for (CimData object : cimData) {
 			for (String query : object.insertPowerTransformerEnd()) {
-				System.out.println("[SQL] " + query); 
+//				System.out.println("[SQL] " + query); 
 				database.insertTable(query);
 			}
 		}
@@ -132,7 +135,7 @@ public class MainProgram {
 		// -------------- Breaker -------------- 
 		for (CimData object : cimData) {
 			for (String query : object.insertBreaker()) {
-				System.out.println("[SQL] " + query); 
+//				System.out.println("[SQL] " + query); 
 				database.insertTable(query);
 			}
 		}
@@ -140,7 +143,7 @@ public class MainProgram {
 		// -------------- Ratio Tap Changer -------------- 
 		for (CimData object : cimData) {
 			for (String query : object.insertRatioTapChanger()) {
-				System.out.println("[SQL] " + query); 
+//				System.out.println("[SQL] " + query); 
 				database.insertTable(query);
 			}
 		}
@@ -148,7 +151,7 @@ public class MainProgram {
 		// -------------- Bus-bar Section -------------- 
 		for (CimData object : cimData) {
 			for (String query : object.insertBusbar()) {
-				System.out.println("[SQL] " + query); 
+//				System.out.println("[SQL] " + query); 
 				database.insertTable(query);
 			}
 		}
@@ -156,7 +159,7 @@ public class MainProgram {
 		// -------------- Connectivity Node --------------
 		for (CimData object : cimData) {
 			for (String query : object.insertConnectNode()) {
-				System.out.println("[SQL] " + query); 
+//				System.out.println("[SQL] " + query); 
 				database.insertTable(query);
 			}
 		}
@@ -164,7 +167,7 @@ public class MainProgram {
 		// -------------- Terminal -------------- 
 		for (CimData object : cimData) {
 			for (String query : object.insertTerminal()) {
-				System.out.println("[SQL] " + query); 
+//				System.out.println("[SQL] " + query); 
 				database.insertTable(query);
 			}
 		}
@@ -172,7 +175,7 @@ public class MainProgram {
 		// -------------- Line -------------- 
 		for (CimData object : cimData) {
 			for (String query : object.insertLine()) {
-				System.out.println("[SQL] " + query); 
+//				System.out.println("[SQL] " + query); 
 				database.insertTable(query);
 			}
 		}
@@ -180,7 +183,7 @@ public class MainProgram {
 		// -------------- Shunt -------------- 
 		for (CimData object : cimData) {
 			for (String query : object.insertShunt()) {
-				System.out.println("[SQL] " + query); 
+//				System.out.println("[SQL] " + query); 
 				database.insertTable(query);
 			}
 		}
@@ -188,7 +191,7 @@ public class MainProgram {
 		// -------------- Synchronous Machine -------------- 
 		for (CimData object : cimData) {
 			for (String query : object.insertSyncMachine()) {
-				System.out.println("[SQL] " + query); 
+//				System.out.println("[SQL] " + query); 
 				database.insertTable(query);
 			}
 		}

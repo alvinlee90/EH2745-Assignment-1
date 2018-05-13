@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import org.w3c.dom.Element;
 
 public class BaseVoltage extends BaseCimClass {
-	private static final String NOMINAL_VOLTAGE_ = "NOMINAL_VOLTAGE";
-
 	private static final String NOMINAL_VOLTAGE = "cim:BaseVoltage.nominalVoltage";
 	
 	private String nominalVolt; 

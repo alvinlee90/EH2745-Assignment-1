@@ -6,11 +6,6 @@ import org.w3c.dom.Element;
 
 
 public class GeneratingUnit extends BaseCimClass{
-	private static final String NAME_ = "NAME";
-	private static final String MAX_P_ = "MAX_P";
-	private static final String MIN_P_ = "MIN_P";
-	private static final String EQUIP_CONTAINER_ID_ = "EQUIPMENT_CONTAINER_ID"; 
-
 	private static final String NAME = "cim:IdentifiedObject.name";
 	private static final String MAX_P = "cim:GeneratingUnit.maxOperatingP"; 
 	private static final String MIN_P = "cim:GeneratingUnit.minOperatingP";

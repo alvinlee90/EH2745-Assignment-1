@@ -5,10 +5,7 @@ import java.util.ArrayList;
 import org.w3c.dom.Element;
 
 
-public class Substation extends BaseCimClass{
-	private static final String NAME_ = "NAME";
-	private static final String REGION_ID_ = "REGION_ID"; 
-	
+public class Substation extends BaseCimClass{	
 	private static final String NAME = "cim:IdentifiedObject.name";
 	private static final String REGION = "cim:Substation.Region"; 
 	

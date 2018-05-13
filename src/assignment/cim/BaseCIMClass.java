@@ -7,8 +7,6 @@ import org.w3c.dom.NodeList;
 import assignment.CimConsts;
 
 public class BaseCimClass extends CimConsts {	
-	protected static final String RDF_ID_ = "RDFID"; 
-
 	protected static final String STRING = "VARCHAR(50)";
 	protected static final String FLOAT = "FLOAT"; 
 	protected static final String INT = "INT"; 
