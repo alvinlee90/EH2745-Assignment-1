@@ -26,11 +26,10 @@ public class NetworkTraversal extends CimConsts {
 		untraversedTe = database.selectSQL(TERMINAL_, CONNECTED_, "true"); 
 		
 		// Traverse network
-		traverseNetwork();
-		
+		traverseNetwork();	
 	}
 	
-	public void traverseNetwork() {
+	private void traverseNetwork() {
 		// Get all the RDF id of the bus-bar sections
 		ArrayList<String> busbarIDs = database.getID(BUSBAR_); 
 		
@@ -39,8 +38,6 @@ public class NetworkTraversal extends CimConsts {
 			// Initialize empty connectivity node stack
 			ArrayList<NodeStack> cnStack = new ArrayList<NodeStack>();
 			ArrayList<NodeTraverse> ceStack = new ArrayList<NodeTraverse>(); 
-
-//			System.out.println("Checking Busbar: " + busbarID);
 
 			// Initialize the previous NodeTraverse for the [bus-bar]
 			NodeTraverse prevNode = initialiseNode(busbarID, CE, BUSBAR_); 
@@ -60,17 +57,6 @@ public class NetworkTraversal extends CimConsts {
 			while (traverse) {					
 				// Find next node
 				nextNode = findNext(currentNode, prevNode); 
-//				System.out.println("-------------------------------");
-//				System.out.println("PreviousNode");
-//				prevNode.print();
-//				
-//				System.out.println("CurrentNode");
-//				currentNode.print();
-//				
-//				System.out.println("NextNode");
-//				if (nextNode != null) {
-//					nextNode.print();
-//				}
 
 				// Check conditions for network traverse
 				switch(currentNode.getNodeType()) {
@@ -87,8 +73,10 @@ public class NetworkTraversal extends CimConsts {
 					case(CN):
 						// If there is no un-traversed terminal remaining, publish the CE stack 
 						// and mark the next node as the CN on top of the CN stack
-						if (nextNode == null) {							
-							networkBranch.add((ArrayList<NodeTraverse>) ceStack.clone());
+						if (nextNode == null) {
+							if (ceStack.size() > 1) {
+								networkBranch.add((ArrayList<NodeTraverse>) ceStack.clone());
+							}
 							
 							// Update current node first CN with an un-traversed terminal and 
 							// update the CN stack
@@ -132,13 +120,18 @@ public class NetworkTraversal extends CimConsts {
 					// -------------- Conducting Equipment Case -------------- 
 					case(CE):
 						// Add to CE stack
-						ceStack.add(currentNode); 
+						if (currentNode.getCeType() != BREAKER_) {
+							ceStack.add(currentNode); 
+						}
 						
 						// If there is no un-traversed terminal remaining or next node is open breaker,
 						// or current node is a bus-bar section, publish the CE stack and mark 
 						// the next node as next CN from the CN stack
 						if (nextNode == null) {							
-							networkBranch.add((ArrayList<NodeTraverse>) ceStack.clone());
+							if (ceStack.size() > 1) {
+								networkBranch.add((ArrayList<NodeTraverse>) ceStack.clone());
+							}
+							
 							traverse = false; 
 
 							// Update current node first CN with an un-traversed terminal and 
@@ -177,7 +170,7 @@ public class NetworkTraversal extends CimConsts {
 		}
 	}
 	
-	public NodeTraverse findNext(NodeTraverse currentNode, NodeTraverse prevNode) {		
+	private NodeTraverse findNext(NodeTraverse currentNode, NodeTraverse prevNode) {		
 		switch(currentNode.getNodeType()) {
 			// --------- Terminal case ---------
 			case(TE):	
@@ -216,7 +209,7 @@ public class NetworkTraversal extends CimConsts {
 				return null; 
 			// --------- Conducting equipment case ---------
 			case(CE):
-				// Check if breaker
+				// Check breaker
 				if (currentNode.getCeType().equals(BREAKER_)) {
 					// Check state of the breaker
 					ArrayList<String> state = database.selectSQL(BREAKER_, 
@@ -244,7 +237,7 @@ public class NetworkTraversal extends CimConsts {
 		return null; 
 	}
 		
-	public NodeTraverse initialiseNode(String id, String... type) {
+	private NodeTraverse initialiseNode(String id, String... type) {
 		// Check input for type (should be of length 1 or 2)
 		// type[0] = type of the node 
 		// type[1] = CE type of the node
@@ -303,7 +296,7 @@ public class NetworkTraversal extends CimConsts {
 	
 	public void printBranches() {
 		for (int i = 0; i < networkBranch.size(); i++ ) {
-			System.out.println("Branch # " + i);
+			System.out.println("\nBranch # " + i);
 			
 			for (NodeTraverse node : networkBranch.get(i)) {
 				System.out.println(node.getID() + " " + node.getCeType());
