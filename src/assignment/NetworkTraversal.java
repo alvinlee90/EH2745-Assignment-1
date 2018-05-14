@@ -1,7 +1,6 @@
 package assignment;
 
 import java.util.ArrayList;
-import java.util.ListIterator;
 
 public class NetworkTraversal extends CimConsts {	
 	private static final String CE = "CE_TYPE"; 
@@ -10,166 +9,172 @@ public class NetworkTraversal extends CimConsts {
 
 	private Database database; 
 	
-	private ArrayList<ArrayList<NodeTraverse>> networkBranch; 
+	private ArrayList<BusBranch> busBranch = new ArrayList<BusBranch>(); 
 	
-	private ArrayList<String> untraversedTe; 
+	private ArrayList<ArrayList<NodeTraverse>> networkBranch = new ArrayList<ArrayList<NodeTraverse>>(); ; 
+	
+	private ArrayList<String> untraversedTe = new ArrayList<String>(); 
 	
 	public NetworkTraversal() {}
 	
 	public NetworkTraversal(Database data) {
 		// Initialize database variable
 		database = data; 
+						
+		// Traverse network and get bus branches
+		traverseNetwork(SHUNT_);
+		findBranches(SHUNT_); 
 		
-		networkBranch =  new ArrayList<ArrayList<NodeTraverse>>(); 
+		traverseNetwork(LINE_);
+		findBranches(LINE_); 
 		
-		// Initialize list of all connected terminals 
-		untraversedTe = database.selectSQL(TERMINAL_, CONNECTED_, "true"); 
+//		traverseNetwork(POWER_TRANS_END_);
 		
-		// Traverse network
-		traverseNetwork();	
+		// Print data
+		busBranch.get(0).printTitle();
+		for (BusBranch print : busBranch) {
+			print.print();
+		}
 	}
 	
-	private void traverseNetwork() {
-		// Get all the RDF id of the bus-bar sections
-		ArrayList<String> busbarIDs = database.getID(BUSBAR_); 
+	// Function to traverse through the network and return all possible paths
+	private void traverseNetwork(String device) {		
+		networkBranch.clear(); 
 		
-		// Loop through all bus-bars (end-device) to find branches 
-		for (String busbarID : busbarIDs) {
+		// Get all the RDF id's
+		ArrayList<String> initialIDs = database.getID(device); 
+		
+		// Loop through end-device to find branches 
+		for (String initialID : initialIDs) {
 			// Initialize empty connectivity node stack
-			ArrayList<NodeStack> cnStack = new ArrayList<NodeStack>();
+			NodeStack cnStack = new NodeStack();
 			ArrayList<NodeTraverse> ceStack = new ArrayList<NodeTraverse>(); 
 
 			// Initialize the previous NodeTraverse for the [bus-bar]
-			NodeTraverse prevNode = initialiseNode(busbarID, CE, BUSBAR_); 
+			NodeTraverse prevNode = initialiseNode(initialID, CE); 
+			NodeTraverse savedPrevNode = prevNode; 
+			
+			untraversedTe.clear();
+			untraversedTe.addAll(database.selectSQL(TERMINAL_, CONNECTED_, "true")); 
+
+//			NodeTraverse currentNode = initialiseNode(prevNode.getList().get(0), TE);
+			for (String initialTerminal : prevNode.getList()) {
+				
+				prevNode = savedPrevNode; 
+				
+				// Initialize the current NodeTraverse for connected [terminal]
+				NodeTraverse currentNode = initialiseNode(initialTerminal, TE);
+
+				NodeTraverse nextNode = findNext(currentNode, prevNode); 
+
+				// Add conducting equipment to CE stack
+				ceStack.clear();
+				ceStack.add(prevNode); 
+
+				// Else, add CN to cnStack and update the current node as next node
+				cnStack = new NodeStack(nextNode, ceStack);
+
+				Boolean traverse = true; 
+				
+				// Main traverse loop
+				while (traverse) {					
+					// Find next node
+					nextNode = findNext(currentNode, prevNode); 
 						
-			// Initialize the current NodeTraverse for connected [terminal]
-			NodeTraverse currentNode = initialiseNode(prevNode.getList().get(0), TE);
-			
-			// Initialize the next node
-			NodeTraverse nextNode = new NodeTraverse(); 
-			
-			// Add conducting equipment to CE stack
-			ceStack.add(prevNode); 
-			
-			Boolean traverse = true; 
-			
-			// Main traverse loop
-			while (traverse) {					
-				// Find next node
-				nextNode = findNext(currentNode, prevNode); 
-
-				// Check conditions for network traverse
-				switch(currentNode.getNodeType()) {
-					// -------------- Terminal Case -------------- 
-					case(TE): 
-						// Remove terminal from un-visited terminal list
-						untraversedTe.remove(currentNode.getID()); 
-
-						// Update current node as next node 
-						prevNode = currentNode; 
-						currentNode = nextNode; 
-						break;
-					// -------------- Connecting Node Case -------------- 
-					case(CN):
-						// If there is no un-traversed terminal remaining, publish the CE stack 
-						// and mark the next node as the CN on top of the CN stack
-						if (nextNode == null) {
-							if (ceStack.size() > 1) {
-								networkBranch.add((ArrayList<NodeTraverse>) ceStack.clone());
-							}
-							
-							// Update current node first CN with an un-traversed terminal and 
-							// update the CN stack
-							traverse = false;
-							
-							// Update current node first CN with an un-traversed terminal and 
-							// update the CN stack
-							for (ListIterator<NodeStack> itr = cnStack.listIterator(); itr.hasNext();) {
-								NodeStack stack = itr.next(); 
+					// Check conditions for network traverse
+					switch(currentNode.getNodeType()) {
+						// -------------- Terminal Case -------------- 
+						case(TE): 
+							// Remove terminal from un-visited terminal list
+							untraversedTe.remove(currentNode.getID()); 
+	
+							// Update current node as next node 
+							prevNode = currentNode; 
+							currentNode = nextNode; 
+							break;
+						// -------------- Connecting Node Case -------------- 
+						case(CN):
+							// If there is no un-traversed terminal remaining, publish the CE stack 
+							// and mark the next node as the CN on top of the CN stack
+							if (nextNode == null) {
+								if (ceStack.size() > 1) {
+									addBranch(ceStack);
+//									networkBranch.add((ArrayList<NodeTraverse>) ceStack.clone());
+								}
 								
-								for (String terminal : stack.getList()) {
+								traverse = false;
+								
+								// Update current node CN with an un-traversed terminal 
+								for (String terminal : cnStack.getList()) {
 									if (untraversedTe.indexOf(terminal) != -1) {
 										// Found connecting node with un-traversed terminals 
 										// Update current node with CN node
-										currentNode = stack.getNode();
+										currentNode = cnStack.getNode();
 										
 										// Update CE stack with corresponding CE stack
 										ceStack.clear();
-										ceStack.addAll(stack.getStack());
-																				
+										ceStack.addAll(cnStack.getStack());
+										
 										// Continue traversing through the network
 										traverse = true; 
-//										itr.remove();
 										break;
 									}									
-								}
-								// Remove CN node with no un-traversed terminals
-								itr.remove();
-							}						
-						}
-						else {
-							// Else, add CN to cnStack and update the current node as next node
-							cnStack.add(new NodeStack(currentNode, ceStack));
-						
-							// Update current node as next node 
-							prevNode = currentNode; 
-							currentNode = nextNode;
-						}
- 
-						break;
-					// -------------- Conducting Equipment Case -------------- 
-					case(CE):
-						// Add to CE stack
-						if (currentNode.getCeType() != BREAKER_) {
-							ceStack.add(currentNode); 
-						}
-						
-						// If there is no un-traversed terminal remaining or next node is open breaker,
-						// or current node is a bus-bar section, publish the CE stack and mark 
-						// the next node as next CN from the CN stack
-						if (nextNode == null) {							
-							if (ceStack.size() > 1) {
-								networkBranch.add((ArrayList<NodeTraverse>) ceStack.clone());
+								}	
+							}
+							else {							
+								// Update current node as next node 
+								prevNode = currentNode; 
+								currentNode = nextNode;
+							}
+	 
+							break;
+						// -------------- Conducting Equipment Case -------------- 
+						case(CE):
+							// Add to CE stack
+							if (currentNode.getCeType() != BREAKER_) {
+								ceStack.add(currentNode); 
 							}
 							
-							traverse = false; 
-
-							// Update current node first CN with an un-traversed terminal and 
-							// update the CN stack
-							for (ListIterator<NodeStack> itr = cnStack.listIterator(); itr.hasNext();) {
-								NodeStack stack = itr.next(); 
+							// If there is no un-traversed terminal remaining or next node is open breaker,
+							// or current node is a bus-bar section, publish the CE stack and mark 
+							// the next node as next CN from the CN stack
+							if (nextNode == null) {		
+								if (ceStack.size() > 1) {
+									addBranch(ceStack);
+								}
 								
-								for (String terminal : stack.getList()) {
+								traverse = false; 
+								
+								// Update current node first CN with an un-traversed terminal
+								for (String terminal : cnStack.getList()) {
 									if (untraversedTe.indexOf(terminal) != -1) {
 										// Found connecting node with un-traversed terminals 
 										// Update current node with CN node
-										currentNode = stack.getNode();
+										currentNode = cnStack.getNode();
 										
 										// Update CE stack with corresponding CE stack
 										ceStack.clear();
-										ceStack.addAll(stack.getStack());
+										ceStack.addAll(cnStack.getStack());
 										
 										// Continue traversing through the network
 										traverse = true; 
-//										itr.remove();
 										break;
-									}									
-								}
-								// Remove CN node with no un-traversed terminals
-								itr.remove();
+									}
+								}								
 							}
-						}
-						else {
-							// Update current node as next node 
-							prevNode = currentNode; 
-							currentNode = nextNode;
-						} 
-						break;
+							else {
+								// Update current node as next node 
+								prevNode = currentNode; 
+								currentNode = nextNode;
+							} 
+							break;
+					}
 				}
 			}
 		}
 	}
 	
+	// Function to find the next connected/valid node 
 	private NodeTraverse findNext(NodeTraverse currentNode, NodeTraverse prevNode) {		
 		switch(currentNode.getNodeType()) {
 			// --------- Terminal case ---------
@@ -198,7 +203,7 @@ public class NetworkTraversal extends CimConsts {
 				break;
 			// --------- Connecting node case ---------
 			case(CN):
-				// Return next un-traversed terminal
+				// Return next un-traversed terminal				
 				for (String terminal : currentNode.getList()) {
 					if (untraversedTe.indexOf(terminal) != -1) {
 						return initialiseNode(terminal, TE); 
@@ -222,13 +227,18 @@ public class NetworkTraversal extends CimConsts {
 						return null; 
 					}
 				}
-							
+					
+				if (currentNode.getCeType().equals(BUSBAR_)) {
+					return null;
+				}
+			
 				// Return next un-traversed terminal
 				for (String terminal : currentNode.getList()) {
 					if (untraversedTe.indexOf(terminal) != -1) {
 						return initialiseNode(terminal, TE); 
 					}
 				}
+				
 				// Else return nothing 
 				return null; 
 			default:
@@ -236,7 +246,8 @@ public class NetworkTraversal extends CimConsts {
 		}
 		return null; 
 	}
-		
+	
+	// Function to initialise a traverse node for network traversing 
 	private NodeTraverse initialiseNode(String id, String... type) {
 		// Check input for type (should be of length 1 or 2)
 		// type[0] = type of the node 
@@ -283,15 +294,89 @@ public class NetworkTraversal extends CimConsts {
 				node.setTerminal(terminals);
 				break;
 			case(CE):
-				ArrayList<String> terminals1 = database.selectSQL(TERMINAL_, 
-																  CONDUCT_ID_, 
-																  id,
-															 	  RDF_ID_); 
+				ArrayList<String> terminals1 = new ArrayList<String>(); 
+			
+				if (node.getCeType() == POWER_TRANS_END_) {
+					terminals1 = database.selectSQL(POWER_TRANS_END_, 
+													RDF_ID_, 
+													id,
+													TERMINAL_ID_); 
+
+				}
+				else {
+					terminals1 = database.selectSQL(TERMINAL_, 
+													CONDUCT_ID_, 
+													id,
+													RDF_ID_); 
+				}
 				node.setTerminal(terminals1);
 				break; 
 		}
 		
 		return node; 
+	}
+	
+	public void addBranch(ArrayList<NodeTraverse> stack) {			
+			networkBranch.add((ArrayList<NodeTraverse>) stack.clone());
+	}
+	
+	// Function to get all the bus branches
+	public void findBranches(String ceType) {
+		switch(ceType) {
+			case(SHUNT_):
+				// Find Shunt -> Bus-bar
+				for (ArrayList<NodeTraverse> branch : networkBranch) {
+					if (branch.size() == 2) {
+						if (branch.get(1).getCeType() == BUSBAR_) {
+							String shuntName = database.selectSQL(SHUNT_, RDF_ID_, branch.get(0).getID(), NAME_).get(0);
+							String busbarName = database.selectSQL(BUSBAR_, RDF_ID_, branch.get(1).getID(), NAME_).get(0); 
+
+							busBranch.add(new BusBranch(branch.get(0).getID(),
+														SHUNT_,
+														shuntName,
+														branch.get(1).getID(),
+														BUSBAR_,
+														busbarName)); 
+						}
+					}
+				}
+				break;
+			case(LINE_): 
+				// Find Busbar -> Line -> Busbar
+				ArrayList<String> history = new ArrayList<String>();
+			
+				for (ArrayList<NodeTraverse> branch : networkBranch) {
+					if (branch.size() == 2 && history.indexOf(branch.get(0).getID()) == -1) {
+						for (ArrayList<NodeTraverse> compare : networkBranch) {
+							if (compare.size() == 2) {
+								// Same AC Line
+								if (branch.get(0).getID() == compare.get(0).getID() &&
+										branch.get(1).getID() != compare.get(1).getID()) {
+									history.add(branch.get(0).getID()); 
+									
+									String busbarName1 = database.selectSQL(BUSBAR_, RDF_ID_, branch.get(1).getID(), NAME_).get(0);
+									String busbarName2 = database.selectSQL(BUSBAR_, RDF_ID_, compare.get(1).getID(), NAME_).get(0); 
+
+									BusBranch bBranch = new BusBranch(branch.get(1).getID(), 
+												 					  BUSBAR_,
+												 					  busbarName1,
+												 					  compare.get(1).getID(),
+												 					  BUSBAR_,
+																	  busbarName2); 
+									
+									String lineName = database.selectSQL(LINE_, RDF_ID_, branch.get(0).getID(), NAME_).get(0); 
+									
+									bBranch.updateDevice(branch.get(0).getID(), lineName, LINE_);
+									
+									busBranch.add(bBranch); 
+
+								}
+							}
+						}
+					}
+				}
+				break;
+		}
 	}
 	
 	public void printBranches() {

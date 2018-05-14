@@ -27,12 +27,12 @@ public class NodeTraverse {
 	public NodeTraverse(String id, String type, ArrayList<String> terminal) {
 		rdfID = id; 
 		nodeType = type; 
-		terminalList.addAll(terminal); 
+		terminalList = (ArrayList<String>) terminal.clone(); 
 	}
 	
 	public void setCeType(String type) { ceType = type; }
 	
-	public void setTerminal(ArrayList<String> list) { terminalList = list; }
+	public void setTerminal(ArrayList<String> list) { terminalList = (ArrayList<String>) list.clone(); }
 	
 	public String getID() { return rdfID; }
 	

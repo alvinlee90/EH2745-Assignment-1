@@ -11,12 +11,14 @@ public class PowerTransformerEnd extends BaseCimClass{
 	private static final String TRANSFORMER_X = "cim:PowerTransformerEnd.x"; 
 	private static final String TRANSFORMER = "cim:PowerTransformerEnd.PowerTransformer"; 
 	private static final String BASE_VOLTAGE = "cim:TransformerEnd.BaseVoltage"; 
-
+	private static final String TERMINAL = "cim:TransformerEnd.Terminal"; 
+	
 	private String name;
 	private String transformerR;
 	private String transformerX;
 	private String transformer;
 	private String baseVoltage; 
+	private String terminal; 
 	
 	public PowerTransformerEnd() {}
 	
@@ -27,12 +29,14 @@ public class PowerTransformerEnd extends BaseCimClass{
 		transformerX = parseElement(element, TRANSFORMER_X); 
 		transformer = parseElement(element, TRANSFORMER);
 		baseVoltage = parseElement(element, BASE_VOLTAGE); 
+		terminal = parseElement(element, TERMINAL); 
 	}
 	
 	public String createTable() {
 		return POWER_TRANS_END_ + " (" + RDF_ID_ + " " + STRING + " NOT NULL, " + NAME_ 
 				+ " " + STRING + ", " + R_ + " " + FLOAT + ", " + X_ + " " + FLOAT + ", " 
 				+ TRANSFORMER_ID_ + " " + STRING + ", " + BASE_VOLTAGE_ID_ + " " + STRING 
+				+ ", " + TERMINAL_ID_ + " "  + STRING
 				+ ", PRIMARY KEY (" + RDF_ID_ + "), FOREIGN KEY (" + TRANSFORMER_ID_ 
 				+ ") REFERENCES " + POWER_TRANS_ + "(" + RDF_ID_ + "), FOREIGN KEY (" 
 				+ BASE_VOLTAGE_ID_ + ") REFERENCES " + BASE_VOLTAGE_ + "(" + RDF_ID_ + "))"; 
@@ -96,6 +100,17 @@ public class PowerTransformerEnd extends BaseCimClass{
 			update = true; 
 		}
 		
+		// Add terminal ID
+		if (terminal != null) {
+			columnNames = columnNames.concat(", " + TERMINAL_ID_);
+			values = values.concat(", '" + terminal + "'");
+			
+			duplicate = duplicate.concat(TERMINAL_ID_ + " = VALUES(" 
+										 + TERMINAL_ID_ + "), ");  
+			update = true; 
+		}
+
+		
 		// Return SQL command (check possibility for duplicates already in table)
 		String command = POWER_TRANS_END_ + columnNames + ") " + values + ")"; 
 		
@@ -111,6 +126,7 @@ public class PowerTransformerEnd extends BaseCimClass{
 		attributes.add(X_);
 		attributes.add(TRANSFORMER_ID_);
 		attributes.add(BASE_VOLTAGE_ID_);
+		attributes.add(TERMINAL_ID_); 
 
 		return attributes; 
 	}

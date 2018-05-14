@@ -11,45 +11,20 @@ public class MainProgram {
 	// Object to manage the SQL database
 	private static Database database;
 	
-	public static void main (String[] args) {
-		// Check the number of arguments 
-		// args[0] = EQ file; args[1] = SSH file
-		if (args.length != 2) {
-			System.err.println("[Main] Error: invalid number of EQ and SSH filepaths");
-			return;
-		}
-		
-		try {
-			// Parse data
-			parseXMLFiles(args[0], args[1]);
-			
-			// Initialize database (create database, create tables, insert elements)
-			initializeDatabase(); 			
-			
-			NetworkTraversal networkTraversal = new NetworkTraversal(database); 
-			
-			networkTraversal.printBranches();
-			// Display (print) all the tables
-//			database.printTables(); 
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		finally {
-			// Drop the database and close connection
-			database.dropDatabase(); 
-		}
-	}
-	
+	// Function to parse EQ and SHH files; stores all the data into a CimData object
+	// in preparation for the database
 	public static void parseXMLFiles(String eqFile, String sshFile) {
 		// Parse EQ and SSH file
-//		System.out.println("Parsing EQ file...");
+		System.out.println("Parsing EQ file...");
 		cimData.add(new CimData(eqFile));
 		
-//		System.out.println("Parsing SSH file...");
+		System.out.println("Parsing SSH file...");
 		cimData.add(new CimData(sshFile));
 	}
 	
+	// Function to initialize the database; creates all the tables required
+	// and populates the tables with the data from the EQ and SHH file. Finally,
+	// it populates the missing relations for the [base voltage id]
 	public static void initializeDatabase() {
 		// Create database
 		database = new Database(DATABASE); 
@@ -67,6 +42,8 @@ public class MainProgram {
 		database.updateBaseVoltageID();
 	}
 	
+	// Function to call all the SQL queries to populate the database with 
+	// information from the EQ and SSH files
 	public static void insertTables() {
 		// -------------- Base Voltage -------------- 
 		for (CimData object : cimData) {
@@ -194,6 +171,35 @@ public class MainProgram {
 //				System.out.println("[SQL] " + query); 
 				database.insertTable(query);
 			}
+		}
+	}
+	
+	public static void main (String[] args) {
+		// Check the number of arguments 
+		// args[0] = EQ file; args[1] = SSH file
+		if (args.length != 2) {
+			System.err.println("[Main] Error: invalid number of EQ and SSH filepaths");
+			return;
+		}
+		
+		try {
+			// Parse data
+			parseXMLFiles(args[0], args[1]);
+			
+			// Initialize database (create database, create tables, insert elements)
+			initializeDatabase(); 			
+			
+			NetworkTraversal networkTraversal = new NetworkTraversal(database); 
+			
+//			networkTraversal.printBranches();
+//			database.printTables(); 
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			// Drop the database and close connection
+			database.dropDatabase(); 
 		}
 	}
 }

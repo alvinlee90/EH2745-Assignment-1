@@ -45,6 +45,7 @@ public class CimConsts {
 	protected static final String CONNECT_ID_ = "CONNECTING_NODE_ID"; 
 	protected static final String CONNECTED_ = "CONNECTED";
 	protected static final String SUBSTATION_ID_ = "SUBSTATION_ID";
+	protected static final String TERMINAL_ID_ = "TERMINAL_ID";
 
 	protected static final String[] CIM_CLASSES_ = {BASE_VOLTAGE_, 
 											        SUBSTATION_,
@@ -67,6 +68,7 @@ public class CimConsts {
 												 BUSBAR_,
 												 ENERGY_CONSUMER_,
 												 POWER_TRANS_,
+												 POWER_TRANS_END_,
 												 BREAKER_,
 												 SHUNT_,
 												 LINE_}; 

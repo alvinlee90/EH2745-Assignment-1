@@ -14,7 +14,7 @@ import assignment.cim.*;
 
 
 public class CimData extends XmlConsts {
-	// CIM classes 		
+	// Required CIM classes 	
 	private ArrayList <BaseVoltage> baseVoltage_ = new ArrayList<BaseVoltage>();
 	private ArrayList <Substation> substation_ = new ArrayList<Substation>();
 	private ArrayList <VoltageLevel> voltageLevel_ = new ArrayList<VoltageLevel>();
@@ -27,6 +27,7 @@ public class CimData extends XmlConsts {
 	private ArrayList <Breaker> breaker_ = new ArrayList<Breaker>();
 	private ArrayList <RatioTapChanger> ratioTapChanger_ = new ArrayList<RatioTapChanger>();
 	
+	// Required CIM class for Y-matrix 
 	private ArrayList <BusbarSection> busbar_ = new ArrayList<BusbarSection>(); 
 	private ArrayList <ConnectivityNode> connectNode_ = new ArrayList<ConnectivityNode>(); 
 	private ArrayList <Terminal> terminal_ = new ArrayList<Terminal>(); 
@@ -35,6 +36,7 @@ public class CimData extends XmlConsts {
 
 	public CimData (String filepath) {
 		try {		
+			// Parse the specified file
 			File file = new File(filepath);	
 			
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -44,8 +46,8 @@ public class CimData extends XmlConsts {
 			
 			doc.getDocumentElement().normalize();
 			
+			// For each 
 			for (String cimClass : CIM_CLASSES) {
-//				System.out.println("Parsing data for " + cimClass + "...\n");
 				NodeList nodeList = doc.getElementsByTagName(cimClass);
 
 				for (int i = 0; i < nodeList.getLength(); i++) {
@@ -53,15 +55,13 @@ public class CimData extends XmlConsts {
 					
 					addElement(element, cimClass);
 				}
-				
-//				printCIMData(cimClass);
 			}					
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
 	}	
-
+	
 	private void addElement(Element element, String object) {
 		switch (object) {
 			case BASE_VOLTAGE: 
@@ -117,6 +117,8 @@ public class CimData extends XmlConsts {
 		}
 	}
 	
+	// Function to return all the SQL queries to create all the  
+	// tables for the database
 	public ArrayList<String> CreateTables() {
 		ArrayList<String> query = new ArrayList<String>();
 		
@@ -143,6 +145,7 @@ public class CimData extends XmlConsts {
 		return query; 
 	}
 	
+	// Function to create SQL queries to insert all the rows for base voltage
 	public ArrayList<String> insertBaseVoltage() {
 		ArrayList<String> query = new ArrayList<String>(); 
 		
@@ -154,6 +157,7 @@ public class CimData extends XmlConsts {
 		return query; 
 	}
 	
+	// Function to create SQL queries to insert all the rows for sub*station
 	public ArrayList<String> insertSubstation() {
 		ArrayList<String> query = new ArrayList<String>(); 
 		
@@ -165,6 +169,7 @@ public class CimData extends XmlConsts {
 		return query; 
 	}
 	
+	// Function to create SQL queries to insert all the rows for voltage level
 	public ArrayList<String> insertVoltageLevel() {
 		ArrayList<String> query = new ArrayList<String>(); 
 		
@@ -176,6 +181,7 @@ public class CimData extends XmlConsts {
 		return query; 
 	}
 	
+	// Function to create SQL queries to insert all the rows for generating unit
 	public ArrayList<String> insertGeneratingUnit() {
 		ArrayList<String> query = new ArrayList<String>(); 
 		
@@ -187,6 +193,7 @@ public class CimData extends XmlConsts {
 		return query; 
 	}
 	
+	// Function to create SQL queries to insert all the rows for sync machine
 	public ArrayList<String> insertSyncMachine() {
 		ArrayList<String> query = new ArrayList<String>(); 
 			
@@ -198,6 +205,7 @@ public class CimData extends XmlConsts {
 		return query; 
 	}
 	
+	// Function to create SQL queries to insert all the rows for regulating control
 	public ArrayList<String> insertRegulatingControl() {
 		ArrayList<String> query = new ArrayList<String>(); 
 	
@@ -209,6 +217,7 @@ public class CimData extends XmlConsts {
 		return query; 
 	}
 
+	// Function to create SQL queries to insert all the rows for power transformer
 	public ArrayList<String> insertPowerTransformer() {
 		ArrayList<String> query = new ArrayList<String>(); 
 			
@@ -220,7 +229,7 @@ public class CimData extends XmlConsts {
 		return query;
 	}
 		
-
+	// Function to create SQL queries to insert all the rows for energy consumer
 	public ArrayList<String> insertEnergyConsumer() {
 		ArrayList<String> query = new ArrayList<String>(); 
 						
@@ -232,6 +241,7 @@ public class CimData extends XmlConsts {
 		return query;
 	}
 	
+	// Function to create SQL queries to insert all the rows for power transformer end
 	public ArrayList<String> insertPowerTransformerEnd() {
 		ArrayList<String> query = new ArrayList<String>(); 
 			
@@ -243,6 +253,7 @@ public class CimData extends XmlConsts {
 		return query;
 	}
 	
+	// Function to create SQL queries to insert all the rows for breaker
 	public ArrayList<String> insertBreaker() {
 		ArrayList<String> query = new ArrayList<String>(); 
 				
@@ -254,6 +265,7 @@ public class CimData extends XmlConsts {
 		return query;
 	}
 	
+	// Function to create SQL queries to insert all the rows for ratio tap changer
 	public ArrayList<String> insertRatioTapChanger() {
 		ArrayList<String> query = new ArrayList<String>(); 		
 
@@ -265,6 +277,7 @@ public class CimData extends XmlConsts {
 		return query;
 	}
 
+	// Function to create SQL queries to insert all the rows for breaker
 	public ArrayList<String> insertBusbar() {
 		ArrayList<String> query = new ArrayList<String>(); 		
 
@@ -276,6 +289,7 @@ public class CimData extends XmlConsts {
 		return query;
 	}
 	
+	// Function to create SQL queries to insert all the rows for connecting node
 	public ArrayList<String> insertConnectNode() {
 		ArrayList<String> query = new ArrayList<String>(); 		
 
@@ -287,6 +301,7 @@ public class CimData extends XmlConsts {
 		return query;
 	}
 	
+	// Function to create SQL queries to insert all the rows for terminal
 	public ArrayList<String> insertTerminal() {
 		ArrayList<String> query = new ArrayList<String>(); 		
 
@@ -298,6 +313,7 @@ public class CimData extends XmlConsts {
 		return query;
 	}
 	
+	// Function to create SQL queries to insert all the rows for ac line
 	public ArrayList<String> insertLine() {
 		ArrayList<String> query = new ArrayList<String>(); 		
 
@@ -309,6 +325,7 @@ public class CimData extends XmlConsts {
 		return query;
 	}
 	
+	// Function to create SQL queries to insert all the rows for shunt
 	public ArrayList<String> insertShunt() {
 		ArrayList<String> query = new ArrayList<String>(); 		
 

@@ -16,6 +16,7 @@ public class BaseCimClass extends CimConsts {
 	
 	protected String rdfID;
 	
+	// Function to parse the RDF ID from both the EQ and SSH files
 	public void parseRDF(Element element) {
 		if (element.hasAttribute(RDF_ID)) {
 			rdfID = element.getAttribute(RDF_ID);
@@ -28,6 +29,7 @@ public class BaseCimClass extends CimConsts {
 		}
 	}
 	
+	// Function to parse an specific element
 	public String parseElement(Element element, String tagName) {
 		NodeList nodeList = element.getElementsByTagName(tagName);
 		
@@ -48,6 +50,7 @@ public class BaseCimClass extends CimConsts {
 		}
 	}
 	
+	// Function to create the SQL insert query
 	protected String insertSQL(String command, String duplicate, Boolean update) {
 		if (update) {
 			if (duplicate.endsWith(", ")) {

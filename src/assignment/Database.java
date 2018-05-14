@@ -51,13 +51,10 @@ public class Database extends CimConsts {
 			
 			// Create database 
 			String sql = "CREATE DATABASE IF NOT EXISTS " + database; 
-//			System.out.println("[SQL] " + sql);
 			
 			stmt = conn.createStatement();
 			stmt.executeUpdate(sql);
 			
-//			System.out.println("Database created successfully...\n");
-
 			// Connect to the created database
 			conn = DriverManager.getConnection(DB_URL + database, credentials);
 		}
@@ -81,6 +78,7 @@ public class Database extends CimConsts {
 		}
 	}
 	
+	// Function to create all the tables
 	public void createTable(String query) {
 		Statement stmt = null;
 
@@ -108,6 +106,7 @@ public class Database extends CimConsts {
 		}
 	}
 	
+	// Function to insert tables 
 	public void insertTable(String sql) {
 		Statement stmt = null; 
 		
@@ -133,6 +132,7 @@ public class Database extends CimConsts {
 		}
 	}
 	
+	// Function to update all the base voltage relations in the database
 	public void updateBaseVoltageID() {		
 		String[] elements = {SYNC_MACHINE_, ENERGY_CONSUMER_, BREAKER_};
 		
@@ -151,7 +151,6 @@ public class Database extends CimConsts {
 								+ " FROM " + table + " WHERE " + BASE_VOLTAGE_ID_
 								+ " IS NULL"; 
 				
-//			    System.out.println("\n[SQL] " + query);
 		        ResultSet result = stmt.executeQuery(query);
 		        
 		        // Loop through all found rows
@@ -163,9 +162,7 @@ public class Database extends CimConsts {
 		        	// Find corresponding voltage level with the same equipment container ID
 		        	String query2 = "SELECT " + BASE_VOLTAGE_ID_ + " FROM " + VOLTAGE_LEVEL_
 		        					+ " WHERE " + RDF_ID_ + " = '" + equipResult + "'"; 
-				    
-//		        	System.out.println("\n[SQL] " + query2);
-		        	
+				    		        	
 			        ResultSet voltageResult = stmt2.executeQuery(query2);
 					
 			        // Check if result is found
@@ -183,7 +180,6 @@ public class Database extends CimConsts {
 		        }
 	        
 	        	for (String update : updateArray) {
-//			        System.out.println("\n[SQL] " + update);
 			        stmt.executeUpdate(update);
 	        	}	        
 			}
@@ -214,6 +210,7 @@ public class Database extends CimConsts {
 		}
 	}
 	
+	// Function to return all the RDF ids from a specific table
 	public ArrayList<String> getID(String table) {
 		Statement stmt = null; 
 				
@@ -256,6 +253,7 @@ public class Database extends CimConsts {
 		return result;
 	}
 	
+	// Function to execute the SQL select query
 	public ArrayList<String> selectSQL(String table, String whereAttribute, String condition, String getAttribute) {
 		PreparedStatement stmt = null; 
 		
@@ -298,10 +296,12 @@ public class Database extends CimConsts {
 		return results;
 	}
 	
+	// Function to execute the SQL select query
 	public ArrayList<String> selectSQL(String table, String whereAttribute, String condition) {
 		return this.selectSQL(table, whereAttribute, condition, RDF_ID_); 
 	}
 	
+	// Function to print all the tables
 	public void printTables() {	    
 	    Statement stmt = null; 
 	    
@@ -377,7 +377,6 @@ public class Database extends CimConsts {
 				}
 	
 			    query = query.concat(" FROM " + table);            
-//			    System.out.println("[SQL] " + query);
 			    System.out.println(title);
 	
 		        ResultSet result = stmt.executeQuery(query);
@@ -412,6 +411,7 @@ public class Database extends CimConsts {
 		}
 	}
 	
+	// Function to drop the database and disconnect
 	public void dropDatabase() {
 		Statement stmt = null;
 		
