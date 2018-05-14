@@ -1,4 +1,10 @@
 package assignment;
+/**
+ * Class to store attributes for the discovered bus branches.
+ *  
+ * @author Alvin Lee
+ *
+ */
 
 public class BusBranch extends CimConsts {
 	private String fromID;

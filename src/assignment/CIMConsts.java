@@ -1,5 +1,13 @@
 package assignment;
 
+/**
+ * Parent class that contains all the constants for the database table names,
+ * and attributes/columns
+ * 
+ * @author Alvin Lee
+ *
+ */
+
 public class CimConsts {
 	protected static final String BASE_VOLTAGE_ = "BASE_VOLTAGE"; 
 	protected static final String SUBSTATION_ = "SUBSTATION"; 

@@ -2,6 +2,13 @@ package assignment;
 
 import java.util.ArrayList;
 
+/** NetworkTraversal traverses through the network in order to identify
+ * the bus branches. 
+ * 
+ * @author Alvin Lee
+ *
+ */
+
 public class NetworkTraversal extends CimConsts {	
 	private static final String CE = "CE_TYPE"; 
 	private static final String CN = "CN_TYPE"; 

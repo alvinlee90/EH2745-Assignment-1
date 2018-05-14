@@ -12,6 +12,13 @@ import org.w3c.dom.NodeList;
 
 import assignment.cim.*;
 
+/** Class to store all the data that is parse from the XML file. 
+ * It also creates all the SQL queries to transfer the data to the 
+ * database. 
+ * 
+ * @author Alvin Lee
+ *
+ */
 
 public class CimData extends XmlConsts {
 	// Required CIM classes 	

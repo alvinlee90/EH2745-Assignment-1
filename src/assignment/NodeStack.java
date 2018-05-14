@@ -2,6 +2,12 @@ package assignment;
 
 import java.util.ArrayList;
 
+/** Class to represent a stack of NodeTraverse; for traversing through the network. 
+ * 
+ * @author Alvin Lee
+ *
+ */
+
 public class NodeStack {
 	private NodeTraverse cnNode; 
 	private ArrayList<NodeTraverse> ceStack = new ArrayList<NodeTraverse>();

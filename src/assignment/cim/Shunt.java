@@ -4,6 +4,13 @@ import java.util.ArrayList;
 
 import org.w3c.dom.Element;
 
+/**
+ * Class to store attributes for shunt.
+ * Also generates SQL queries to create table and insert data into the table
+ * 
+ * @author Alvin Lee
+ *
+ */
 
 public class Shunt extends BaseCimClass{
 	private static final String NAME = "cim:IdentifiedObject.name";

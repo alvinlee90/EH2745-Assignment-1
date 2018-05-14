@@ -4,6 +4,13 @@ import java.util.ArrayList;
 
 import org.w3c.dom.Element;
 
+/** Class to store attributes for the base voltage.
+ * Also generates SQL queries to create table and insert data into the table
+ * 
+ * @author Alvin Lee
+ *
+ */
+
 public class BaseVoltage extends BaseCimClass {
 	private static final String NOMINAL_VOLTAGE = "cim:BaseVoltage.nominalVoltage";
 	

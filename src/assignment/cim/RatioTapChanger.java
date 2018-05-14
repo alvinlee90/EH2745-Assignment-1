@@ -4,6 +4,13 @@ import java.util.ArrayList;
 
 import org.w3c.dom.Element;
 
+/**
+ * Class to store attributes for ratio tap changer.
+ * Also generates SQL queries to create table and insert data into the table
+ * 
+ * @author Alvin Lee
+ *
+ */
 
 public class RatioTapChanger extends BaseCimClass{
 	private static final String NAME_ = "NAME";

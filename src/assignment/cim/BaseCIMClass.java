@@ -6,6 +6,13 @@ import org.w3c.dom.NodeList;
 
 import assignment.CimConsts;
 
+/**BaseCimClass is the parent class for all the classes that represents 
+ * an CIM object. 
+ * 
+ * @author Alvin Lee
+ *
+ */
+
 public class BaseCimClass extends CimConsts {	
 	protected static final String STRING = "VARCHAR(50)";
 	protected static final String FLOAT = "FLOAT"; 

@@ -1,5 +1,12 @@
 package assignment;
 
+/** Class to store all the constants that refers to the elements/attributes
+ * from the CIM. 
+ * 
+ * @author Alvin Lee
+ *
+ */
+
 public class XmlConsts {
 	protected static final String BASE_VOLTAGE = "cim:BaseVoltage"; 
 	protected static final String SUBSTATION = "cim:Substation"; 

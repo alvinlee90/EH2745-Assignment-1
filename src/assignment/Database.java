@@ -11,6 +11,13 @@ import java.util.Properties;
 
 import assignment.cim.*; 
 
+/** Class that manages the database; create and connect to database, create tables, 
+ * insert into tables, and SQL select queries. 
+ * 
+ * @author Alvin Lee
+ *
+ */
+
 public class Database extends CimConsts {
 	// JDBC driver name and database URL
 	final static String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";

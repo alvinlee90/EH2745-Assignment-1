@@ -2,6 +2,14 @@ package assignment;
 
 import java.util.ArrayList;
 
+/** Class to store the node information while traversing through the 
+ * network. 
+ * 
+ * @author Alvin Lee
+ *
+ */
+
+
 public class NodeTraverse {
 	private String rdfID;
 	private String nodeType; 
